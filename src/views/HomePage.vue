@@ -1,11 +1,5 @@
 <template>
-  <BaseButton @click="handleClick">Rent Now</BaseButton>
+  <div class="text-center text-9xl font-bold text-orange-base">HOME PAGE</div>
 </template>
 
-<script lang="ts" setup>
-import BaseButton from '../components/BaseButton.vue';
-
-const handleClick = () => {
-  console.log('btn clicked');
-};
-</script>
+<script lang="ts" setup></script>

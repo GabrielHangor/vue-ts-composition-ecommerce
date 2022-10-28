@@ -1,7 +1,14 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./index.html', './views/**/*.{js,ts,jsx,tsx,vue}', './src/**/*.{js,ts,jsx,tsx,vue}'],
+  content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   theme: {
+    screens: {
+      sm: '640px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1135px',
+      '2xl': '1536px',
+    },
     fontFamily: { sans: ['Montserrat', 'sans-serif'], serif: ['Montserrat', 'serif'] },
     extend: {
       colors: {
