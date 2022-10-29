@@ -1,8 +1,8 @@
 <template>
-  <TheNavBar />
+  <NavBar />
   <main class="flex h-full items-center justify-center">
     <router-view v-slot="{ Component }">
-      <transition name="fade" mode="out-in">
+      <transition name="slide">
         <component :is="Component" />
       </transition>
     </router-view>
@@ -10,5 +10,5 @@
 </template>
 
 <script setup lang="ts">
-  import TheNavBar from '@/components/TheNavBar.vue';
+  import NavBar from '@/components/NavBar/NavBar.vue';
 </script>

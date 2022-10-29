@@ -9,7 +9,7 @@ module.exports = {
       xl: '1135px',
       '2xl': '1536px',
     },
-    fontFamily: { sans: ['Montserrat', 'sans-serif'], serif: ['Montserrat', 'serif'] },
+
     extend: {
       colors: {
         'orange-base': '#E85638',
