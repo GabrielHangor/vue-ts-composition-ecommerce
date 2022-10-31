@@ -1,6 +1,6 @@
 <template>
   <NavBar />
-  <main class="flex h-full items-center justify-center">
+  <main class="flex h-full justify-center">
     <router-view v-slot="{ Component }">
       <transition name="slide">
         <component :is="Component" />

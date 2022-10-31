@@ -1,7 +1,7 @@
 <template>
-  <div class="max-h-full w-full text-center text-5xl font-bold text-orange-base md:text-9xl">
-    EXPLORE CARS
-  </div>
+  <PickupControlsForm />
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+  import PickupControlsForm from '@/components/PickupControlsForm/PickupControlsForm.vue';
+</script>

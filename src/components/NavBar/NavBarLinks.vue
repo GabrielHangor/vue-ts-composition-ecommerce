@@ -4,7 +4,7 @@
     v-for="link in links"
     :key="link.title"
     :to="link.path"
-    @click="toggleMobileNav"
+    @click="closeMobileNav"
   >
     {{ link.title }}</RouterLink
   >
@@ -19,6 +19,6 @@
     { path: '/contact', title: 'Contact' },
   ];
 
-  const emit = defineEmits<{ (e: 'toggle-mobile-nav'): void }>();
-  const toggleMobileNav = () => emit('toggle-mobile-nav');
+  const emit = defineEmits<{ (e: 'close-mobile-nav'): void }>();
+  const closeMobileNav = () => emit('close-mobile-nav');
 </script>
