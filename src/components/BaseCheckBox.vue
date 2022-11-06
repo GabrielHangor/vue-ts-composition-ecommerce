@@ -1,5 +1,5 @@
 <template>
-  <label class="flex h-full cursor-pointer items-center" :for="id">
+  <label class="flex h-full w-fit cursor-pointer items-center" :for="id">
     <input
       :id="id"
       :name="id"
