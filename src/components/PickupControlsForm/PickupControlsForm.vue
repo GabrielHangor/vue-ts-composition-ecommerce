@@ -6,7 +6,7 @@
         class="h-full"
         label="Pick up from"
         :list-data="citiesListData"
-        :error="errorMessages.pickupFrom"
+        :error="v$.pickupFrom.$errors[0]?.$message"
       />
 
       <div class="h-full">
@@ -15,7 +15,7 @@
           v-model="pickupFormValues.dropOff"
           label="Drop-off"
           :list-data="citiesListData"
-          :error="errorMessages.dropOff"
+          :error="v$.dropOff.$errors[0]?.$message"
         />
 
         <BaseCheckBox
@@ -26,25 +26,39 @@
           id="1"
         />
       </div>
-      <div class="grid gap-4 lg:grid-cols-2">
-        <BaseDatePicker v-model="pickupFormValues.pickupDate" label="Pick up date" />
-        <BaseTimePicker v-model="pickupFormValues.pickupTime" label="Pick up time" />
+      <div class="grid h-full gap-4 lg:grid-cols-2">
+        <BaseDatePicker
+          v-model="pickupFormValues.pickupDate"
+          label="Pick up date"
+          :error="v$.pickupDate.$errors[0]?.$message"
+        />
+        <BaseTimePicker
+          v-model="pickupFormValues.pickupTime"
+          label="Pick up time"
+          :error="v$.pickupTime.$errors[0]?.$message"
+        />
       </div>
-      <div class="grid gap-4 lg:grid-cols-2">
-        <BaseDatePicker v-model="pickupFormValues.dropOffDate" label="Drop-off date" />
-        <BaseTimePicker v-model="pickupFormValues.dropOffTime" label="Drop off time" />
+      <div class="grid h-full gap-4 lg:grid-cols-2">
+        <BaseDatePicker
+          v-model="pickupFormValues.dropOffDate"
+          label="Drop-off date"
+          :error="v$.dropOffDate.$errors[0]?.$message"
+        />
+        <BaseTimePicker
+          v-model="pickupFormValues.dropOffTime"
+          label="Drop off time"
+          :error="v$.dropOffTime.$errors[0]?.$message"
+        />
       </div>
     </div>
     <div class="container mx-auto mb-8 flex justify-center">
       <BaseButton class="w-[272px]">Search</BaseButton>
     </div>
-
-    {{ errorMessages }}
   </form>
 </template>
 
 <script lang="ts" setup>
-  import { computed, ref, watch } from 'vue';
+  import { ref, watch } from 'vue';
   import BaseAutocomplete from '../BaseAutocomplete.vue';
   import BaseCheckBox from '../BaseCheckBox.vue';
   import BaseDatePicker from '../BaseDatePicker.vue';
@@ -75,16 +89,6 @@
   };
 
   const v$ = useVuelidate(validationRules, pickupFormValues, { $autoDirty: true });
-
-  const errorMessages = computed(() => {
-    const errorMessagesObj = {};
-
-    v$.value.$errors.forEach((errorObj) => {
-      errorMessagesObj[errorObj.$property] = errorObj.$message;
-    });
-
-    return errorMessagesObj;
-  });
 
   watch(
     pickupFormValues,

@@ -27,7 +27,7 @@
       >
       <transition name="fade" mode="out-in">
         <ul
-          v-if="listeners.focused"
+          v-if="listeners.focused && filteredListData?.length"
           class="absolute z-10 mt-2 max-h-[30vh] w-full overflow-y-auto overflow-x-hidden rounded-[10px] bg-white shadow-inputBase"
         >
           <li
@@ -39,6 +39,16 @@
             <span class="pl-[52px]">{{ listItem }}</span>
           </li>
         </ul>
+        <ul
+          v-else-if="listeners.focused && !filteredListData?.length"
+          class="absolute text-gray-500 z-10 mt-2 flex h-[56px] w-full items-center overflow-y-auto overflow-x-hidden rounded-[10px] bg-white shadow-inputBase"
+        >
+          <li
+            class="py-2 transition first-of-type:rounded-t-[10px] first-of-type:rounded-b-none last-of-type:rounded-t-none last-of-type:rounded-b-[10px]"
+          >
+            <span class="pl-[52px]">Nothing is found...</span>
+          </li>
+        </ul>
       </transition>
     </div>
     <span class="mt-1 text-xs text-error">{{ error }}</span>
@@ -46,13 +56,13 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, ref, type PropType } from 'vue';
+  import { computed, ref, type PropType, type Ref } from 'vue';
 
   const props = defineProps({
     listData: { type: Array as PropType<string[]> },
     modelValue: { type: String as PropType<string>, required: true },
     label: { type: String as PropType<string>, required: true },
-    error: { type: String as PropType<string> },
+    error: { type: String as PropType<string | Ref<string>> },
   });
 
   const emit = defineEmits<{
