@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { citiesListData, carBrands } from './mocks/mocks.js';
+import { citiesListData, carBrands } from './mocks/mocks';
 
 const carEntityArr = [];
 

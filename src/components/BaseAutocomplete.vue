@@ -1,5 +1,5 @@
 <template>
-  <div >
+  <div>
     <div class="relative block">
       <span class="absolute inset-y-0 left-0 flex items-center pl-4">
         <slot name="icon-left"><img src="/map-pin.svg" alt="Map Pin" /></slot>
@@ -17,12 +17,12 @@
         v-bind="$attrs"
         placeholder="1"
         class="peer block h-12 w-full rounded-[10px] px-[52px] pt-5 font-medium text-gray-600 placeholder-transparent shadow-inputBase transition duration-300 ease-in-out placeholder-shown:pt-0 focus:outline-none"
-        :class="{ 'border-[1px] border-error text-error': error && listeners.touched }"
+        :class="{ 'border-[1px] border-error text-error': error }"
       />
       <label
         for="input"
         class="pointer-text pointer-events-none absolute top-1 pl-[52px] text-xs font-normal text-gray-600 transition-all peer-placeholder-shown:top-[12px] peer-placeholder-shown:text-base peer-placeholder-shown:font-medium"
-        :class="{ 'text-error': error && listeners.touched }"
+        :class="{ 'text-error': error }"
         >{{ label }}</label
       >
       <transition name="fade" mode="out-in">
@@ -41,29 +41,28 @@
         </ul>
       </transition>
     </div>
-    <span v-show="error && listeners.touched" class="text-xs text-error absolute mt-2">{{ error }}</span>
+    <span class="mt-1 text-xs text-error">{{ error }}</span>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { computed } from 'vue';
-  import { ref, type PropType } from 'vue';
+  import { computed, ref, type PropType } from 'vue';
 
   const props = defineProps({
     listData: { type: Array as PropType<string[]> },
     modelValue: { type: String as PropType<string>, required: true },
     label: { type: String as PropType<string>, required: true },
-    error: { type: String as PropType<string | undefined | null> },
+    error: { type: String as PropType<string> },
   });
 
-  const emit = defineEmits<{ (e: 'update:modelValue', modelValue: string): void }>();
+  const emit = defineEmits<{
+    (e: 'update:modelValue', modelValue: string): void;
+  }>();
 
   const listeners = ref({ focused: false, touched: false });
 
   const filteredListData = computed(() => {
-    return props.listData?.filter((item) =>
-      item.toLowerCase().includes(props.modelValue.toLowerCase())
-    );
+    return props.listData?.filter((item) => item.toLowerCase().includes(props.modelValue.toLowerCase()));
   });
 
   const updateValue = (value: string) => {
@@ -73,6 +72,7 @@
 
   const select = (listItem: string) => {
     listeners.value.touched = true;
+
     emit('update:modelValue', listItem);
   };
 
