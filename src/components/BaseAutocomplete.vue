@@ -41,7 +41,7 @@
         </ul>
         <ul
           v-else-if="listeners.focused && !filteredListData?.length"
-          class="absolute text-gray-500 z-10 mt-2 flex h-[56px] w-full items-center overflow-y-auto overflow-x-hidden rounded-[10px] bg-white shadow-inputBase"
+          class="absolute z-10 mt-2 flex h-[56px] w-full items-center overflow-y-auto overflow-x-hidden rounded-[10px] bg-white text-gray-500 shadow-inputBase"
         >
           <li
             class="py-2 transition first-of-type:rounded-t-[10px] first-of-type:rounded-b-none last-of-type:rounded-t-none last-of-type:rounded-b-[10px]"
@@ -93,5 +93,6 @@
   const onFocus = () => {
     listeners.value.focused = true;
   };
+  
   const onBlur = () => (listeners.value.focused = false);
 </script>

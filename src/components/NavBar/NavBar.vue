@@ -1,5 +1,7 @@
 <template>
-  <nav class="container relative mx-auto flex items-center justify-between py-8 md:items-start md:px-0">
+  <nav
+    class="container relative mx-auto flex items-center justify-between py-3 md:items-start md:py-8 md:px-0"
+  >
     <RouterLink to="/"
       ><img
         src="Logo car.svg"
@@ -14,7 +16,7 @@
       class="pr-4 md:hidden md:pr-0"
     />
     <div
-      class="md:z-1 absolute top-[89px] z-10 flex min-h-[80vh] flex-col items-center justify-center gap-9 overflow-hidden bg-white text-sm font-medium text-gray-600 transition-[width] duration-300 ease-in-out md:relative md:top-0 md:min-h-fit md:w-auto md:flex-row md:items-center md:justify-between md:gap-[20px] md:bg-transparent lg:gap-[65px] lg:text-[16px]"
+      class="md:z-1 absolute top-[100%] z-10 flex min-h-[100vh] flex-col items-center justify-center gap-9 overflow-hidden bg-white text-sm font-medium text-gray-600 transition-[width] duration-300 ease-in-out md:relative md:top-0 md:min-h-fit md:w-auto md:flex-row md:items-center md:justify-between md:gap-[20px] md:bg-transparent lg:gap-[65px] lg:text-[16px]"
       :class="isNavOpen ? 'w-full' : 'w-0'"
     >
       <NavBarLinks @close-mobile-nav="isNavOpen = false" />

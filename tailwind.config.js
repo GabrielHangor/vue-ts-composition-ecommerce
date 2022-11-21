@@ -15,6 +15,7 @@ module.exports = {
         'orange-base': '#E85638',
         'orange-hovered': '#EF320B',
         error: '#E03646',
+  
       },
       fontFamily: { sans: ['Montserrat', 'sans-serif'], serif: ['Montserrat', 'serif'] },
       boxShadow: {

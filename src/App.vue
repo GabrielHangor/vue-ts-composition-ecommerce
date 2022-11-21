@@ -1,9 +1,9 @@
 <template>
   <NavBar />
-  <main class="flex h-full justify-center">
-    <router-view v-slot="{ Component }">
+  <main class="flex h-full flex-col">
+    <router-view v-slot="{ Component, route }">
       <transition name="slide">
-        <component :is="Component" />
+        <component :key="route.name" :is="Component" />
       </transition>
     </router-view>
   </main>

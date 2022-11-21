@@ -1,6 +1,8 @@
 <template>
-  <form @submit.prevent="handleSubmit" class="h-fit w-full bg-orange-base/5">
-    <div class="container mx-auto mt-10 mb-8 grid items-center gap-4 px-4 md:grid-cols-2 md:px-0">
+  <form @submit.prevent="handleSubmit" class="h-fit bg-orange-base/5 pb-10">
+    <div
+      class="container order-2 mx-auto grid items-center gap-4 px-4 pt-10 pb-8 md:order-1 md:grid-cols-2 md:px-0"
+    >
       <BaseAutocomplete
         v-model="locationAndTimeFormValues.pickupFrom"
         class="h-full"
@@ -51,7 +53,7 @@
         />
       </div>
     </div>
-    <div class="container mx-auto mb-8 flex justify-center">
+    <div class="container mx-auto flex justify-center">
       <BaseButton class="w-[272px]">Search</BaseButton>
     </div>
   </form>
@@ -110,7 +112,7 @@
   const handleSubmit = async () => {
     const isFormValidated = await v$.value.$validate();
 
-    if (isFormValidated) emit('updateLocationAndTimeFilters', { ...locationAndTimeFormValues.value });
+    if (isFormValidated) emit('updateLocationAndTimeFilters', locationAndTimeFormValues.value);
   };
 
   watch(
