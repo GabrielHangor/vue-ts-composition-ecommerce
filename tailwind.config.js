@@ -7,15 +7,15 @@ module.exports = {
       md: '768px',
       lg: '1024px',
       xl: '1135px',
-      '2xl': '1536px',
     },
 
     extend: {
       colors: {
         'orange-base': '#E85638',
         'orange-hovered': '#EF320B',
+        'base-gray': ' #444444',
         error: '#E03646',
-  
+        'car-bg': '#F2F2F2',
       },
       fontFamily: { sans: ['Montserrat', 'sans-serif'], serif: ['Montserrat', 'serif'] },
       boxShadow: {

@@ -1,7 +1,7 @@
 <template>
   <form @submit.prevent="handleSubmit" class="h-fit bg-orange-base/5 pb-10">
     <div
-      class="container order-2 mx-auto grid items-center gap-4 px-4 pt-10 pb-8 md:order-1 md:grid-cols-2 md:px-0"
+      class="container order-2 mx-auto grid items-center gap-4 px-4 pt-10 pb-8 md:order-1 md:grid-cols-2"
     >
       <BaseAutocomplete
         v-model="locationAndTimeFormValues.pickupFrom"

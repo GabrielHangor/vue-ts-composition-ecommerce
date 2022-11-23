@@ -1,8 +1,8 @@
 <template>
-  <div class="container mx-auto px-4 md:px-0 order-1 md:order-2">
-    <h1 class="py-3 md:py-10 text-2xl font-bold text-gray-600 md:text-3xl">
+  <div class="container order-1 mx-auto px-4 md:order-2">
+    <h1 class="py-3 text-2xl font-bold text-gray-600 md:py-10 md:text-3xl">
       {{ heading }}
-      <span class="text-sm font-semibold md:text-base text-gray-400">({{ computedAmount }})</span>
+      <span class="text-sm font-semibold text-gray-400 md:text-base">({{ computedAmount }})</span>
     </h1>
   </div>
 </template>

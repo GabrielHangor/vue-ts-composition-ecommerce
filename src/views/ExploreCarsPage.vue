@@ -4,10 +4,13 @@
     <PageHeading heading="Our cars" computed-amount="88" />
     <OurCarsSectionWrapper>
       <template v-slot:filters>
-        <OurCarsCatalogFilters :is-open="isCarCatalogFiltersOpen" />
+        <OurCarsCatalogFilters
+          @close-mobile-filters="isCarCatalogFiltersOpen = false"
+          :is-open="isCarCatalogFiltersOpen"
+        />
       </template>
       <template v-slot:cars>
-        <OurCarsCatalog @show-filters="isCarCatalogFiltersOpen = true" />
+        <OurCarsCatalog @open-mobile-filters="isCarCatalogFiltersOpen = true" />
       </template>
     </OurCarsSectionWrapper>
   </div>

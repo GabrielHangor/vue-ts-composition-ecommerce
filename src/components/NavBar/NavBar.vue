@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="container relative mx-auto flex items-center justify-between py-3 md:items-start md:py-8 md:px-0"
+    class="container relative mx-auto flex items-center justify-between  py-3 md:items-start md:py-8"
   >
     <RouterLink to="/"
       ><img
