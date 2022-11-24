@@ -1,7 +1,5 @@
 <template>
-  <nav
-    class="container relative mx-auto flex items-center justify-between  py-3 md:items-start md:py-8"
-  >
+  <nav class="container relative mx-auto flex items-center justify-between py-3 md:items-start md:py-8">
     <RouterLink to="/"
       ><img
         src="Logo car.svg"
@@ -25,6 +23,7 @@
   </nav>
 </template>
 <script lang="ts" setup>
+  import { usePreventScroll } from '@/composables/usePreventScroll';
   import { computed, ref } from 'vue';
   import BaseButton from '../BaseButton.vue';
   import NavBarLinks from './NavBarLinks.vue';
@@ -32,4 +31,6 @@
   const isNavOpen = ref(false);
   const burgerIconLink = computed(() => (isNavOpen.value ? '/burger-closed.svg' : '/burger-opened.svg'));
   const toggleMobileNav = () => (isNavOpen.value = !isNavOpen.value);
+
+  usePreventScroll(isNavOpen);
 </script>

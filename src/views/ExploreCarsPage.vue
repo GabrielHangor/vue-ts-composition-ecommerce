@@ -22,6 +22,7 @@
   import OurCarsCatalogFilters from '@/components/OurCarsSection/OurCarsCatalogFilters.vue';
   import OurCarsSectionWrapper from '@/components/OurCarsSection/OurCarsSectionWrapper.vue';
   import PageHeading from '@/components/PageHeading.vue';
+  import { usePreventScroll } from '@/composables/usePreventScroll';
   import type { ILocationAndTimeFormValues } from '@/types';
   import { ref } from 'vue';
 
@@ -32,4 +33,6 @@
   };
 
   const isCarCatalogFiltersOpen = ref(false);
+
+  usePreventScroll(isCarCatalogFiltersOpen);
 </script>
