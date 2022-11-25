@@ -13,4 +13,5 @@
 <script lang="ts" setup>
   import OurCarsCatalogHeading from './OurCarsCatalogHeading.vue';
   import CarCard from './CarCard.vue';
+
 </script>

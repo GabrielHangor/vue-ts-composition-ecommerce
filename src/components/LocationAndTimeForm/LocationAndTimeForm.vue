@@ -66,10 +66,11 @@
   import BaseDatePicker from '../BaseDatePicker.vue';
   import BaseButton from '../BaseButton.vue';
   import BaseTimePicker from '../BaseTimePicker.vue';
-  import { citiesListData } from '@/mocks/mocks';
   import { useVuelidate } from '@vuelidate/core';
   import { helpers, required } from '@vuelidate/validators';
-  import type { ILocationAndTimeFormValues } from '@/types';
+  import type { City } from '@/types';
+  import { citiesListData } from '@/mocks/mocks';
+  import type { ILocationAndTimeFormValues } from '@/interfaces';
 
   const emit = defineEmits<{
     (e: 'updateLocationAndTimeFilters', locationAndTimeFormValues: ILocationAndTimeFormValues): void;
@@ -77,7 +78,7 @@
 
   const returnToDifferentLocation = ref(false);
 
-  const isLocationCorrect = (location: string) => {
+  const isLocationCorrect = (location: City) => {
     if (citiesListData.includes(location)) return true;
 
     return false;

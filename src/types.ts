@@ -1,12 +1,20 @@
-import type { btnVariants } from './constatnts';
+import type {
+  btnVariants,
+  capacity,
+  carModels,
+  carType,
+  citiesListData,
+  deposit,
+  numberOfSeats,
+  transmission,
+} from './constants';
 
 export type BtnVariant = typeof btnVariants[number];
 
-export interface ILocationAndTimeFormValues {
-  pickupFrom: string;
-  dropOff: string;
-  pickupDate: string;
-  pickupTime: string;
-  dropOffDate: string;
-  dropOffTime: string;
-}
+export type CarModel = typeof carModels[number];
+export type City = typeof citiesListData[number];
+export type NumberOfSeats = typeof numberOfSeats[number];
+export type Transmission = typeof transmission[number];
+export type Deposit = typeof deposit[number];
+export type CarType = typeof carType[number];
+export type Capacity = typeof capacity[number]

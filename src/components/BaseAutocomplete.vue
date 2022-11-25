@@ -93,6 +93,6 @@
   const onFocus = () => {
     listeners.value.focused = true;
   };
-  
+
   const onBlur = () => (listeners.value.focused = false);
 </script>

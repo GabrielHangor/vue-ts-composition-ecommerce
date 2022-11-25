@@ -23,7 +23,7 @@
   import OurCarsSectionWrapper from '@/components/OurCarsSection/OurCarsSectionWrapper.vue';
   import PageHeading from '@/components/PageHeading.vue';
   import { usePreventScroll } from '@/composables/usePreventScroll';
-  import type { ILocationAndTimeFormValues } from '@/types';
+  import type { ILocationAndTimeFormValues } from '@/interfaces';
   import { ref } from 'vue';
 
   const activeLocationAndTimeFilters = ref<ILocationAndTimeFormValues>({} as ILocationAndTimeFormValues);

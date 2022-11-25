@@ -46,10 +46,9 @@
           class="flex basis-1/4 items-center justify-center rounded bg-car-bg py-[6.5px] md:basis-auto md:bg-transparent md:py-0"
         >
           <img class="h-[17px] pr-2" src="Icon stearing wheel.svg" alt="Transmission icon" /><span
-            class="hidden pl-1 md:block"
-            >auto</span
+            class="pl-1"
+            >MT</span
           >
-          <span class="md:hidden">AT</span>
         </div>
       </div>
       <BaseButton class="hidden w-full sm:block">Rent now</BaseButton>
