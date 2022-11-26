@@ -53,9 +53,6 @@
     return range;
   });
 
-  const isInFirstPage = computed(() => currentPage.value === 1);
-  const isInLastPage = computed(() => currentPage.value === totalPages.value);
-
   const changeCurrentPage = (page: number) => {
     currentPage.value = page;
     emit('changeCurrentPage', page);
