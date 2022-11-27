@@ -15,7 +15,7 @@ export const usePaginatedVehicles = (currentPage: Ref<number>) => {
     };
   });
 
-  const fetchVehicles = async () => {
+  const fetchVehicles = async ({ append } = { append: false }) => {
     try {
       isLoading.value = true;
 
@@ -26,12 +26,13 @@ export const usePaginatedVehicles = (currentPage: Ref<number>) => {
           ascending: true,
         })
         .range(vehiclesRange.value.offset, vehiclesRange.value.limit)) as {
-        data: ICarEntity[];
-        count: number;
+        data: ICarEntity[] | null;
+        count: number | null;
       };
 
-      vehicles.value = data;
-      vehiclesCount.value = count;
+      if (data && !append) vehicles.value = data;
+      if (data && append) vehicles.value.push(...data);
+      if (count) vehiclesCount.value = count;
     } catch (error) {
       console.log(error);
     } finally {

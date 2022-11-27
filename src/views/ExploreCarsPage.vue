@@ -13,8 +13,11 @@
         <OurCarsCatalog
           :carsTotal="vehiclesCount"
           :vehicles="vehicles"
+          :isLoading="isLoading"
+          :currentPage="currentPage"
           @open-mobile-filters="isCarCatalogFiltersOpen = true"
           @change-current-page="changeCurrentPage"
+          @append-page="appendPage"
         />
       </template>
     </OurCarsSectionWrapper>
@@ -31,7 +34,7 @@
   import { usePreventScroll } from '@/composables/usePreventScroll';
   import type { ILocationAndTimeFormValues } from '@/interfaces';
 
-  import { onMounted, ref, watch } from 'vue';
+  import { onMounted, ref } from 'vue';
 
   const activeLocationAndTimeFilters = ref<ILocationAndTimeFormValues>({} as ILocationAndTimeFormValues);
 
@@ -47,9 +50,15 @@
 
   const { vehicles, vehiclesCount, isLoading, fetchVehicles } = usePaginatedVehicles(currentPage);
 
-  const changeCurrentPage = (page: number) => (currentPage.value = page);
+  const changeCurrentPage = (page: number) => {
+    currentPage.value = page;
+    fetchVehicles();
+  };
 
-  watch(currentPage, (newVal) => newVal && fetchVehicles());
+  const appendPage = () => {
+    currentPage.value += 1;
+    fetchVehicles({ append: true });
+  };
 
   onMounted(() => fetchVehicles());
 </script>

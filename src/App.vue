@@ -3,7 +3,9 @@
   <main class="flex h-full flex-col">
     <router-view v-slot="{ Component, route }">
       <transition name="slide">
-        <component :key="route.name" :is="Component" />
+        <KeepAlive>
+          <component :key="route.name" :is="Component" />
+        </KeepAlive>
       </transition>
     </router-view>
   </main>

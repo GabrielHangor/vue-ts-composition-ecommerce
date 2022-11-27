@@ -4,8 +4,15 @@
     <section class="h- mb-10 grid gap-4 lg:grid-cols-2">
       <CarCard v-for="vehicle in vehicles" :key="vehicle.id" :vehicle="vehicle" />
     </section>
-    <BaseButton variant="transparent" class="w-full">Show more</BaseButton>
-    <BasePaginator :totalEntities="carsTotal" :entitiesPerPage="6" v-bind="$attrs" />
+    <BaseButton :disabled="isOnLastPage" :loading="isLoading" variant="transparent" class="w-full" @click="appendPage"
+      >Show more</BaseButton
+    >
+    <BasePaginator
+      :currentPage="currentPage"
+      :totalEntities="carsTotal"
+      :entitiesPerPage="6"
+      v-bind="$attrs"
+    />
   </div>
 </template>
 
@@ -13,12 +20,22 @@
   import OurCarsCatalogHeading from './OurCarsCatalogHeading.vue';
   import CarCard from './CarCard.vue';
   import type { ICarEntity } from '@/interfaces';
-  import type { PropType } from 'vue';
+  import { computed, type PropType } from 'vue';
   import BaseButton from '../BaseButton.vue';
   import BasePaginator from '@/components/BasePaginator.vue';
 
   const props = defineProps({
     vehicles: { type: Array as PropType<ICarEntity[]>, required: true },
     carsTotal: { type: Number as PropType<number>, required: true },
+    currentPage: { type: Number as PropType<number>, required: true },
+    isLoading: { type: Boolean as PropType<boolean> },
   });
+
+  const emit = defineEmits<{
+    (e: 'appendPage'): void;
+  }>();
+
+  const isOnLastPage = computed(() => props.currentPage === Math.ceil(props.carsTotal / 6));
+
+  const appendPage = () => emit('appendPage');
 </script>
