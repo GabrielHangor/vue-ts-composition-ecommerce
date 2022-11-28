@@ -115,3 +115,4 @@ export const numberOfSeats = [4, 5] as const;
 export const deposit = [100, 150, 200, 250, 300] as const;
 export const carType = ['Sedan', 'Compact', 'Economy', 'Midsize', 'FullSize', 'Mini', 'Luxury'] as const;
 export const capacity = ['2', '3-5', '6+'] as const;
+export const VEHICLES_PER_PAGE = 6;

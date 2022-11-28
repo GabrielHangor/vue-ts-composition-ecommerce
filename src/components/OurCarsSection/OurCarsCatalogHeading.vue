@@ -3,10 +3,41 @@
     <div @click="$emit('openMobileFilters')">
       <img class="md:hidden" src="filters icon.svg" alt="Filters icon mobile" />
     </div>
-    <div class="flex cursor-pointer items-center">
-      <span>Sort by price</span> <img class="inline pl-2" src="icon sort.svg" alt="Sort by icon" />
+    <div class="flex items-center gap-4">
+      <BaseSelect :sortBy="sortBy" :selectOptions="sortOptions"  v-bind="$attrs"></BaseSelect>
+      <span class="cursor-pointer"
+        ><img :src="sortIcon" alt="Sort by icon" @click="toggleSortOrder"
+      /></span>
     </div>
   </div>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+  import { computed, type PropType } from 'vue';
+  import BaseSelect from '@/components/BaseSelect.vue';
+  import type { ISelectOptions } from '@/interfaces';
+
+  const sortOptions: ISelectOptions = {
+    baseOption: { value: 'rentalCost', name: 'Sort by price' },
+    options: [
+      { value: 'releaseYear', name: 'Sort by year' },
+      { value: 'deposit', name: 'Sort by deposit' },
+    ],
+  };
+
+  const props = defineProps({
+    isLoading: { type: Boolean as PropType<boolean> },
+    sortOrderASC: { type: Boolean as PropType<boolean> },
+    sortBy: { type: String as PropType<string> },
+  });
+
+  const emit = defineEmits<{
+    (e: 'toggle-sort-order'): void;
+  }>();
+
+  const sortIcon = computed(() => (props.sortOrderASC ? '/sort-up.svg' : '/sort-down.svg'));
+
+  const toggleSortOrder = () => {
+    if (!props.isLoading) emit('toggle-sort-order');
+  };
+</script>

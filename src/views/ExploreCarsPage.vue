@@ -15,9 +15,13 @@
           :vehicles="vehicles"
           :isLoading="isLoading"
           :currentPage="currentPage"
+          :sortOrderASC="sortOrderASC"
+          :sortBy="sortBy"
           @open-mobile-filters="isCarCatalogFiltersOpen = true"
           @change-current-page="changeCurrentPage"
           @append-page="appendPage"
+          @toggle-sort-order="toggleSortOrder"
+          @updateSortType="updateSortType"
         />
       </template>
     </OurCarsSectionWrapper>
@@ -30,7 +34,7 @@
   import OurCarsCatalogFilters from '@/components/OurCarsSection/OurCarsCatalogFilters.vue';
   import OurCarsSectionWrapper from '@/components/OurCarsSection/OurCarsSectionWrapper.vue';
   import PageHeading from '@/components/PageHeading.vue';
-  import { usePaginatedVehicles } from '@/composables/usePaginatedVehicles';
+  import { usePaginatedAndSortedVehicles } from '@/composables/usePaginatedAndSortedVehicles';
   import { usePreventScroll } from '@/composables/usePreventScroll';
   import type { ILocationAndTimeFormValues } from '@/interfaces';
 
@@ -47,8 +51,14 @@
   usePreventScroll(isCarCatalogFiltersOpen);
 
   const currentPage = ref(1);
+  const sortOrderASC = ref(true);
+  const sortBy = ref('rentalCost');
 
-  const { vehicles, vehiclesCount, isLoading, fetchVehicles } = usePaginatedVehicles(currentPage);
+  const { vehicles, vehiclesCount, isLoading, fetchVehicles } = usePaginatedAndSortedVehicles(
+    currentPage,
+    sortOrderASC,
+    sortBy
+  );
 
   const changeCurrentPage = (page: number) => {
     currentPage.value = page;
@@ -60,5 +70,17 @@
     fetchVehicles({ append: true });
   };
 
+  const toggleSortOrder = () => {
+    sortOrderASC.value = !sortOrderASC.value;
+    fetchVehicles();
+  };
+
+  const updateSortType = (sortType: string) => {
+    sortBy.value = sortType;
+    fetchVehicles();
+  };
+
   onMounted(() => fetchVehicles());
+
+  // TODO refactor refs and multiple trigger methods into one
 </script>

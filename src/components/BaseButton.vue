@@ -2,7 +2,7 @@
   <button
     class="rounded-lg py-3.5 px-4 font-semibold leading-5 transition duration-300 ease-in-out disabled:cursor-not-allowed disabled:opacity-60"
     :class="btnClassList"
-    :disabled="loading"
+    :disabled="loading || isDisabled"
   >
     <div v-if="loading" class="flex justify-center"><BaseButtonSpinner />Loading...</div>
     <slot v-else></slot>
@@ -17,6 +17,7 @@
   const props = defineProps({
     variant: { type: String as PropType<BtnVariant>, default: 'primary' },
     loading: { type: Boolean },
+    isDisabled: { type: Boolean },
   });
 
   const btnVariantClasses = {

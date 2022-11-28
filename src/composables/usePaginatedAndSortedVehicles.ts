@@ -1,17 +1,21 @@
 import type { ICarEntity } from '@/interfaces';
 import { supabase } from '@/supabase';
 import { computed, ref, type Ref } from 'vue';
+import { VEHICLES_PER_PAGE } from '../constants';
 
-export const usePaginatedVehicles = (currentPage: Ref<number>) => {
-  const vehiclesPerPage = 6;
+export const usePaginatedAndSortedVehicles = (
+  currentPage: Ref<number>,
+  sortOrderASC: Ref<boolean>,
+  sortBy: Ref<string>
+) => {
   const vehicles = ref<ICarEntity[]>([]);
   const vehiclesCount = ref(0);
   const isLoading = ref(false);
 
   const vehiclesRange = computed(() => {
     return {
-      offset: currentPage.value * vehiclesPerPage - vehiclesPerPage,
-      limit: currentPage.value * vehiclesPerPage - 1,
+      offset: currentPage.value * VEHICLES_PER_PAGE - VEHICLES_PER_PAGE,
+      limit: currentPage.value * VEHICLES_PER_PAGE - 1,
     };
   });
 
@@ -22,8 +26,8 @@ export const usePaginatedVehicles = (currentPage: Ref<number>) => {
       const { data, count } = (await supabase
         .from('Vehicles')
         .select('*', { count: 'exact' })
-        .order('rentalCost', {
-          ascending: true,
+        .order(`${sortBy.value}`, {
+          ascending: sortOrderASC.value,
         })
         .range(vehiclesRange.value.offset, vehiclesRange.value.limit)) as {
         data: ICarEntity[] | null;

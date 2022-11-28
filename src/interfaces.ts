@@ -25,3 +25,13 @@ export interface ICarEntity {
   mileage: number;
   videoRecorder: boolean;
 }
+
+export interface ISelectOption {
+  value: string | number;
+  name: string;
+}
+
+export interface ISelectOptions {
+  baseOption: ISelectOption;
+  options: ISelectOption[];
+}
