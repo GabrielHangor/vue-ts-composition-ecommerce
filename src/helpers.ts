@@ -58,3 +58,9 @@ export const getCarType = (model) => {
 
   return carTypes[model];
 };
+
+export const delay = (value: number) => {
+  return new Promise<void>((res) => {
+    setTimeout(() => res(), value);
+  });
+};

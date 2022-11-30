@@ -1,7 +1,8 @@
 import type { ICarEntity } from '@/interfaces';
 import { supabase } from '@/supabase';
-import { computed, ref, type Ref } from 'vue';
+import { computed, onMounted, ref, type Ref } from 'vue';
 import { VEHICLES_PER_PAGE } from '../constants';
+import { delay } from '../helpers';
 
 export const usePaginatedAndSortedVehicles = (
   currentPage: Ref<number>,
@@ -23,6 +24,8 @@ export const usePaginatedAndSortedVehicles = (
     try {
       isLoading.value = true;
 
+      await delay(1000);
+
       const { data, count } = (await supabase
         .from('Vehicles')
         .select('*', { count: 'exact' })
@@ -43,6 +46,8 @@ export const usePaginatedAndSortedVehicles = (
       isLoading.value = false;
     }
   };
+
+  onMounted(() => fetchVehicles());
 
   return { vehicles, vehiclesCount, isLoading, fetchVehicles };
 };

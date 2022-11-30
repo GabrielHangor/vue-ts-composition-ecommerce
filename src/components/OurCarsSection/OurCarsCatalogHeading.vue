@@ -4,7 +4,12 @@
       <img class="md:hidden" src="filters icon.svg" alt="Filters icon mobile" />
     </div>
     <div class="flex items-center gap-4">
-      <BaseSelect :sortBy="sortBy" :selectOptions="sortOptions"  v-bind="$attrs"></BaseSelect>
+      <BaseSelect
+        :isLoading="isLoading"
+        :modelValue="sortBy"
+        @update:modelValue="(newVal) => $emit('updateSortType', newVal)"
+        :selectOptions="sortOptions"
+      ></BaseSelect>
       <span class="cursor-pointer"
         ><img :src="sortIcon" alt="Sort by icon" @click="toggleSortOrder"
       /></span>

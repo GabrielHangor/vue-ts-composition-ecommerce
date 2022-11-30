@@ -38,7 +38,7 @@
   import { usePreventScroll } from '@/composables/usePreventScroll';
   import type { ILocationAndTimeFormValues } from '@/interfaces';
 
-  import { onMounted, ref } from 'vue';
+  import { onMounted, ref, watch } from 'vue';
 
   const activeLocationAndTimeFilters = ref<ILocationAndTimeFormValues>({} as ILocationAndTimeFormValues);
 
@@ -53,6 +53,7 @@
   const currentPage = ref(1);
   const sortOrderASC = ref(true);
   const sortBy = ref('rentalCost');
+  const shouldAppendPage = ref(false);
 
   const { vehicles, vehiclesCount, isLoading, fetchVehicles } = usePaginatedAndSortedVehicles(
     currentPage,
@@ -62,25 +63,28 @@
 
   const changeCurrentPage = (page: number) => {
     currentPage.value = page;
-    fetchVehicles();
   };
 
   const appendPage = () => {
+    shouldAppendPage.value = true;
     currentPage.value += 1;
-    fetchVehicles({ append: true });
   };
 
-  const toggleSortOrder = () => {
-    sortOrderASC.value = !sortOrderASC.value;
+  const toggleSortOrder = () => (sortOrderASC.value = !sortOrderASC.value);
+  
+  const updateSortType = (sortType: string) => (sortBy.value = sortType);
+
+  watch([currentPage, sortOrderASC, sortBy], (newVal) => {
+    console.log(newVal);
+
+    if (shouldAppendPage.value) {
+      fetchVehicles({ append: true });
+      shouldAppendPage.value = false;
+      return;
+    }
+
     fetchVehicles();
-  };
-
-  const updateSortType = (sortType: string) => {
-    sortBy.value = sortType;
-    fetchVehicles();
-  };
-
-  onMounted(() => fetchVehicles());
+  });
 
   // TODO refactor refs and multiple trigger methods into one
 </script>

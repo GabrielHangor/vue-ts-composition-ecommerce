@@ -1,5 +1,5 @@
 <template>
-  <div class="col-span-12 mb-4 md:col-span-8 md:col-start-6 lg:col-span-9 lg:col-start-5">
+  <div  class="col-span-12 mb-4 md:col-span-8 md:col-start-6 lg:col-span-9 lg:col-start-5">
     <OurCarsCatalogHeading
       v-bind="$attrs"
       :sortBy="sortBy"
