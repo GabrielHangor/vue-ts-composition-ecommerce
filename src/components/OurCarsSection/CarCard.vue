@@ -2,7 +2,7 @@
   <div class="rounded-[10px] p-4 shadow-inputBase">
     <div class="flex items-center border-b md:flex-col md:items-stretch md:border-b-0">
       <div class="basis-1/2 rounded-[10px] md:basis-auto md:bg-car-bg">
-        <img class="mx-auto" src="/cars/VW Polo.png" alt="Car" />
+        <img class="mx-auto" src="/cars/VW-Polo.png" alt="Car" />
       </div>
       <div class="flex basis-1/2 flex-col items-start justify-center md:block md:basis-auto">
         <span
@@ -28,24 +28,24 @@
         <div
           class="flex basis-1/4 items-center justify-center rounded bg-car-bg py-[6.5px] md:hidden md:basis-auto md:bg-transparent md:py-0"
         >
-          <img class="h-[17px] pr-2" src="Icon wallet.svg" alt="Doors icon" /> {{ vehicle.deposit }}$
+          <img class="h-[17px] pr-2" src="/Icon-wallet.svg" alt="Doors icon" /> {{ vehicle.deposit }}$
         </div>
         <div
           class="flex basis-1/4 items-center justify-center rounded bg-car-bg py-[6.5px] md:basis-auto md:bg-transparent md:py-0"
         >
-          <img class="h-[17px] pr-2" src="Icon door.svg" alt="Doors icon" /> 4
+          <img class="h-[17px] pr-2" src="/Icon-door.svg" alt="Doors icon" /> 4
           <span class="hidden pl-1 md:block">doors</span>
         </div>
         <div
           class="flex basis-1/4 items-center justify-center rounded bg-car-bg py-[6.5px] md:basis-auto md:bg-transparent md:py-0"
         >
-          <img class="h-[17px] pr-2" src="Icon seats.svg" alt="Seats icon" /> {{ vehicle.capacity }}
+          <img class="h-[17px] pr-2" src="/Icon-seats.svg" alt="Seats icon" /> {{ vehicle.capacity }}
           <span class="hidden pl-1 md:block">seats</span>
         </div>
         <div
           class="flex basis-1/4 items-center justify-center rounded bg-car-bg py-[6.5px] md:basis-auto md:bg-transparent md:py-0"
         >
-          <img class="h-[17px] pr-2" src="Icon stearing wheel.svg" alt="Transmission icon" /><span
+          <img class="h-[17px] pr-2" src="/Icon-stearing-wheel.svg" alt="Transmission icon" /><span
             class="pl-1"
             >{{ vehicle.transmission }}</span
           >
