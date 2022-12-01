@@ -1,7 +1,7 @@
 <template>
   <div class="flex justify-between pb-6">
     <div @click="$emit('openMobileFilters')">
-      <img class="md:hidden" src="filters icon.svg" alt="Filters icon mobile" />
+      <img class="md:hidden" src="/filters-icon.svg" alt="Filters-icon mobile" />
     </div>
     <div class="flex items-center gap-4">
       <BaseSelect

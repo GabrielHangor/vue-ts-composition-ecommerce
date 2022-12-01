@@ -2,7 +2,7 @@
   <nav class="container relative mx-auto flex items-center justify-between py-3 md:items-start md:py-8">
     <RouterLink to="/"
       ><img
-        src="Logo car.svg"
+        src="/Logo-car.svg"
         alt="Car Logo"
         class="h-[19px] w-[80px] pl-4 md:ml-0 md:h-[33px] md:w-[136px] md:pl-0"
         @click="isNavOpen = false"
