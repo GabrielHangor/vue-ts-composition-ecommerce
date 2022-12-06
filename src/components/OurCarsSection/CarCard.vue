@@ -1,8 +1,10 @@
 <template>
-  <div class="rounded-[10px] p-4 shadow-inputBase">
-    <div class="flex items-center border-b md:flex-col md:items-stretch md:border-b-0">
+  <div class="rounded-[10px] p-3 shadow-inputBase">
+    <div
+      class="flex items-center gap-3 border-b pb-3 md:flex-col md:items-stretch md:gap-0 md:border-b-0 md:pb-0"
+    >
       <div class="basis-1/2 rounded-[10px] md:basis-auto md:bg-car-bg">
-        <img class="mx-auto" src="/cars/VW-Polo.png" alt="Car" />
+        <img class="mx-auto" :src="vehicle.imgPath" alt="Car" />
       </div>
       <div class="flex basis-1/2 flex-col items-start justify-center md:block md:basis-auto">
         <span
@@ -12,7 +14,7 @@
         <h2 class="pt-1 text-[12px] font-semibold text-base-gray sm:pt-4 sm:text-[22px]">
           {{ vehicle.model }}
         </h2>
-        <div class="flex items-center justify-between py-4 md:border-b">
+        <div class="flex items-center justify-between py-2 md:border-b md:py-4">
           <div class="text-sm text-orange-base sm:text-base">
             From <span class="text-base font-semibold sm:text-[25px]">${{ vehicle.rentalCost }}</span>
             <span class="text-xs"> / day</span>

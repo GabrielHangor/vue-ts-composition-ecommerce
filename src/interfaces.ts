@@ -1,4 +1,5 @@
 import type { Capacity, CarModel, CarType, City, Deposit, NumberOfSeats, Transmission } from './types';
+import type { Ref } from 'vue';
 
 export interface ILocationAndTimeFormValues {
   pickupFrom: City;
@@ -24,6 +25,7 @@ export interface ICarEntity {
   capacity: Capacity;
   mileage: number;
   videoRecorder: boolean;
+  imgPath: string;
 }
 
 export interface ISelectOption {
@@ -35,3 +37,5 @@ export interface ISelectOptions {
   baseOption: ISelectOption;
   options: ISelectOption[];
 }
+
+

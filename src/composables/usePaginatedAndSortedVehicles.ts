@@ -1,8 +1,8 @@
 import type { ICarEntity } from '@/interfaces';
-import { supabase } from '@/supabase';
 import { computed, onMounted, ref, type Ref } from 'vue';
-import { VEHICLES_PER_PAGE } from '../constants';
-import { delay } from '../helpers';
+import { VEHICLES_PER_PAGE } from '@/constants';
+import { delay } from '@/helpers';
+import { serviceAPI } from '@/api/serviceAPI';
 
 export const usePaginatedAndSortedVehicles = (
   currentPage: Ref<number>,
@@ -11,6 +11,7 @@ export const usePaginatedAndSortedVehicles = (
 ) => {
   const vehicles = ref<ICarEntity[]>([]);
   const vehiclesCount = ref(0);
+  const error = ref(null);
   const isLoading = ref(false);
 
   const vehiclesRange = computed(() => {
@@ -26,16 +27,12 @@ export const usePaginatedAndSortedVehicles = (
 
       await delay(1000);
 
-      const { data, count } = (await supabase
-        .from('Vehicles')
-        .select('*', { count: 'exact' })
-        .order(`${sortBy.value}`, {
-          ascending: sortOrderASC.value,
-        })
-        .range(vehiclesRange.value.offset, vehiclesRange.value.limit)) as {
-        data: ICarEntity[] | null;
-        count: number | null;
-      };
+      const { data, count, error } = await serviceAPI.getAllVehicles({
+        sortBy: sortBy.value,
+        sortOrderASC: sortOrderASC.value,
+        offset: vehiclesRange.value.offset,
+        limit: vehiclesRange.value.limit,
+      });
 
       if (data && !append) vehicles.value = data;
       if (data && append) vehicles.value.push(...data);
@@ -49,5 +46,5 @@ export const usePaginatedAndSortedVehicles = (
 
   onMounted(() => fetchVehicles());
 
-  return { vehicles, vehiclesCount, isLoading, fetchVehicles };
+  return { vehicles, vehiclesCount, error, isLoading, fetchVehicles };
 };

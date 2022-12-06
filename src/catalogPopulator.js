@@ -1,7 +1,7 @@
 import fs from 'fs';
 
 import { carModels, citiesListData, depositAmount } from './mocks/mocks.js';
-import { getCarType } from './helpers.js';
+import { getCarType, getImgPath } from './helpers.js';
 
 const carEntityArr = [];
 
@@ -21,6 +21,7 @@ for (let i = 0; i <= 500; i++) {
   const capacity = ['2', '3-5', '6+'][Math.floor(Math.random() * ['2', '3-5', '6+'].length)];
   const mileage = Math.floor(Math.random() * (300000 - 2 + 1) + 2);
   const videoRecorder = Math.random() < 0.5;
+  const imgPath = getImgPath(model);
 
   const carObj = {
     id: i,
@@ -37,6 +38,7 @@ for (let i = 0; i <= 500; i++) {
     capacity,
     mileage,
     videoRecorder,
+    imgPath
   };
   carEntityArr.push(carObj);
 }

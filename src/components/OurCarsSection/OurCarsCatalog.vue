@@ -1,14 +1,17 @@
 <template>
-  <div  class="col-span-12 mb-4 md:col-span-8 md:col-start-6 lg:col-span-9 lg:col-start-5">
+  <div class="col-span-12 mb-4 md:col-span-8 md:col-start-6 lg:col-span-9 lg:col-start-5">
     <OurCarsCatalogHeading
       v-bind="$attrs"
       :sortBy="sortBy"
       :sortOrderASC="sortOrderASC"
       :isLoading="isLoading"
     />
-    <section class="h- mb-10 grid gap-4 lg:grid-cols-2">
-      <CarCard v-for="vehicle in vehicles" :key="vehicle.id" :vehicle="vehicle" />
-    </section>
+
+    <transition name="fade" mode="out-in">
+      <SkeletonCardBlock v-if="isLoading" />
+      <CarCardsBlock v-else :vehicles="vehicles" />
+    </transition>
+
     <BaseButton
       :isDisabled="isOnLastPage"
       :loading="isLoading"
@@ -28,12 +31,13 @@
 
 <script lang="ts" setup>
   import OurCarsCatalogHeading from './OurCarsCatalogHeading.vue';
-  import CarCard from './CarCard.vue';
+  import CarCardsBlock from './CarCardsBlock.vue';
   import type { ICarEntity } from '@/interfaces';
   import { computed, type PropType } from 'vue';
   import BaseButton from '../BaseButton.vue';
   import BasePaginator from '@/components/BasePaginator.vue';
   import { VEHICLES_PER_PAGE } from '@/constants';
+  import SkeletonCardBlock from './SkeletonCardBlock.vue';
 
   const props = defineProps({
     vehicles: { type: Array as PropType<ICarEntity[]>, required: true },

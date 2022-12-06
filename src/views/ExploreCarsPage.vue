@@ -6,7 +6,7 @@
       <template v-slot:filters>
         <OurCarsCatalogFilters
           @close-mobile-filters="isCarCatalogFiltersOpen = false"
-          :is-open="isCarCatalogFiltersOpen"
+          :isOpen="isCarCatalogFiltersOpen"
         />
       </template>
       <template v-slot:cars>
@@ -71,12 +71,10 @@
   };
 
   const toggleSortOrder = () => (sortOrderASC.value = !sortOrderASC.value);
-  
+
   const updateSortType = (sortType: string) => (sortBy.value = sortType);
 
-  watch([currentPage, sortOrderASC, sortBy], (newVal) => {
-    console.log(newVal);
-
+  watch([currentPage, sortOrderASC, sortBy], () => {
     if (shouldAppendPage.value) {
       fetchVehicles({ append: true });
       shouldAppendPage.value = false;

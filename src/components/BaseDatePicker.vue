@@ -49,7 +49,7 @@
   const listeners = ref({ focused: false });
   const type = computed(() => (listeners.value.focused ? 'date' : 'text'));
   const showCrossIcon = computed(() =>
-    listeners.value.focused && props.modelValue ? '/delete-icon.svg' : '/dropdown-arrow.svg'
+    listeners.value.focused && props.modelValue ? '/delete-icon.svg' : 'dropdown-arrow.svg'
   );
 
   const serializedDate = computed(() => {

@@ -1,59 +1,11 @@
 export const getCarType = (model) => {
   const carTypes = {
-    'Toyota Camry': 'Sedan',
-    'Toyota Prius': 'Compact',
-    'Toyota Corolla': 'Economy',
-    'Honda CR-V': 'Midsize',
-    'Honda Accord': 'Sedan',
-    'Honda Pilot': 'Midsize',
-    'Chevrolet Tahoe': 'FullSize',
-    'Chevrolet Spark': 'Mini',
-    'Ford Escape': 'MidSize',
-    'Ford Focus': 'Economy',
-    'Mercedes-Benz GLE': 'Luxury',
-    'Mercedes-Benz C-Class': 'Luxury',
-    'Jeep Cherokee': 'FullSize',
-    'Jeep Wrangler': 'MidSize',
-    'BMW 330i': 'Luxury',
-    'BMW X1': 'Luxury',
-    'Subaru Forester': 'MidSize',
-    'Subaru Impreza': 'Sedan',
-    'Nissan Sentra': 'Sedan',
-    'Nissan Leaf': 'Mini',
-    'Nissan Almera': 'Sedan',
-    'Cadillac CT5': 'Sedan',
-    'Cadillac CT4': 'Sedan',
-    'Volkswagen Golf': 'Compact',
-    'Volkswagen Passat': 'Sedan',
-    'Audi A1': 'Luxury',
-    'Audi A6': 'Luxury',
-    'Audi A4': 'Luxury',
-    'GMC CANYON': 'FullSize',
-    'GMC TERRAIN': 'FullSize',
-    'Dodge Charger': 'Sedan',
-    'Dodge Challenger': 'Sedan',
-    'Hyundai Tucson': 'MidSize',
-    'Hyundai Elantra': 'Sedan',
-    'Hyundai Solaris': 'Economy',
-    'Hyundai Sonata': 'Sedan',
-    'Mazda 3': 'Compact',
-    'Mazda 6': 'Sedan',
-    'Land Rover Defender': 'Luxury',
-    'Tesla Model 3': 'Luxury',
-    'Tesla Model X': 'Luxury',
-    'Tesla Model S': 'Luxury',
-    'Kia Rio': 'Economy',
-    'Kia Optima': 'Sedan',
-    'Chrysler 300': 'Sedan',
-    'Mitsubishi Lancer': 'Sedan',
-    'Mitsubishi Outlander': 'MidSize',
-    'Genesis G70': 'Luxury',
-    'Suzuki Vitara': 'MidSize',
-    'Suzuki Gimny': 'MidSize',
-    'Renault Logan': 'Economy',
-    'Peugeot 2008': 'Compact',
-    'Peugeot 3008': 'Midsize',
-    'Citroen C4': 'Sedan',
+    'VW Polo Sedan': 'Economy',
+    'Jaguar XJ': 'Midsize',
+    'BMW M5': 'Compact',
+    'Audi TT': 'Luxury',
+    'VW Beetle': 'Mini',
+    'Fiat Fullback': 'Full-size',
   };
 
   return carTypes[model];
@@ -63,4 +15,17 @@ export const delay = (value: number) => {
   return new Promise<void>((res) => {
     setTimeout(() => res(), value);
   });
+};
+
+export const getImgPath = (model) => {
+  const carTypes = {
+    'VW Polo Sedan': '/VW-Polo.png',
+    'Jaguar XJ': '/Jaguar.png',
+    'BMW M5': '/BMW-M5.png',
+    'Audi TT': '/AUDI-TT.png',
+    'VW Beetle': '/VW-Beetle.png',
+    'Fiat Fullback': '/Fiat.png',
+  };
+
+  return carTypes[model];
 };
