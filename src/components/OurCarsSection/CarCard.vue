@@ -4,7 +4,7 @@
       class="flex items-center gap-3 border-b pb-3 md:flex-col md:items-stretch md:gap-0 md:border-b-0 md:pb-0"
     >
       <div class="basis-1/2 rounded-[10px] md:basis-auto md:bg-car-bg">
-        <img class="mx-auto" :src="vehicle.imgPath" alt="Car" />
+        <img class="mx-auto" :src="`${title}${vehicle.imgPath}`" alt="Car" />
       </div>
       <div class="flex basis-1/2 flex-col items-start justify-center md:block md:basis-auto">
         <span
@@ -63,7 +63,10 @@
   import type { PropType } from 'vue';
   import BaseButton from '../BaseButton.vue';
 
+
   const props = defineProps({
     vehicle: { type: Object as PropType<ICarEntity>, required: true },
   });
+
+  const title = import.meta.env.BASE_URL;
 </script>
