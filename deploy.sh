@@ -23,6 +23,6 @@ git commit -m 'deploy'
 
 
 # if you are deploying to https://<USERNAME>.github.io/<REPO>
-git push -f git@github.com:GabrielHangor/vue-ts-composition-ecommerce.git main:gh-pages
+git push -f git@github.com:GabrielHangor/vue-ts-composition-ecommerce.git gh-pages
 
 cd -
