@@ -13,6 +13,7 @@
         <OurCarsCatalog
           :carsTotal="vehiclesCount"
           :vehicles="vehicles"
+          :isError="isError"
           :isLoading="isLoading"
           :currentPage="currentPage"
           :sortOrderASC="sortOrderASC"
@@ -55,7 +56,7 @@
   const sortBy = ref('rentalCost');
   const shouldAppendPage = ref(false);
 
-  const { vehicles, vehiclesCount, isLoading, fetchVehicles } = usePaginatedAndSortedVehicles(
+  const { vehicles, vehiclesCount, isLoading, isError, fetchVehicles } = usePaginatedAndSortedVehicles(
     currentPage,
     sortOrderASC,
     sortBy

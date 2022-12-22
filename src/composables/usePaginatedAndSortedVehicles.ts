@@ -3,6 +3,7 @@ import { computed, onMounted, ref, type Ref } from 'vue';
 import { VEHICLES_PER_PAGE } from '@/constants';
 import { delay } from '@/helpers';
 import { serviceAPI } from '@/api/serviceAPI';
+import type { PostgrestError } from '@supabase/supabase-js';
 
 export const usePaginatedAndSortedVehicles = (
   currentPage: Ref<number>,
@@ -11,7 +12,7 @@ export const usePaginatedAndSortedVehicles = (
 ) => {
   const vehicles = ref<ICarEntity[]>([]);
   const vehiclesCount = ref(0);
-  const error = ref(null);
+  const isError = ref<PostgrestError | null>(null);
   const isLoading = ref(false);
 
   const vehiclesRange = computed(() => {
@@ -23,6 +24,7 @@ export const usePaginatedAndSortedVehicles = (
 
   const fetchVehicles = async ({ append } = { append: false }) => {
     try {
+      isError.value = null;
       isLoading.value = true;
 
       await delay(1000);
@@ -37,6 +39,7 @@ export const usePaginatedAndSortedVehicles = (
       if (data && !append) vehicles.value = data;
       if (data && append) vehicles.value.push(...data);
       if (count) vehiclesCount.value = count;
+      if (error) isError.value = error;
     } catch (error) {
       console.log(error);
     } finally {
@@ -44,7 +47,9 @@ export const usePaginatedAndSortedVehicles = (
     }
   };
 
+
+
   onMounted(() => fetchVehicles());
 
-  return { vehicles, vehiclesCount, error, isLoading, fetchVehicles };
+  return { vehicles, vehiclesCount, isError, isLoading, fetchVehicles };
 };

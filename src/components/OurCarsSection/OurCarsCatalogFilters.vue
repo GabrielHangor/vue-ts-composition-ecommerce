@@ -1,5 +1,5 @@
 <template>
-  <div
+  <aside
     class="fixed top-0 left-0 h-full overflow-hidden bg-yellow-300 transition-[width] duration-300 ease-in-out md:relative md:col-span-4 md:w-auto lg:col-span-3"
     :class="isOpen ? 'w-full' : 'w-0'"
   >
@@ -9,7 +9,7 @@
       src="/burger-closed.svg"
       alt="Burger close icon"
     />
-  </div>
+  </aside>
 </template>
 
 <script lang="ts" setup>

@@ -15,7 +15,7 @@ class ApiService {
     this.supabase = supabase;
   }
 
-  async getAllVehicles({ sortBy, sortOrderASC, offset, limit }: IVehiclesRequestParams) {
+  getAllVehicles({ sortBy, sortOrderASC, offset, limit }: IVehiclesRequestParams) {
     return this.supabase
       .from('Vehicles')
       .select('*', { count: 'exact' })

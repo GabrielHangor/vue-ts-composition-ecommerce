@@ -1,5 +1,4 @@
 import type { Capacity, CarModel, CarType, City, Deposit, NumberOfSeats, Transmission } from './types';
-import type { Ref } from 'vue';
 
 export interface ILocationAndTimeFormValues {
   pickupFrom: City;
