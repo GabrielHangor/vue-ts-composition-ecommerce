@@ -41,7 +41,7 @@
 
   import { onMounted, ref, watch } from 'vue';
 
-  const activeLocationAndTimeFilters = ref<ILocationAndTimeFormValues>({} as ILocationAndTimeFormValues);
+  const activeLocationAndTimeFilters = ref<ILocationAndTimeFormValues | null>(null);
 
   const updateLocationAndTimeFilters = (locationAndTimeFilters: ILocationAndTimeFormValues) => {
     activeLocationAndTimeFilters.value = locationAndTimeFilters;
