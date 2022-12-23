@@ -1,1 +1,0 @@
-import{_ as e,o as t,c as o}from"./index-9f401e5c.js";const c={},n={class:"max-h-full w-full text-center text-5xl md:text-9xl font-bold text-orange-base"};function s(a,r){return t(),o("div",n,"HOME PAGE")}const _=e(c,[["render",s]]);export{_ as default};
