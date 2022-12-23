@@ -6,10 +6,10 @@
       type="checkbox"
       class="invisible absolute"
       :checked="checked"
-      @input="updateValue(($event.target as HTMLInputElement).checked)"
+      @input="updateValue($event.target.checked)"
     />
 
-    <img class="mr-2" :src="checkedIconName" alt="Checked icon" />
+    <img class="mr-2" :src="`${title}${checkedIconName}`" alt="Checked icon" />
 
     {{ label }}
   </label>
@@ -17,6 +17,7 @@
 
 <script setup lang="ts">
   import { computed, type PropType } from 'vue';
+  const title = import.meta.env.BASE_URL;
 
   const props = defineProps({
     checked: { type: Boolean as PropType<boolean> },

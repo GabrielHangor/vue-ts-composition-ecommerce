@@ -6,7 +6,7 @@
       </span>
 
       <span class="absolute inset-y-0 right-0 flex items-center pr-3" @mousedown="clearInput">
-        <img :src="showCrossIcon" alt="Cross" class="cursor-pointer" />
+        <img :src="`${title}${showCrossIcon}`" alt="Cross" class="cursor-pointer" />
       </span>
       <input
         ref="datePicker"
@@ -35,6 +35,7 @@
 
 <script lang="ts" setup>
   import { computed, nextTick, ref, type PropType, type Ref } from 'vue';
+  const title = import.meta.env.BASE_URL;
 
   const currentDate = new Date().toISOString().slice(0, 10);
 

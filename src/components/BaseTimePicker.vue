@@ -6,14 +6,14 @@
       </span>
 
       <span class="absolute inset-y-0 right-0 flex items-center pr-3" @mousedown="clearInput">
-        <img :src="showCrossIcon" alt="Cross" class="cursor-pointer" />
+        <img :src="`${title}${showCrossIcon}`" alt="Cross" class="cursor-pointer" />
       </span>
       <input
         ref="timePicker"
         :type="type"
         name="input"
         :value="modelValue"
-        @input="updateValue(($event.target as HTMLInputElement).value)"
+        @input="updateValue($event.target.value)"
         @focus="onFocus"
         @blur="onBlur"
         v-bind="$attrs"
@@ -34,6 +34,7 @@
 
 <script lang="ts" setup>
   import { computed, nextTick, ref, type PropType, type Ref } from 'vue';
+  const title = import.meta.env.BASE_URL;
 
   const props = defineProps({
     modelValue: { type: String as PropType<string>, required: true },

@@ -8,7 +8,7 @@
         @click="isNavOpen = false"
     /></RouterLink>
     <img
-      :src="burgerIconLink"
+      :src="`${title}${burgerIconLink}`"
       alt="Burger Icon"
       @click="toggleMobileNav"
       class="pr-4 md:hidden md:pr-0"
@@ -27,6 +27,7 @@
   import { computed, ref } from 'vue';
   import BaseButton from '../BaseButton.vue';
   import NavBarLinks from './NavBarLinks.vue';
+  const title = import.meta.env.BASE_URL;
 
   const isNavOpen = ref(false);
   const burgerIconLink = computed(() => (isNavOpen.value ? '/burger-closed.svg' : '/burger-opened.svg'));

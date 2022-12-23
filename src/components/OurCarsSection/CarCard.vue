@@ -63,7 +63,6 @@
   import type { PropType } from 'vue';
   import BaseButton from '../BaseButton.vue';
 
-
   const props = defineProps({
     vehicle: { type: Object as PropType<ICarEntity>, required: true },
   });

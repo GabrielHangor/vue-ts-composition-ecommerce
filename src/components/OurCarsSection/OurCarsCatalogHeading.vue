@@ -11,7 +11,7 @@
         :selectOptions="sortOptions"
       ></BaseSelect>
       <span class="cursor-pointer"
-        ><img :src="sortIcon" alt="Sort by icon" @click="toggleSortOrder"
+        ><img :src="`${title}${sortIcon}`" alt="Sort by icon" @click="toggleSortOrder"
       /></span>
     </div>
   </div>
@@ -21,6 +21,7 @@
   import { computed, type PropType } from 'vue';
   import BaseSelect from '@/components/BaseSelect.vue';
   import type { ISelectOptions } from '@/interfaces';
+  const title = import.meta.env.BASE_URL;
 
   const sortOptions: ISelectOptions = {
     baseOption: { value: 'rentalCost', name: 'Sort by price' },

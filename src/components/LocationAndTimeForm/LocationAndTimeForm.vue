@@ -52,7 +52,6 @@
           :error="v$.dropOffTime.$errors[0]?.$message"
         />
 
-        <input type="date" />
       </div>
     </div>
     <div class="container mx-auto flex justify-center">
