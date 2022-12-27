@@ -1,1 +1,0 @@
-import{_ as e,o as t,c}from"./index-00755016.js";const o={},s={class:"w-full max-h-full text-center text-5xl md:text-9xl font-bold text-orange-base"};function a(n,l){return t(),c("div",s,"DETAIL PAGE")}const _=e(o,[["render",a]]);export{_ as default};
