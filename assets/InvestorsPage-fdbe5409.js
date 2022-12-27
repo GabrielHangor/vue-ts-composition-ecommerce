@@ -1,1 +1,0 @@
-import{_ as e,o as t,c as o}from"./index-a64f8e56.js";const c={},s={class:"w-full max-h-full text-center text-5xl md:text-9xl font-bold text-orange-base"};function n(r,a){return t(),o("div",s,"INVESTORS PAGE")}const _=e(c,[["render",n]]);export{_ as default};
