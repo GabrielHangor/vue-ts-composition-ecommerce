@@ -4,7 +4,7 @@
       class="container order-2 mx-auto grid items-center gap-4 px-4 pt-10 pb-8 md:order-1 md:grid-cols-2"
     >
       <BaseAutocomplete
-        v-model="locationAndTimeFormValues.pickupFrom"
+        v-model="formValues.pickupFrom"
         class="h-full"
         label="Pick up from"
         :list-data="citiesListData"
@@ -14,7 +14,7 @@
       <div class="h-full">
         <BaseAutocomplete
           v-if="returnToDifferentLocation"
-          v-model="locationAndTimeFormValues.dropOff"
+          v-model="formValues.dropOff"
           label="Drop-off"
           :list-data="citiesListData"
           :error="v$.dropOff.$errors[0]?.$message"
@@ -23,45 +23,29 @@
         <BaseCheckBox
           v-else
           v-model:checked="returnToDifferentLocation"
-          @change="locationAndTimeFormValues.dropOff = ''"
+          @change="formValues.dropOff = ''"
           label="Return to different location"
           id="1"
         />
       </div>
       <div class="grid h-full gap-4 lg:grid-cols-2">
-        <BaseDatePicker
-          v-model="locationAndTimeFormValues.pickupDate"
-          label="Pick up date"
-          :error="v$.pickupDate.$errors[0]?.$message"
-        />
-        <BaseTimePicker
-          v-model="locationAndTimeFormValues.pickupTime"
-          label="Pick up time"
-          :error="v$.pickupTime.$errors[0]?.$message"
-        />
+        <BaseDatePicker v-model="formValues.pickupDate" label="Pick up date" />
+        <BaseTimePicker v-model="formValues.pickupTime" label="Pick up time" />
       </div>
       <div class="grid h-full gap-4 lg:grid-cols-2">
-        <BaseDatePicker
-          v-model="locationAndTimeFormValues.dropOffDate"
-          label="Drop-off date"
-          :error="v$.dropOffDate.$errors[0]?.$message"
-        />
-        <BaseTimePicker
-          v-model="locationAndTimeFormValues.dropOffTime"
-          label="Drop off time"
-          :error="v$.dropOffTime.$errors[0]?.$message"
-        />
+        <BaseDatePicker v-model="formValues.dropOffDate" label="Drop-off date" />
+        <BaseTimePicker v-model="formValues.dropOffTime" label="Drop off time" />
       </div>
     </div>
 
     <div class="container mx-auto flex justify-center">
-      <BaseButton class="w-[272px]">Search</BaseButton>
+      <BaseButton :loading="isLoading" class="w-[272px]">Search</BaseButton>
     </div>
   </form>
 </template>
 
 <script lang="ts" setup>
-  import { computed, ref, watch } from 'vue';
+  import { computed, type PropType, ref, watch } from 'vue';
   import BaseAutocomplete from '../BaseAutocomplete.vue';
   import BaseCheckBox from '../BaseCheckBox.vue';
   import BaseDatePicker from '../BaseDatePicker.vue';
@@ -73,21 +57,13 @@
   import { citiesListData } from '@/mocks/mocks';
   import type { ILocationAndTimeFormValues } from '@/interfaces';
 
-
-
-  const emit = defineEmits<{
-    (e: 'updateLocationAndTimeFilters', locationAndTimeFormValues: ILocationAndTimeFormValues): void;
-  }>();
+  const props = defineProps({
+    isLoading: { type: Boolean as PropType<boolean>, default: false },
+  });
 
   const returnToDifferentLocation = ref(false);
 
-  const isLocationCorrect = (location: City) => {
-    if (citiesListData.includes(location)) return true;
-
-    return false;
-  };
-
-  const locationAndTimeFormValues = ref<ILocationAndTimeFormValues>({
+  const formValues = ref<ILocationAndTimeFormValues>({
     pickupFrom: '',
     dropOff: '',
     pickupDate: '',
@@ -96,33 +72,33 @@
     dropOffTime: '',
   });
 
+  const emit = defineEmits<{
+    (e: 'updateLocationFilter', location: City): void;
+  }>();
+
+  const isLocationCorrect = (location: City) => !!citiesListData.includes(location);
+
   const validationRules = computed(() => ({
     pickupFrom: {
-      required,
       location_validation: helpers.withMessage('Select a city from the list', isLocationCorrect),
     },
     dropOff: {
-      required,
       location_validation: helpers.withMessage('Select a city from the list', isLocationCorrect),
     },
-    pickupDate: { required },
-    pickupTime: { required },
-    dropOffDate: { required },
-    dropOffTime: { required },
   }));
 
-  const v$ = useVuelidate(validationRules, locationAndTimeFormValues, { $autoDirty: true });
+  const v$ = useVuelidate(validationRules, formValues, { $autoDirty: true });
 
   const handleSubmit = async () => {
     const isFormValidated = await v$.value.$validate();
 
-    if (isFormValidated) emit('updateLocationAndTimeFilters', locationAndTimeFormValues.value);
+    if (isFormValidated) emit('updateLocationFilter', formValues.value.pickupFrom);
   };
 
   watch(
-    locationAndTimeFormValues,
+    formValues,
     (value) => {
-      if (!returnToDifferentLocation.value) locationAndTimeFormValues.value.dropOff = value.pickupFrom;
+      if (!returnToDifferentLocation.value) formValues.value.dropOff = value.pickupFrom;
     },
     { deep: true }
   );

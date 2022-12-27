@@ -9,8 +9,8 @@
 
     <transition name="fade" mode="out-in">
       <SkeletonCardBlock v-if="isLoading" />
-      <h1 class="p-10 text-center text-5xl" v-else-if="isError">
-        Something went wrong... {{ isError.message }}
+      <h1 class="p-10 text-center text-5xl" v-else-if="error">
+        Something went wrong... {{ error }}
       </h1>
       <CarCardsBlock v-else :vehicles="vehicles" />
     </transition>
@@ -50,7 +50,7 @@
     isLoading: { type: Boolean as PropType<boolean> },
     sortOrderASC: { type: Boolean as PropType<boolean> },
     sortBy: { type: String as PropType<string> },
-    isError: { type: Object as PropType<PostgrestError | null> },
+    error: { type: String as PropType<string | null> },
   });
 
   const emit = defineEmits<{

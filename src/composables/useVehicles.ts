@@ -2,17 +2,19 @@ import type { ICarEntity } from '@/interfaces';
 import { computed, onMounted, ref, type Ref } from 'vue';
 import { VEHICLES_PER_PAGE } from '@/constants';
 import { delay } from '@/helpers';
-import { serviceAPI } from '@/api/serviceAPI';
 import type { PostgrestError } from '@supabase/supabase-js';
+import type { City } from '@/types';
+import { APIService } from '@/api/ApiService';
 
-export const usePaginatedAndSortedVehicles = (
+export const useVehicles = (
   currentPage: Ref<number>,
   sortOrderASC: Ref<boolean>,
-  sortBy: Ref<string>
+  sortBy: Ref<string>,
+  activeLocationFilter: Ref<City | null>
 ) => {
   const vehicles = ref<ICarEntity[]>([]);
   const vehiclesCount = ref(0);
-  const isError = ref<PostgrestError | null>(null);
+  const errorMessage = ref<string | null>(null);
   const isLoading = ref(false);
 
   const vehiclesRange = computed(() => {
@@ -24,32 +26,32 @@ export const usePaginatedAndSortedVehicles = (
 
   const fetchVehicles = async ({ append } = { append: false }) => {
     try {
-      isError.value = null;
+      errorMessage.value = null;
       isLoading.value = true;
 
       await delay(1000);
 
-      const { data, count, error } = await serviceAPI.getAllVehicles({
+      const { data, count, error } = await APIService.getAllVehicles({
         sortBy: sortBy.value,
         sortOrderASC: sortOrderASC.value,
         offset: vehiclesRange.value.offset,
         limit: vehiclesRange.value.limit,
+        location: activeLocationFilter.value,
       });
+
 
       if (data && !append) vehicles.value = data;
       if (data && append) vehicles.value.push(...data);
       if (count) vehiclesCount.value = count;
-      if (error) isError.value = error;
+      if (error) errorMessage.value = 'Unknown error occurred while fetching vehicles...';
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       isLoading.value = false;
     }
   };
 
-
-
   onMounted(() => fetchVehicles());
 
-  return { vehicles, vehiclesCount, isError, isLoading, fetchVehicles };
+  return { vehicles, vehiclesCount, errorMessage, isLoading, fetchVehicles };
 };

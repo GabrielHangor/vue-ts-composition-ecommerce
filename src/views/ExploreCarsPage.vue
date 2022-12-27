@@ -1,6 +1,6 @@
 <template>
   <div class="flex h-full w-full flex-col">
-    <LocationAndTimeForm @update-location-and-time-filters="updateLocationAndTimeFilters" />
+    <LocationAndTimeForm :is-loading="isLoading" @update-location-filter="updateLocationFilter" />
     <PageHeading heading="Our cars" :carsTotal="vehiclesCount" />
     <OurCarsSectionWrapper>
       <template v-slot:filters>
@@ -13,7 +13,7 @@
         <OurCarsCatalog
           :carsTotal="vehiclesCount"
           :vehicles="vehicles"
-          :isError="isError"
+          :error="errorMessage"
           :isLoading="isLoading"
           :currentPage="currentPage"
           :sortOrderASC="sortOrderASC"
@@ -35,36 +35,28 @@
   import OurCarsCatalogFilters from '@/components/OurCarsSection/OurCarsCatalogFilters.vue';
   import OurCarsSectionWrapper from '@/components/OurCarsSection/OurCarsSectionWrapper.vue';
   import PageHeading from '@/components/PageHeading.vue';
-  import { usePaginatedAndSortedVehicles } from '@/composables/usePaginatedAndSortedVehicles';
+  import { useVehicles } from '@/composables/useVehicles';
   import { usePreventScroll } from '@/composables/usePreventScroll';
-  import type { ILocationAndTimeFormValues } from '@/interfaces';
 
-  import { onMounted, ref, watch } from 'vue';
-
-  const activeLocationAndTimeFilters = ref<ILocationAndTimeFormValues | null>(null);
-
-  const updateLocationAndTimeFilters = (locationAndTimeFilters: ILocationAndTimeFormValues) => {
-    activeLocationAndTimeFilters.value = locationAndTimeFilters;
-  };
+  import { ref, watch } from 'vue';
+  import type { City } from '@/types';
 
   const isCarCatalogFiltersOpen = ref(false);
 
   usePreventScroll(isCarCatalogFiltersOpen);
 
+  const activeLocationFilter = ref<City>('');
   const currentPage = ref(1);
   const sortOrderASC = ref(true);
   const sortBy = ref('rentalCost');
   const shouldAppendPage = ref(false);
 
-  const { vehicles, vehiclesCount, isLoading, isError, fetchVehicles } = usePaginatedAndSortedVehicles(
+  const { vehicles, vehiclesCount, isLoading, errorMessage, fetchVehicles } = useVehicles(
     currentPage,
     sortOrderASC,
-    sortBy
+    sortBy,
+    activeLocationFilter
   );
-
-  const changeCurrentPage = (page: number) => {
-    currentPage.value = page;
-  };
 
   const appendPage = () => {
     shouldAppendPage.value = true;
@@ -72,10 +64,11 @@
   };
 
   const toggleSortOrder = () => (sortOrderASC.value = !sortOrderASC.value);
-
   const updateSortType = (sortType: string) => (sortBy.value = sortType);
+  const updateLocationFilter = (location: City) => (activeLocationFilter.value = location);
+  const changeCurrentPage = (page: number) => (currentPage.value = page);
 
-  watch([currentPage, sortOrderASC, sortBy], () => {
+  watch([currentPage, sortOrderASC, sortBy, activeLocationFilter], () => {
     if (shouldAppendPage.value) {
       fetchVehicles({ append: true });
       shouldAppendPage.value = false;
@@ -84,5 +77,4 @@
 
     fetchVehicles();
   });
-
 </script>

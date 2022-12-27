@@ -27,6 +27,14 @@ export interface ICarEntity {
   imgPath: string;
 }
 
+export interface IVehiclesRequestParams {
+  sortBy: string;
+  sortOrderASC: boolean;
+  offset: number;
+  limit: number;
+  location: City | null;
+}
+
 export interface ISelectOption {
   value: string | number;
   name: string;
@@ -36,5 +44,3 @@ export interface ISelectOptions {
   baseOption: ISelectOption;
   options: ISelectOption[];
 }
-
-
