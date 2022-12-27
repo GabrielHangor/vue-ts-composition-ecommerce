@@ -5,12 +5,16 @@
         <img src="/clock.svg" alt="Clock Icon" />
       </span>
 
-      <span class="absolute inset-y-0 right-0 flex items-center pr-3" @mousedown="clearInput">
-        <img :src="`${title}${showCrossIcon}`" alt="Cross" class="cursor-pointer" />
+      <span
+        class="absolute inset-y-0 right-0 flex items-center px-3 transition"
+        :class="{ 'rotate-180': listeners.focused && !props.modelValue }"
+        @mousedown="clearInput"
+      >
+        <img :src="`${title}${rightIconPath}`" alt="Cross" />
       </span>
       <input
         ref="timePicker"
-        :type="type"
+        type="time"
         name="input"
         :value="modelValue"
         @input="updateValue($event.target.value)"
@@ -19,7 +23,7 @@
         v-bind="$attrs"
         :class="{ 'border-[1px] border-error text-error': error }"
         placeholder="1"
-        class="peer block h-12 w-full rounded-[10px] pl-[52px] pt-5 font-medium text-gray-600 placeholder-transparent shadow-inputBase transition duration-300 ease-in-out placeholder-shown:pt-0 focus:outline-none"
+        class="peer block h-12 w-full min-w-[95%] cursor-text rounded-[10px] bg-white pl-[52px] pt-5 font-medium text-gray-600 placeholder-transparent shadow-inputBase transition duration-300 ease-in-out placeholder-shown:pt-0 focus:outline-none"
       />
       <label
         for="input"
@@ -33,7 +37,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, nextTick, ref, type PropType, type Ref } from 'vue';
+  import { computed, ref, type PropType, type Ref } from 'vue';
   const title = import.meta.env.BASE_URL;
 
   const props = defineProps({
@@ -45,29 +49,38 @@
   const emit = defineEmits<{ (e: 'update:modelValue', modelValue: string): void }>();
 
   const listeners = ref({ focused: false });
-  const type = computed(() => (listeners.value.focused ? 'time' : 'text'));
-  const showCrossIcon = computed(() =>
-    listeners.value.focused && props.modelValue ? '/delete-icon.svg' : '/dropdown-arrow.svg'
-  );
+  const rightIconPath = computed(() => (props.modelValue ? '/delete-icon.svg' : '/dropdown-arrow.svg'));
 
-  const timePicker = ref<HTMLInputElement | null>(null);
+  const timePicker = ref();
 
   const updateValue = (value: string) => emit('update:modelValue', value);
   const onFocus = () => {
+    timePicker?.value?.showPicker();
     listeners.value.focused = true;
-    nextTick(() => timePicker?.value?.showPicker());
   };
 
   const onBlur = () => (listeners.value.focused = false);
 
   const clearInput = () => {
-    if (listeners.value.focused && props.modelValue) emit('update:modelValue', '');
+    if (props.modelValue) emit('update:modelValue', '');
   };
 </script>
 
-<style>
+<style scoped>
   input[type='time']::-webkit-calendar-picker-indicator {
-    color: transparent;
-    background: transparent;
+    display: none;
+  }
+
+  input::-webkit-date-and-time-value {
+    text-align: -webkit-left;
+    -webkit-padding-start: 50px;
+    -webkit-padding-before: 15px;
+  }
+
+  input[type='time'] {
+    -webkit-appearance: textfield;
+    -moz-appearance: textfield;
+    min-height: 1.2em;
+    display: flex;
   }
 </style>

@@ -51,9 +51,9 @@
           label="Drop off time"
           :error="v$.dropOffTime.$errors[0]?.$message"
         />
-
       </div>
     </div>
+
     <div class="container mx-auto flex justify-center">
       <BaseButton class="w-[272px]">Search</BaseButton>
     </div>
@@ -72,6 +72,8 @@
   import type { City } from '@/types';
   import { citiesListData } from '@/mocks/mocks';
   import type { ILocationAndTimeFormValues } from '@/interfaces';
+
+
 
   const emit = defineEmits<{
     (e: 'updateLocationAndTimeFilters', locationAndTimeFormValues: ILocationAndTimeFormValues): void;

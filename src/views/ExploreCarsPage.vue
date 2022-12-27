@@ -85,5 +85,4 @@
     fetchVehicles();
   });
 
-  // TODO refactor refs and multiple trigger methods into one
 </script>
