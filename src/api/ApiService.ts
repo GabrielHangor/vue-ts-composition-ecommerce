@@ -1,21 +1,14 @@
 import { supabase } from '@/supabase';
 import type { SupabaseClient } from '@supabase/supabase-js';
-
 import QueryBuilder from '@/api/QueryBuilder';
-import type { IVehiclesRequestParams } from '@/interfaces';
+import type { IGetVehiclesRequestParams } from '@/interfaces';
 
 class ApiService {
-  private supabase: SupabaseClient;
-  private queryBuilder;
+  constructor(private supabase: SupabaseClient, private queryBuilder: QueryBuilder) {}
 
-  constructor() {
-    this.supabase = supabase;
-    this.queryBuilder = new QueryBuilder(supabase);
-  }
-
-  getAllVehicles(params: IVehiclesRequestParams) {
+  getAllVehicles(params: IGetVehiclesRequestParams) {
     return this.queryBuilder.buildGetAllVehiclesQuery(params);
   }
 }
 
-export const APIService = new ApiService();
+export const APIService = new ApiService(supabase, new QueryBuilder(supabase));

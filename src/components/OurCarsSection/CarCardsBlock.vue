@@ -5,11 +5,11 @@
 </template>
 
 <script lang="ts" setup>
-  import type { ICarEntity } from '@/interfaces';
+  import type { IVehicleEntity } from '@/interfaces';
   import type { PropType } from 'vue';
   import CarCard from './CarCard.vue';
 
   const props = defineProps({
-    vehicles: { type: Array as PropType<ICarEntity[]>, required: true },
+    vehicles: { type: Array as PropType<IVehicleEntity[]>, required: true },
   });
 </script>

@@ -1,18 +1,18 @@
-import type { ICarEntity } from '@/interfaces';
+import type { IVehicleEntity, IUseVehiclesParams } from '@/interfaces';
 import { computed, onMounted, ref, type Ref } from 'vue';
 import { VEHICLES_PER_PAGE } from '@/constants';
 import { delay } from '@/helpers';
-import type { PostgrestError } from '@supabase/supabase-js';
 import type { City } from '@/types';
 import { APIService } from '@/api/ApiService';
+import type { PostgrestError } from '@supabase/supabase-js';
 
-export const useVehicles = (
-  currentPage: Ref<number>,
-  sortOrderASC: Ref<boolean>,
-  sortBy: Ref<string>,
-  activeLocationFilter: Ref<City | null>
-) => {
-  const vehicles = ref<ICarEntity[]>([]);
+export const useVehicles = ({
+  currentPage,
+  sortOrderASC,
+  sortBy,
+  activeLocationFilter,
+}: IUseVehiclesParams) => {
+  const vehicles = ref<IVehicleEntity[]>([]);
   const vehiclesCount = ref(0);
   const errorMessage = ref<string | null>(null);
   const isLoading = ref(false);
@@ -38,7 +38,6 @@ export const useVehicles = (
         limit: vehiclesRange.value.limit,
         location: activeLocationFilter.value,
       });
-
 
       if (data && !append) vehicles.value = data;
       if (data && append) vehicles.value.push(...data);

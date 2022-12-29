@@ -35,7 +35,7 @@
 <script lang="ts" setup>
   import OurCarsCatalogHeading from './OurCarsCatalogHeading.vue';
   import CarCardsBlock from './CarCardsBlock.vue';
-  import type { ICarEntity } from '@/interfaces';
+  import type { IVehicleEntity } from '@/interfaces';
   import { computed, type PropType } from 'vue';
   import BaseButton from '../BaseButton.vue';
   import BasePaginator from '@/components/BasePaginator.vue';
@@ -44,7 +44,7 @@
   import type { PostgrestError } from '@supabase/supabase-js';
 
   const props = defineProps({
-    vehicles: { type: Array as PropType<ICarEntity[]>, required: true },
+    vehicles: { type: Array as PropType<IVehicleEntity[]>, required: true },
     carsTotal: { type: Number as PropType<number>, required: true },
     currentPage: { type: Number as PropType<number>, required: true },
     isLoading: { type: Boolean as PropType<boolean> },

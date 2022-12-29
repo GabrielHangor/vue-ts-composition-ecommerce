@@ -1,28 +1,28 @@
 <template>
   <div class="flex h-full w-full flex-col">
     <LocationAndTimeForm :is-loading="isLoading" @update-location-filter="updateLocationFilter" />
-    <PageHeading heading="Our cars" :carsTotal="vehiclesCount" />
+    <PageHeading heading="Our cars" :cars-total="vehiclesCount" />
     <OurCarsSectionWrapper>
       <template v-slot:filters>
         <OurCarsCatalogFilters
           @close-mobile-filters="isCarCatalogFiltersOpen = false"
-          :isOpen="isCarCatalogFiltersOpen"
+          :is-open="isCarCatalogFiltersOpen"
         />
       </template>
       <template v-slot:cars>
         <OurCarsCatalog
-          :carsTotal="vehiclesCount"
+          :sort-by="sortBy"
           :vehicles="vehicles"
           :error="errorMessage"
-          :isLoading="isLoading"
-          :currentPage="currentPage"
-          :sortOrderASC="sortOrderASC"
-          :sortBy="sortBy"
-          @open-mobile-filters="isCarCatalogFiltersOpen = true"
-          @change-current-page="changeCurrentPage"
+          :is-loading="isLoading"
+          :current-page="currentPage"
+          :cars-total="vehiclesCount"
+          :sort-order-a-s-c="sortOrderASC"
           @append-page="appendPage"
+          @update-sort-type="updateSortType"
           @toggle-sort-order="toggleSortOrder"
-          @updateSortType="updateSortType"
+          @change-current-page="changeCurrentPage"
+          @open-mobile-filters="isCarCatalogFiltersOpen = true"
         />
       </template>
     </OurCarsSectionWrapper>
@@ -37,9 +37,9 @@
   import PageHeading from '@/components/PageHeading.vue';
   import { useVehicles } from '@/composables/useVehicles';
   import { usePreventScroll } from '@/composables/usePreventScroll';
-
   import { ref, watch } from 'vue';
   import type { City } from '@/types';
+  import BaseCollapse from '@/components/BaseCollapse.vue';
 
   const isCarCatalogFiltersOpen = ref(false);
 
@@ -51,12 +51,12 @@
   const sortBy = ref('rentalCost');
   const shouldAppendPage = ref(false);
 
-  const { vehicles, vehiclesCount, isLoading, errorMessage, fetchVehicles } = useVehicles(
+  const { vehicles, vehiclesCount, isLoading, errorMessage, fetchVehicles } = useVehicles({
     currentPage,
     sortOrderASC,
     sortBy,
-    activeLocationFilter
-  );
+    activeLocationFilter,
+  });
 
   const appendPage = () => {
     shouldAppendPage.value = true;

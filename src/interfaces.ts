@@ -1,4 +1,5 @@
 import type { Capacity, CarModel, CarType, City, Deposit, NumberOfSeats, Transmission } from './types';
+import type { Ref } from 'vue';
 
 export interface ILocationAndTimeFormValues {
   pickupFrom: City;
@@ -9,7 +10,7 @@ export interface ILocationAndTimeFormValues {
   dropOffTime: string;
 }
 
-export interface ICarEntity {
+export interface IVehicleEntity {
   id: number;
   createdAt: Date;
   city: City;
@@ -27,12 +28,19 @@ export interface ICarEntity {
   imgPath: string;
 }
 
-export interface IVehiclesRequestParams {
+export interface IGetVehiclesRequestParams {
   sortBy: string;
   sortOrderASC: boolean;
   offset: number;
   limit: number;
   location: City | null;
+}
+
+export interface IUseVehiclesParams {
+  currentPage: Ref<number>;
+  sortOrderASC: Ref<boolean>;
+  sortBy: Ref<string>;
+  activeLocationFilter: Ref<City | null>;
 }
 
 export interface ISelectOption {

@@ -40,6 +40,7 @@
   const emit = defineEmits<{
     (e: 'toggle-sort-order'): void;
     (e: 'updateSortType', value: string): void;
+    (e: 'openMobileFilters'): void;
   }>();
 
   const sortIcon = computed(() => (props.sortOrderASC ? '/sort-up.svg' : '/sort-down.svg'));

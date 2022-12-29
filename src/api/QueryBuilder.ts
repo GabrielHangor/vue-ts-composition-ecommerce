@@ -1,14 +1,16 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
-import type { IVehiclesRequestParams } from '@/interfaces';
+import type { IGetVehiclesRequestParams } from '@/interfaces';
 
 export default class QueryBuilder {
-  private supabase;
+  constructor(private supabase: SupabaseClient) {}
 
-  constructor(supabase: SupabaseClient) {
-    this.supabase = supabase;
-  }
-
-  buildGetAllVehiclesQuery({ sortBy, sortOrderASC, offset, limit, location }: IVehiclesRequestParams) {
+  buildGetAllVehiclesQuery({
+    sortBy,
+    sortOrderASC,
+    offset,
+    limit,
+    location,
+  }: IGetVehiclesRequestParams) {
     let query = this.supabase
       .from('Vehicles')
       .select('*', { count: 'exact' })

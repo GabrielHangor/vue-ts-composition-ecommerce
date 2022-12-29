@@ -59,12 +59,12 @@
 </template>
 
 <script lang="ts" setup>
-  import type { ICarEntity } from '@/interfaces';
+  import type { IVehicleEntity } from '@/interfaces';
   import type { PropType } from 'vue';
   import BaseButton from '../BaseButton.vue';
 
   const props = defineProps({
-    vehicle: { type: Object as PropType<ICarEntity>, required: true },
+    vehicle: { type: Object as PropType<IVehicleEntity>, required: true },
   });
 
   const title = import.meta.env.BASE_URL;
