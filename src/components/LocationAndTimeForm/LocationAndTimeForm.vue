@@ -63,7 +63,7 @@
   import BaseButton from '../BaseButton.vue';
   import BaseTimePicker from '../BaseTimePicker.vue';
   import { useVuelidate } from '@vuelidate/core';
-  import { helpers, required } from '@vuelidate/validators';
+  import { helpers } from '@vuelidate/validators';
   import type { City } from '@/types';
   import { citiesListData } from '@/mocks/mocks';
   import type { ILocationAndTimeFormValues } from '@/interfaces';
@@ -87,7 +87,7 @@
   });
 
   const emit = defineEmits<{
-    (e: 'updateLocationFilter', location: City): void;
+    (e: 'updateLocationFilter', filters: ILocationAndTimeFormValues): void;
   }>();
 
   const isLocationCorrect = (location: City) => !!citiesListData.includes(location);
@@ -106,7 +106,7 @@
   const handleSubmit = async () => {
     const isFormValidated = await v$.value.$validate();
 
-    if (isFormValidated) emit('updateLocationFilter', formValues.value.pickupFrom);
+    if (isFormValidated) emit('updateLocationFilter', formValues.value);
   };
 
   watch(

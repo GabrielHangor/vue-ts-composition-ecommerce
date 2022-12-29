@@ -40,12 +40,13 @@
   import { ref, watch } from 'vue';
   import type { City } from '@/types';
   import BaseCollapse from '@/components/BaseCollapse.vue';
+  import type { ILocationAndTimeFormValues } from '@/interfaces';
 
   const isCarCatalogFiltersOpen = ref(false);
 
   usePreventScroll(isCarCatalogFiltersOpen);
 
-  const activeLocationFilter = ref<City>('');
+  const activeLocationFilters = ref<ILocationAndTimeFormValues>({} as ILocationAndTimeFormValues);
   const currentPage = ref(1);
   const sortOrderASC = ref(true);
   const sortBy = ref('rentalCost');
@@ -55,7 +56,7 @@
     currentPage,
     sortOrderASC,
     sortBy,
-    activeLocationFilter,
+    activeLocationFilters,
   });
 
   const appendPage = () => {
@@ -65,16 +66,23 @@
 
   const toggleSortOrder = () => (sortOrderASC.value = !sortOrderASC.value);
   const updateSortType = (sortType: string) => (sortBy.value = sortType);
-  const updateLocationFilter = (location: City) => (activeLocationFilter.value = location);
   const changeCurrentPage = (page: number) => (currentPage.value = page);
 
-  watch([currentPage, sortOrderASC, sortBy, activeLocationFilter], () => {
-    if (shouldAppendPage.value) {
-      fetchVehicles({ append: true });
-      shouldAppendPage.value = false;
-      return;
-    }
+  const updateLocationFilter = (filters: ILocationAndTimeFormValues) => {
+    Object.assign(activeLocationFilters.value, filters);
+  };
 
-    fetchVehicles();
-  });
+  watch(
+    [currentPage, sortOrderASC, sortBy, activeLocationFilters],
+    () => {
+      if (shouldAppendPage.value) {
+        fetchVehicles({ append: true });
+        shouldAppendPage.value = false;
+        return;
+      }
+
+      fetchVehicles();
+    },
+    { deep: true }
+  );
 </script>

@@ -40,7 +40,7 @@ export interface IUseVehiclesParams {
   currentPage: Ref<number>;
   sortOrderASC: Ref<boolean>;
   sortBy: Ref<string>;
-  activeLocationFilter: Ref<City | null>;
+  activeLocationFilters: Ref<ILocationAndTimeFormValues>;
 }
 
 export interface ISelectOption {

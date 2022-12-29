@@ -10,7 +10,7 @@ export const useVehicles = ({
   currentPage,
   sortOrderASC,
   sortBy,
-  activeLocationFilter,
+  activeLocationFilters,
 }: IUseVehiclesParams) => {
   const vehicles = ref<IVehicleEntity[]>([]);
   const vehiclesCount = ref(0);
@@ -36,7 +36,7 @@ export const useVehicles = ({
         sortOrderASC: sortOrderASC.value,
         offset: vehiclesRange.value.offset,
         limit: vehiclesRange.value.limit,
-        location: activeLocationFilter.value,
+        location: activeLocationFilters.value.pickupFrom,
       });
 
       if (data && !append) vehicles.value = data;
