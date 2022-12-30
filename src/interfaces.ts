@@ -52,3 +52,18 @@ export interface ISelectOptions {
   baseOption: ISelectOption;
   options: ISelectOption[];
 }
+
+export interface IMap<T> {
+  [key: string]: T;
+}
+
+interface IUseSearchParamsOptions {
+  key: string;
+  newKey: string;
+  targetValue: string;
+}
+
+export interface IUseSearchParams<T> {
+  args: IMap<T>;
+  options?: IUseSearchParamsOptions;
+}

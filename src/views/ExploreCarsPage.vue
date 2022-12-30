@@ -39,13 +39,14 @@
   import { usePreventScroll } from '@/composables/usePreventScroll';
   import { ref, watch } from 'vue';
   import type { ILocationAndTimeFormValues } from '@/interfaces';
+  import { useSearchParams } from '@/composables/useSearchParams';
 
   const isCarCatalogFiltersOpen = ref(false);
 
-  usePreventScroll(isCarCatalogFiltersOpen);
-
   // LOCATION
-  const activeLocationFilters = ref<ILocationAndTimeFormValues>({} as ILocationAndTimeFormValues);
+  const activeLocationFilters = ref<ILocationAndTimeFormValues>({
+    pickupFrom: '',
+  } as ILocationAndTimeFormValues);
 
   const updateLocationFilters = (filters: ILocationAndTimeFormValues) => {
     Object.assign(activeLocationFilters.value, filters);
@@ -86,10 +87,22 @@
   const shouldAppendPage = ref(false);
 
   // COMPOSABLES
+  usePreventScroll(isCarCatalogFiltersOpen);
+
   const { vehicles, vehiclesCount, isLoading, errorMessage, fetchVehicles } = useVehicles({
     currentPage,
     sortOrderASC,
     sortBy,
     activeLocationFilters,
+  });
+
+  useSearchParams({
+    args: {
+      page: currentPage,
+      sortOrderASC,
+      sortBy,
+      activeLocationFilters,
+    },
+    options: { key: 'activeLocationFilters', newKey: 'location', targetValue: 'pickupFrom' },
   });
 </script>

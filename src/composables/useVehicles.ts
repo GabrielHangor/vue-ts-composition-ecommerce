@@ -1,10 +1,10 @@
 import type { IVehicleEntity, IUseVehiclesParams } from '@/interfaces';
-import { computed, onMounted, ref, type Ref } from 'vue';
+import { computed, onMounted, ref,  } from 'vue';
 import { VEHICLES_PER_PAGE } from '@/constants';
 import { delay } from '@/helpers';
-import type { City } from '@/types';
+
 import { APIService } from '@/api/ApiService';
-import type { PostgrestError } from '@supabase/supabase-js';
+
 
 export const useVehicles = ({
   currentPage,

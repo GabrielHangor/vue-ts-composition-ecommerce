@@ -1,3 +1,5 @@
+
+
 export const getCarType = (model) => {
   const carTypes = {
     'VW Polo Sedan': 'Economy',
@@ -28,4 +30,14 @@ export const getImgPath = (model) => {
   };
 
   return carTypes[model];
+};
+
+export const getNormalizedUrlQueryVal = (replaceableVal: any, oldVal: string ) => {
+  let newVal;
+
+  if (typeof replaceableVal === 'number') newVal = Number(oldVal);
+  if (typeof replaceableVal === 'string') newVal = oldVal;
+  if (typeof replaceableVal === 'boolean') newVal = oldVal === 'true';
+
+  return newVal;
 };
