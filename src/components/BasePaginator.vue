@@ -53,6 +53,11 @@
     return Math.min(startPage.value + props.maxVisibleButtons - 1, totalPages.value);
   });
 
+  const changeCurrentPage = (page: number) => {
+    if (page === props.currentPage) return;
+    emit('changeCurrentPage', page);
+  };
+
   const visibleRange = computed(() => {
     const range = [];
 
@@ -65,9 +70,4 @@
 
     return range;
   });
-
-  const changeCurrentPage = (page: number) => {
-    if (page === props.currentPage) return;
-    emit('changeCurrentPage', page);
-  };
 </script>

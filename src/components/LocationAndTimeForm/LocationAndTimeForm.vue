@@ -73,9 +73,14 @@
     isLoading: { type: Boolean as PropType<boolean>, default: false },
   });
 
+  const emit = defineEmits<{
+    (e: 'updateLocationFilters', filters: ILocationAndTimeFormValues): void;
+  }>();
+
   const initialVisibility = window.innerWidth >= 768;
 
   const returnToDifferentLocation = ref(false);
+  const isLocationCorrect = (location: City) => !!citiesListData.includes(location);
 
   const formValues = ref<ILocationAndTimeFormValues>({
     pickupFrom: '',
@@ -86,11 +91,19 @@
     dropOffTime: '',
   });
 
-  const emit = defineEmits<{
-    (e: 'updateLocationFilter', filters: ILocationAndTimeFormValues): void;
-  }>();
+  watch(
+    formValues,
+    (value) => {
+      if (!returnToDifferentLocation.value) formValues.value.dropOff = value.pickupFrom;
+    },
+    { deep: true }
+  );
 
-  const isLocationCorrect = (location: City) => !!citiesListData.includes(location);
+  const handleSubmit = async () => {
+    const isFormValidated = await v$.value.$validate();
+
+    if (isFormValidated) emit('updateLocationFilters', formValues.value);
+  };
 
   const validationRules = computed(() => ({
     pickupFrom: {
@@ -102,18 +115,4 @@
   }));
 
   const v$ = useVuelidate(validationRules, formValues, { $autoDirty: true });
-
-  const handleSubmit = async () => {
-    const isFormValidated = await v$.value.$validate();
-
-    if (isFormValidated) emit('updateLocationFilter', formValues.value);
-  };
-
-  watch(
-    formValues,
-    (value) => {
-      if (!returnToDifferentLocation.value) formValues.value.dropOff = value.pickupFrom;
-    },
-    { deep: true }
-  );
 </script>

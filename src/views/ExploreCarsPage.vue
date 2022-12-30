@@ -1,6 +1,6 @@
 <template>
   <div class="flex h-full w-full flex-col">
-    <LocationAndTimeForm :is-loading="isLoading" @update-location-filter="updateLocationFilter" />
+    <LocationAndTimeForm :is-loading="isLoading" @update-location-filters="updateLocationFilters" />
     <PageHeading heading="Our cars" :cars-total="vehiclesCount" />
     <OurCarsSectionWrapper>
       <template v-slot:filters>
@@ -38,51 +38,58 @@
   import { useVehicles } from '@/composables/useVehicles';
   import { usePreventScroll } from '@/composables/usePreventScroll';
   import { ref, watch } from 'vue';
-  import type { City } from '@/types';
-  import BaseCollapse from '@/components/BaseCollapse.vue';
   import type { ILocationAndTimeFormValues } from '@/interfaces';
 
   const isCarCatalogFiltersOpen = ref(false);
 
   usePreventScroll(isCarCatalogFiltersOpen);
 
+  // LOCATION
   const activeLocationFilters = ref<ILocationAndTimeFormValues>({} as ILocationAndTimeFormValues);
-  const currentPage = ref(1);
-  const sortOrderASC = ref(true);
-  const sortBy = ref('rentalCost');
-  const shouldAppendPage = ref(false);
 
-  const { vehicles, vehiclesCount, isLoading, errorMessage, fetchVehicles } = useVehicles({
-    currentPage,
-    sortOrderASC,
-    sortBy,
-    activeLocationFilters,
-  });
+  const updateLocationFilters = (filters: ILocationAndTimeFormValues) => {
+    Object.assign(activeLocationFilters.value, filters);
+  };
+
+  watch(activeLocationFilters, () => fetchVehicles(), { deep: true });
+
+  // PAGE
+  const currentPage = ref(1);
 
   const appendPage = () => {
     shouldAppendPage.value = true;
     currentPage.value += 1;
   };
 
-  const toggleSortOrder = () => (sortOrderASC.value = !sortOrderASC.value);
-  const updateSortType = (sortType: string) => (sortBy.value = sortType);
   const changeCurrentPage = (page: number) => (currentPage.value = page);
 
-  const updateLocationFilter = (filters: ILocationAndTimeFormValues) => {
-    Object.assign(activeLocationFilters.value, filters);
-  };
+  watch(currentPage, () => {
+    if (shouldAppendPage.value) {
+      fetchVehicles({ append: true });
+      shouldAppendPage.value = false;
+      return;
+    }
 
-  watch(
-    [currentPage, sortOrderASC, sortBy, activeLocationFilters],
-    () => {
-      if (shouldAppendPage.value) {
-        fetchVehicles({ append: true });
-        shouldAppendPage.value = false;
-        return;
-      }
+    fetchVehicles();
+  });
 
-      fetchVehicles();
-    },
-    { deep: true }
-  );
+  // SORT
+  const sortOrderASC = ref(true);
+  const sortBy = ref('rentalCost');
+
+  const toggleSortOrder = () => (sortOrderASC.value = !sortOrderASC.value);
+  const updateSortType = (sortType: string) => (sortBy.value = sortType);
+
+  watch([sortBy, sortOrderASC], () => fetchVehicles());
+
+  // OTHER
+  const shouldAppendPage = ref(false);
+
+  // COMPOSABLES
+  const { vehicles, vehiclesCount, isLoading, errorMessage, fetchVehicles } = useVehicles({
+    currentPage,
+    sortOrderASC,
+    sortBy,
+    activeLocationFilters,
+  });
 </script>
