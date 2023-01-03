@@ -1,10 +1,9 @@
 import type { IVehicleEntity, IUseVehiclesParams } from '@/interfaces';
-import { computed, onMounted, ref,  } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { VEHICLES_PER_PAGE } from '@/constants';
 import { delay } from '@/helpers';
 
 import { APIService } from '@/api/ApiService';
-
 
 export const useVehicles = ({
   currentPage,

@@ -2,11 +2,11 @@
   <NavBar />
   <main class="flex h-full flex-col">
     <router-view v-slot="{ Component, route }">
-      <KeepAlive>
-        <transition name="slide">
+      <transition name="slide">
+        <KeepAlive>
           <component :key="route.name" :is="Component" />
-        </transition>
-      </KeepAlive>
+        </KeepAlive>
+      </transition>
     </router-view>
   </main>
 </template>
