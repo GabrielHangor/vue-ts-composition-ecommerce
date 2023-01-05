@@ -4,10 +4,10 @@ import type { Ref } from 'vue';
 export const usePreventScroll = (isMenuOpen: Ref<boolean>) => {
   watch(isMenuOpen, (newVal) => {
     if (newVal) {
-      document.body.classList.add('!overflow-y-hidden');
+      document.body.classList.add('!overflow-y-hidden', 'touch-none');
       return;
     }
 
-    document.body.classList.remove('!overflow-y-hidden');
+    document.body.classList.remove('!overflow-y-hidden', 'touch-none');
   });
 };
