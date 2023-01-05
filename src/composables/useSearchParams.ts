@@ -3,29 +3,23 @@ import { useRoute, useRouter } from 'vue-router';
 import { getNormalizedUrlQueryVal } from '@/helpers';
 import type { IMap, IUseSearchParams } from '@/interfaces';
 
-
-
-export const useSearchParams = ({ args, options }: IUseSearchParams<Ref>) => {
+export const useSearchParams = (params: IUseSearchParams<Ref>) => {
   const router = useRouter();
   const route = useRoute();
 
   for (const key in route.query) {
-    if (args[key]) {
-      args[key].value = getNormalizedUrlQueryVal(args[key].value, route.query[key] as string);
+    if (params[key]) {
+      params[key].value = getNormalizedUrlQueryVal(params[key].value, route.query[key] as string);
     }
   }
 
   watch(
-    Object.values(args), () => {
+    Object.values(params),
+    () => {
       const query: IMap<string> = {};
 
-      for (const key in args) {
-        if (key === options?.key && args[key].value[options.targetValue]) {
-          query[options.newKey] = args[key].value[options.targetValue];
-          continue;
-        }
-
-        if (typeof args[key].value !== 'object') query[key] = args[key].value;
+      for (const key in params) {
+        if (params[key].value !== '') query[key] = params[key].value;
       }
 
       router.push({ query });

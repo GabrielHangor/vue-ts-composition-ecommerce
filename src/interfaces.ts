@@ -64,6 +64,5 @@ interface IUseSearchParamsOptions {
 }
 
 export interface IUseSearchParams<T> {
-  args: IMap<T>;
-  options?: IUseSearchParamsOptions;
+  [key: string]: T;
 }

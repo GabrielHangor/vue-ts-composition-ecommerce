@@ -1,6 +1,10 @@
 <template>
   <div class="flex h-full w-full flex-col">
-    <LocationAndTimeForm :is-loading="isLoading" @update-location-filters="updateLocationFilters" />
+    <LocationAndTimeForm
+      :active-location-filters="activeLocationFilters"
+      :is-loading="isLoading"
+      @update-location-filters="updateLocationFilters"
+    />
     <PageHeading heading="Our cars" :cars-total="vehiclesCount" />
     <OurCarsSectionWrapper>
       <template v-slot:filters>
@@ -37,7 +41,7 @@
   import PageHeading from '@/components/PageHeading.vue';
   import { useVehicles } from '@/composables/useVehicles';
   import { usePreventScroll } from '@/composables/usePreventScroll';
-  import { ref, watch } from 'vue';
+  import { ref, watch, toRef } from 'vue';
   import type { ILocationAndTimeFormValues } from '@/interfaces';
   import { useSearchParams } from '@/composables/useSearchParams';
 
@@ -97,12 +101,9 @@
   });
 
   useSearchParams({
-    args: {
-      page: currentPage,
-      sortOrderASC,
-      sortBy,
-      activeLocationFilters,
-    },
-    options: { key: 'activeLocationFilters', newKey: 'location', targetValue: 'pickupFrom' },
+    page: currentPage,
+    sortOrderASC,
+    sortBy,
+    location: toRef(activeLocationFilters.value, 'pickupFrom'),
   });
 </script>

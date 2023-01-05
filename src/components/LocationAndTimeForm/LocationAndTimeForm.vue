@@ -71,6 +71,7 @@
 
   const props = defineProps({
     isLoading: { type: Boolean as PropType<boolean>, default: false },
+    activeLocationFilters: { type: Object as PropType<ILocationAndTimeFormValues> },
   });
 
   const emit = defineEmits<{
@@ -83,7 +84,7 @@
   const isLocationCorrect = (location: City) => !!citiesListData.includes(location);
 
   const formValues = ref<ILocationAndTimeFormValues>({
-    pickupFrom: '',
+    pickupFrom: props.activeLocationFilters?.pickupFrom || '',
     dropOff: '',
     pickupDate: '',
     pickupTime: '',
