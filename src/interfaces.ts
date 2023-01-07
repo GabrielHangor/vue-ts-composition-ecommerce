@@ -66,3 +66,8 @@ interface IUseSearchParamsOptions {
 export interface IUseSearchParams<T> {
   [key: string]: T;
 }
+
+export interface IPriceRange {
+  min: number | null;
+  max: number | null;
+}

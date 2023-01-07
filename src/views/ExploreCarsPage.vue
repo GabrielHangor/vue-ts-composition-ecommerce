@@ -7,13 +7,13 @@
     />
     <PageHeading heading="Our cars" :cars-total="vehiclesCount" />
     <OurCarsSectionWrapper>
-      <template v-slot:filters>
+      <template #filters>
         <OurCarsCatalogFilters
           @close-mobile-filters="isCarCatalogFiltersOpen = false"
           :is-open="isCarCatalogFiltersOpen"
         />
       </template>
-      <template v-slot:cars>
+      <template #cars>
         <OurCarsCatalog
           :sort-by="sortBy"
           :vehicles="vehicles"

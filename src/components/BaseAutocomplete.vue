@@ -11,7 +11,7 @@
       <input
         name="input"
         :value="modelValue"
-        @input="updateValue(($event.target as HTMLInputElement).value)"
+        @input="updateValue($event.target.value)"
         @focus="onFocus"
         @blur="onBlur"
         v-bind="$attrs"
@@ -34,7 +34,7 @@
             class="cursor-pointer py-2 transition first-of-type:rounded-t-[10px] first-of-type:rounded-b-none last-of-type:rounded-t-none last-of-type:rounded-b-[10px] hover:font-semibold"
             v-for="listItem in filteredListData"
             :key="listItem"
-            @click="select(listItem)"
+            @mousedown="select(listItem)"
           >
             <span class="pl-[52px]">{{ listItem }}</span>
           </li>
@@ -71,7 +71,7 @@
 
   const listeners = ref({ focused: false, touched: false });
 
-  const filteredListData = computed(() => {
+  const filteredListData = computed<string[] | undefined>(() => {
     return props.listData?.filter((item) => item.toLowerCase().includes(props.modelValue.toLowerCase()));
   });
 
@@ -90,9 +90,8 @@
     emit('update:modelValue', '');
   };
 
-  const onFocus = () => {
-    listeners.value.focused = true;
-  };
+  const onFocus = () => listeners.value.focused = true;
+
 
   const onBlur = () => (listeners.value.focused = false);
 </script>
