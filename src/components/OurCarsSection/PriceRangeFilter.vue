@@ -6,8 +6,8 @@
       <span class="px-1">-</span>
       <BaseInput type="number" label="To" v-model.number="maxPrice" />
     </div>
-    <div class="flex py-6">
-      <input type="range" class="w-full" />
+    <div class="flex flex-col py-6">
+      <BaseRangeInput v-model:minPrice.number="minPrice" v-model:maxPrice.number="maxPrice" />
     </div>
   </section>
 </template>
@@ -17,6 +17,7 @@
   import { watch } from 'vue';
   import { useDebouncedRef } from '@/composables/useDebouncedRef';
   import type { IPriceRange } from '@/interfaces';
+  import BaseRangeInput from '@/components/BaseRangeInput.vue';
 
   const emit = defineEmits<{
     (e: 'updatePriceRange', priceRange: IPriceRange): void;
