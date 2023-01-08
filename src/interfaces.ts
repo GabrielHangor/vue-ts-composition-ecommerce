@@ -57,17 +57,11 @@ export interface IMap<T> {
   [key: string]: T;
 }
 
-interface IUseSearchParamsOptions {
-  key: string;
-  newKey: string;
-  targetValue: string;
-}
-
 export interface IUseSearchParams<T> {
   [key: string]: T;
 }
 
 export interface IPriceRange {
-  min: number | null;
-  max: number | null;
+  minPrice: number | null;
+  maxPrice: number | null;
 }

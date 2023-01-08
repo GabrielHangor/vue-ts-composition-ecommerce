@@ -16,7 +16,7 @@
         @blur="onBlur"
         v-bind="$attrs"
         placeholder="1"
-        class="peer appearance-none  block h-12 w-full rounded-[10px] px-4 pt-5 font-medium text-gray-600 placeholder-transparent shadow-inputBase transition duration-300 ease-in-out placeholder-shown:pt-0 focus:outline-none"
+        class="peer block h-12 w-full appearance-none rounded-[10px] px-4 pt-5 font-medium text-gray-600 placeholder-transparent shadow-inputBase transition duration-300 ease-in-out placeholder-shown:pt-0 focus:outline-none"
         :class="{ 'border-[1px] border-error text-error': error }"
       />
       <label
@@ -31,13 +31,15 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, type PropType, type Ref } from 'vue';
+  import { ref, type Ref } from 'vue';
 
-  const props = defineProps({
-    modelValue: { type: String as PropType<string | number>, required: true },
-    label: { type: String as PropType<string>, required: true },
-    error: { type: String as PropType<string | Ref<string>> },
-  });
+  interface Props {
+    modelValue: string | number | null;
+    label: string;
+    error?: string | Ref<string>;
+  }
+
+  const props = defineProps<Props>();
 
   const emit = defineEmits<{
     (e: 'update:modelValue', modelValue: string | number): void;

@@ -1,6 +1,6 @@
 <template>
   <aside
-    class="fixed top-0 left-0 px-1 h-full overflow-hidden transition-[width] duration-300 ease-in-out md:relative md:col-span-4 md:w-auto lg:col-span-3"
+    class="fixed top-0 left-0 h-full overflow-hidden px-1 transition-[width] duration-300 ease-in-out md:relative md:col-span-4 md:w-auto lg:col-span-3"
     :class="isOpen ? 'w-full' : 'w-0'"
   >
     <img
@@ -10,7 +10,7 @@
       alt="Burger close icon"
     />
 
-    <PriceRangeFilter />
+    <PriceRangeFilter v-bind="$attrs" />
   </aside>
 </template>
 

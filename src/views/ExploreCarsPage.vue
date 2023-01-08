@@ -9,8 +9,9 @@
     <OurCarsSectionWrapper>
       <template #filters>
         <OurCarsCatalogFilters
-          @close-mobile-filters="isCarCatalogFiltersOpen = false"
           :is-open="isCarCatalogFiltersOpen"
+          @close-mobile-filters="isCarCatalogFiltersOpen = false"
+          @update-price-range="updatePriceRange"
         />
       </template>
       <template #cars>
@@ -42,7 +43,7 @@
   import { useVehicles } from '@/composables/useVehicles';
   import { usePreventScroll } from '@/composables/usePreventScroll';
   import { ref, watch, toRef } from 'vue';
-  import type { ILocationAndTimeFormValues } from '@/interfaces';
+  import type { ILocationAndTimeFormValues, IPriceRange } from '@/interfaces';
   import { useSearchParams } from '@/composables/useSearchParams';
 
   const isCarCatalogFiltersOpen = ref(false);
@@ -57,6 +58,10 @@
   };
 
   watch(activeLocationFilters, () => fetchVehicles(), { deep: true });
+
+  // PRICE RANGE
+  const priceRange = ref<IPriceRange>({} as IPriceRange);
+  const updatePriceRange = (range: IPriceRange) => Object.assign(priceRange.value, range);
 
   // PAGE
   const currentPage = ref(1);
