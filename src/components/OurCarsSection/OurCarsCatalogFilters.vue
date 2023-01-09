@@ -10,7 +10,7 @@
       alt="Burger close icon"
     />
 
-    <PriceRangeFilter v-bind="$attrs" />
+    <PriceRangeFilter :is-loading="isLoading" v-bind="$attrs" />
   </aside>
 </template>
 
@@ -20,5 +20,6 @@
 
   const props = defineProps({
     isOpen: { type: Boolean as PropType<boolean>, required: true },
+    isLoading: { type: Boolean as PropType<boolean>, default: false },
   });
 </script>

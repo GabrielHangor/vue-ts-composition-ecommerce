@@ -34,13 +34,15 @@ export interface IGetVehiclesRequestParams {
   offset: number;
   limit: number;
   location: City | null;
+  priceRange: IPriceRange;
 }
 
-export interface IUseVehiclesParams {
+export interface IUseVehiclesArgs {
   currentPage: Ref<number>;
   sortOrderASC: Ref<boolean>;
   sortBy: Ref<string>;
   activeLocationFilters: Ref<ILocationAndTimeFormValues>;
+  priceRange: Ref<IPriceRange>;
 }
 
 export interface ISelectOption {

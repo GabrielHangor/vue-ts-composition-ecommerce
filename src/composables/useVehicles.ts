@@ -1,8 +1,7 @@
-import type { IVehicleEntity, IUseVehiclesParams } from '@/interfaces';
+import type { IVehicleEntity, IUseVehiclesArgs } from '@/interfaces';
 import { computed, onMounted, ref } from 'vue';
 import { VEHICLES_PER_PAGE } from '@/constants';
 import { delay } from '@/helpers';
-
 import { APIService } from '@/api/ApiService';
 
 export const useVehicles = ({
@@ -10,7 +9,8 @@ export const useVehicles = ({
   sortOrderASC,
   sortBy,
   activeLocationFilters,
-}: IUseVehiclesParams) => {
+  priceRange,
+}: IUseVehiclesArgs) => {
   const vehicles = ref<IVehicleEntity[]>([]);
   const vehiclesCount = ref(0);
   const errorMessage = ref<string | null>(null);
@@ -28,7 +28,7 @@ export const useVehicles = ({
       errorMessage.value = null;
       isLoading.value = true;
 
-      await delay(1000);
+      await delay(500);
 
       const { data, count, error } = await APIService.getAllVehicles({
         sortBy: sortBy.value,
@@ -36,12 +36,13 @@ export const useVehicles = ({
         offset: vehiclesRange.value.offset,
         limit: vehiclesRange.value.limit,
         location: activeLocationFilters.value.pickupFrom,
+        priceRange: priceRange.value,
       });
 
       if (data && !append) vehicles.value = data;
       if (data && append) vehicles.value.push(...data);
       if (count) vehiclesCount.value = count;
-      if (error) errorMessage.value = 'Unknown error occurred while fetching vehicles...';
+      if (error) errorMessage.value = 'Nothing was found...';
     } catch (error) {
       console.error(error);
     } finally {

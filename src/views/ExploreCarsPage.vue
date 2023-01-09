@@ -10,6 +10,7 @@
       <template #filters>
         <OurCarsCatalogFilters
           :is-open="isCarCatalogFiltersOpen"
+          :is-loading="isLoading"
           @close-mobile-filters="isCarCatalogFiltersOpen = false"
           @update-price-range="updatePriceRange"
         />
@@ -45,6 +46,7 @@
   import { ref, watch, toRef } from 'vue';
   import type { ILocationAndTimeFormValues, IPriceRange } from '@/interfaces';
   import { useSearchParams } from '@/composables/useSearchParams';
+  import { useDebouncedRef } from '@/composables/useDebouncedRef';
 
   const isCarCatalogFiltersOpen = ref(false);
 
@@ -57,11 +59,23 @@
     Object.assign(activeLocationFilters.value, filters);
   };
 
-  watch(activeLocationFilters, () => fetchVehicles(), { deep: true });
+  watch(
+    activeLocationFilters,
+    () => {
+      currentPage.value = 1;
+      fetchVehicles();
+    },
+    { deep: true }
+  );
 
   // PRICE RANGE
-  const priceRange = ref<IPriceRange>({} as IPriceRange);
-  const updatePriceRange = (range: IPriceRange) => Object.assign(priceRange.value, range);
+  const priceRange = useDebouncedRef<IPriceRange>({} as IPriceRange, 500);
+  const updatePriceRange = (range: IPriceRange) => (priceRange.value = range);
+
+  watch(priceRange, () => {
+    currentPage.value = 1;
+    fetchVehicles();
+  });
 
   // PAGE
   const currentPage = ref(1);
@@ -103,6 +117,7 @@
     sortOrderASC,
     sortBy,
     activeLocationFilters,
+    priceRange,
   });
 
   useSearchParams({

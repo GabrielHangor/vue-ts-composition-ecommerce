@@ -18,6 +18,7 @@
         placeholder="1"
         class="peer block h-12 w-full appearance-none rounded-[10px] px-4 pt-5 font-medium text-gray-600 placeholder-transparent shadow-inputBase transition duration-300 ease-in-out placeholder-shown:pt-0 focus:outline-none"
         :class="{ 'border-[1px] border-error text-error': error }"
+        :disabled="disabled"
       />
       <label
         for="input"
@@ -37,23 +38,25 @@
     modelValue: string | number | null;
     label: string;
     error?: string | Ref<string>;
+    disabled: boolean;
   }
 
   const props = defineProps<Props>();
 
   const emit = defineEmits<{
-    (e: 'update:modelValue', modelValue: string | number): void;
+    (e: 'update:modelValue', modelValue: string | number | null): void;
   }>();
 
   const listeners = ref({ focused: false, touched: false });
 
-  const updateValue = (value: string | number) => {
+  const updateValue = (value: string | number | null) => {
     listeners.value.touched = true;
     emit('update:modelValue', value);
   };
 
   const clearInput = () => {
-    emit('update:modelValue', '');
+    if (props.disabled) return;
+    emit('update:modelValue', null);
   };
 
   const onFocus = () => (listeners.value.focused = true);
