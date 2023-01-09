@@ -48,5 +48,6 @@
   onMounted(async () => {
     const { minPrice: minVal, maxPrice: maxVal } = await APIService.getPriceRange();
     [sliderMinValue.value, sliderMaxValue.value] = [minVal, maxVal];
+    [minPrice.value, maxPrice.value] = [minVal, maxVal];
   });
 </script>
