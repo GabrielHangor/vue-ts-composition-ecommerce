@@ -20,34 +20,28 @@
 
 <script setup lang="ts">
   import BaseInput from '@/components/BaseInput.vue';
-  import { computed, onMounted, type PropType, ref, watch } from 'vue';
+  import { computed, inject, type PropType, ref, unref, watch } from 'vue';
   import type { IPriceRange } from '@/interfaces';
   import BaseRangeSlider from '@/components/BaseRangeSlider.vue';
-  import { APIService } from '@/api/ApiService';
 
   const props = defineProps({
     isLoading: { type: Boolean as PropType<boolean>, default: false },
+    initialPriceBoundaries: { type: Object as PropType<IPriceRange>, required: true },
   });
 
   const emit = defineEmits<{
     (e: 'updatePriceRange', priceRange: IPriceRange): void;
   }>();
 
-  const minPrice = ref<number | null>(null);
-  const maxPrice = ref<number | null>(null);
+  const minPrice = ref<number | null>(props.initialPriceBoundaries.minPrice);
+  const maxPrice = ref<number | null>(props.initialPriceBoundaries.maxPrice);
 
-  const sliderMinValue = ref<number | null>(0);
-  const sliderMaxValue = ref<number | null>(0);
+  const sliderMinValue: number | null = unref(props.initialPriceBoundaries.minPrice);
+  const sliderMaxValue: number | null = unref(props.initialPriceBoundaries.maxPrice);
 
   const priceRange = computed<IPriceRange>(() => {
     return { minPrice: minPrice.value, maxPrice: maxPrice.value };
   });
 
   watch([minPrice, maxPrice], () => emit('updatePriceRange', priceRange.value));
-
-  onMounted(async () => {
-    const { minPrice: minVal, maxPrice: maxVal } = await APIService.getPriceRange();
-    [sliderMinValue.value, sliderMaxValue.value] = [minVal, maxVal];
-    [minPrice.value, maxPrice.value] = [minVal, maxVal];
-  });
 </script>

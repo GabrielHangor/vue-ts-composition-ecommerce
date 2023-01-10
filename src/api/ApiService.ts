@@ -13,7 +13,7 @@ class ApiService {
   async getPriceRange(): Promise<IPriceRange> {
     const { data: rentalCostsArr } = await this.queryBuilder.buildGetPriceRangeQuery();
 
-    if (!rentalCostsArr) return { minPrice: 0, maxPrice: 101 };
+    if (!rentalCostsArr) return { minPrice: 1, maxPrice: 101 };
 
     rentalCostsArr?.sort((a, b) => a.rentalCost - b.rentalCost);
 

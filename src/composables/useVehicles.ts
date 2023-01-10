@@ -1,4 +1,4 @@
-import type { IVehicleEntity, IUseVehiclesArgs } from '@/interfaces';
+import type { IVehicleEntity, IUseVehiclesArgs, IPriceRange } from '@/interfaces';
 import { computed, onMounted, ref } from 'vue';
 import { VEHICLES_PER_PAGE } from '@/constants';
 import { delay } from '@/helpers';
@@ -15,6 +15,7 @@ export const useVehicles = ({
   const vehiclesCount = ref(0);
   const errorMessage = ref<string | null>(null);
   const isLoading = ref(false);
+  const initialPriceBoundaries = ref<IPriceRange>({ minPrice: null, maxPrice: null });
 
   const vehiclesRange = computed(() => {
     return {
@@ -50,7 +51,12 @@ export const useVehicles = ({
     }
   };
 
-  onMounted(() => fetchVehicles());
+  const fetchPriceBoundaries = async () => {
+    const { minPrice, maxPrice } = await APIService.getPriceRange();
+    initialPriceBoundaries.value = { minPrice, maxPrice };
+  };
 
-  return { vehicles, vehiclesCount, errorMessage, isLoading, fetchVehicles };
+  onMounted(async () => await Promise.all([fetchVehicles(), fetchPriceBoundaries()]));
+
+  return { vehicles, vehiclesCount, errorMessage, isLoading, fetchVehicles, initialPriceBoundaries };
 };

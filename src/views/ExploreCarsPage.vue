@@ -9,6 +9,7 @@
     <OurCarsSectionWrapper>
       <template #filters>
         <OurCarsCatalogFilters
+          :initial-price-boundaries="initialPriceBoundaries"
           :is-open="isCarCatalogFiltersOpen"
           :is-loading="isLoading"
           @close-mobile-filters="isCarCatalogFiltersOpen = false"
@@ -112,13 +113,14 @@
   // COMPOSABLES
   usePreventScroll(isCarCatalogFiltersOpen);
 
-  const { vehicles, vehiclesCount, isLoading, errorMessage, fetchVehicles } = useVehicles({
-    currentPage,
-    sortOrderASC,
-    sortBy,
-    activeLocationFilters,
-    priceRange,
-  });
+  const { vehicles, vehiclesCount, isLoading, errorMessage, initialPriceBoundaries, fetchVehicles } =
+    useVehicles({
+      currentPage,
+      sortOrderASC,
+      sortBy,
+      activeLocationFilters,
+      priceRange,
+    });
 
   useSearchParams({
     page: currentPage,

@@ -10,16 +10,23 @@
       alt="Burger close icon"
     />
 
-    <PriceRangeFilter :is-loading="isLoading" v-bind="$attrs" />
+    <PriceRangeFilter
+      v-if="initialPriceBoundaries.minPrice"
+      :initial-price-boundaries="initialPriceBoundaries"
+      :is-loading="isLoading"
+      v-bind="$attrs"
+    />
   </aside>
 </template>
 
 <script lang="ts" setup>
   import type { PropType } from 'vue';
   import PriceRangeFilter from '@/components/OurCarsSection/PriceRangeFilter.vue';
+  import type { IPriceRange } from '@/interfaces';
 
   const props = defineProps({
     isOpen: { type: Boolean as PropType<boolean>, required: true },
     isLoading: { type: Boolean as PropType<boolean>, default: false },
+    initialPriceBoundaries: { type: Object as PropType<IPriceRange>, required: true },
   });
 </script>
