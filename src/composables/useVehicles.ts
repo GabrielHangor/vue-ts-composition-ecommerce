@@ -2,7 +2,7 @@ import type { IVehicleEntity, IUseVehiclesArgs, IPriceRange } from '@/interfaces
 import { computed, onMounted, ref } from 'vue';
 import { VEHICLES_PER_PAGE } from '@/constants';
 import { delay } from '@/helpers';
-import { APIService } from '@/api/ApiService';
+import ApiService from '@/api/ApiService';
 
 export const useVehicles = ({
   currentPage,
@@ -31,7 +31,7 @@ export const useVehicles = ({
 
       await delay(500);
 
-      const { data, count, error } = await APIService.getAllVehicles({
+      const { data, count, error } = await ApiService.getAllVehicles({
         sortBy: sortBy.value,
         sortOrderASC: sortOrderASC.value,
         offset: vehiclesRange.value.offset,
@@ -52,7 +52,7 @@ export const useVehicles = ({
   };
 
   const fetchPriceBoundaries = async () => {
-    const { minPrice, maxPrice } = await APIService.getPriceRange();
+    const { minPrice, maxPrice } = await ApiService.getPriceRange();
     initialPriceBoundaries.value = { minPrice, maxPrice };
   };
 

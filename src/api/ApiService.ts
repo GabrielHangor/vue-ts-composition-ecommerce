@@ -1,17 +1,14 @@
-import { supabase } from '@/supabase';
-import type { SupabaseClient } from '@supabase/supabase-js';
+import type { IGetVehiclesRequestParams, IPriceRange, IVehicleEntity } from '@/interfaces';
 import QueryBuilder from '@/api/QueryBuilder';
-import type { IGetVehiclesRequestParams, IPriceRange } from '@/interfaces';
+import type { PostgrestResponse } from '@supabase/supabase-js';
 
-class ApiService {
-  constructor(private supabase: SupabaseClient, private queryBuilder: QueryBuilder) {}
-
-  getAllVehicles(params: IGetVehiclesRequestParams) {
-    return this.queryBuilder.buildGetAllVehiclesQuery(params);
+export default class ApiService {
+  static async getAllVehicles(params: IGetVehiclesRequestParams): Promise<PostgrestResponse<IVehicleEntity>> {
+    return QueryBuilder.buildGetAllVehiclesQuery(params);
   }
 
-  async getPriceRange(): Promise<IPriceRange> {
-    const { data: rentalCostsArr } = await this.queryBuilder.buildGetPriceRangeQuery();
+  static async getPriceRange(): Promise<IPriceRange> {
+    const { data: rentalCostsArr } = await QueryBuilder.buildGetPriceRangeQuery();
 
     if (!rentalCostsArr) return { minPrice: 1, maxPrice: 101 };
 
@@ -23,5 +20,3 @@ class ApiService {
     };
   }
 }
-
-export const APIService = new ApiService(supabase, new QueryBuilder(supabase));

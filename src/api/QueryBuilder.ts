@@ -1,10 +1,8 @@
-import type { SupabaseClient } from '@supabase/supabase-js';
 import type { IGetVehiclesRequestParams } from '@/interfaces';
+import { supabase } from '@/supabase';
 
 export default class QueryBuilder {
-  constructor(private supabase: SupabaseClient) {}
-
-  buildGetAllVehiclesQuery({
+  static buildGetAllVehiclesQuery({
     sortBy,
     sortOrderASC,
     offset,
@@ -12,7 +10,7 @@ export default class QueryBuilder {
     location,
     priceRange,
   }: IGetVehiclesRequestParams) {
-    let query = this.supabase
+    let query = supabase
       .from('Vehicles')
       .select('*', { count: 'exact' })
       .order(`${sortBy}`, { ascending: sortOrderASC })
@@ -25,7 +23,7 @@ export default class QueryBuilder {
     return query;
   }
 
-  buildGetPriceRangeQuery() {
-    return this.supabase.from('Vehicles').select('rentalCost');
+  static buildGetPriceRangeQuery() {
+    return supabase.from('Vehicles').select('rentalCost');
   }
 }
