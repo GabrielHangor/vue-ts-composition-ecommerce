@@ -19,7 +19,7 @@ export const useSearchParams = (params: IUseSearchParams<Ref>) => {
       const query: IMap<string> = {};
 
       for (const key in params) {
-        if (params[key].value !== '') query[key] = params[key].value;
+        if (params[key].value !== '' && params[key].value) query[key] = params[key].value;
       }
 
       router.push({ query });

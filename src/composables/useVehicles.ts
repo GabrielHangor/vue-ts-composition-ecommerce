@@ -25,6 +25,7 @@ export const useVehicles = ({
   });
 
   const fetchVehicles = async ({ append } = { append: false }) => {
+    if (isLoading.value) return;
     try {
       errorMessage.value = null;
       isLoading.value = true;
@@ -43,9 +44,9 @@ export const useVehicles = ({
       if (data && !append) vehicles.value = data;
       if (data && append) vehicles.value.push(...data);
       if (count) vehiclesCount.value = count;
-      if (error) errorMessage.value = 'Nothing was found...';
+      if (error) throw new Error('Nothing was found...');
     } catch (error) {
-      console.error(error);
+      if (error instanceof Error) errorMessage.value = error.message;
     } finally {
       isLoading.value = false;
     }

@@ -14,6 +14,7 @@
     </transition>
 
     <BaseButton
+      v-if="vehicles.length"
       :isDisabled="isOnLastPage"
       :loading="isLoading"
       variant="transparent"
@@ -22,6 +23,7 @@
       >Show more</BaseButton
     >
     <BasePaginator
+      v-if="vehicles.length"
       :currentPage="currentPage"
       :totalEntities="carsTotal"
       :entitiesPerPage="VEHICLES_PER_PAGE"

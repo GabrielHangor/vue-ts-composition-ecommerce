@@ -47,7 +47,7 @@
   import { ref, watch, toRef } from 'vue';
   import type { ILocationAndTimeFormValues, IPriceRange } from '@/interfaces';
   import { useSearchParams } from '@/composables/useSearchParams';
-  import { useDebouncedRef } from '@/composables/useDebouncedRef';
+  import { debounce } from '@/helpers';
 
   const isCarCatalogFiltersOpen = ref(false);
 
@@ -70,13 +70,16 @@
   );
 
   // PRICE RANGE
-  const priceRange = useDebouncedRef<IPriceRange>({} as IPriceRange, 500);
-  const updatePriceRange = (range: IPriceRange) => (priceRange.value = range);
+  const priceRange = ref<IPriceRange>({ minPrice: 0, maxPrice: 0 } as IPriceRange);
+
+  const updatePriceRange = debounce((range: IPriceRange) => Object.assign(priceRange.value, range), 500);
 
   watch(priceRange, () => {
-    currentPage.value = 1;
-    fetchVehicles();
-  });
+      currentPage.value = 1;
+      fetchVehicles();
+    },
+    { deep: true }
+  );
 
   // PAGE
   const currentPage = ref(1);
@@ -127,5 +130,7 @@
     sortOrderASC,
     sortBy,
     location: toRef(activeLocationFilters.value, 'pickupFrom'),
+    minPrice: toRef(priceRange.value, 'minPrice'),
+    maxPrice: toRef(priceRange.value, 'maxPrice'),
   });
 </script>

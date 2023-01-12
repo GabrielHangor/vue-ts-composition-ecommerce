@@ -1,5 +1,3 @@
-
-
 export const getCarType = (model) => {
   const carTypes = {
     'VW Polo Sedan': 'Economy',
@@ -32,7 +30,7 @@ export const getImgPath = (model) => {
   return carTypes[model];
 };
 
-export const getNormalizedUrlQueryVal = (replaceableVal: any, oldVal: string ) => {
+export const getNormalizedUrlQueryVal = (replaceableVal: any, oldVal: string) => {
   let newVal;
 
   if (typeof replaceableVal === 'number') newVal = Number(oldVal);
@@ -40,4 +38,15 @@ export const getNormalizedUrlQueryVal = (replaceableVal: any, oldVal: string ) =
   if (typeof replaceableVal === 'boolean') newVal = oldVal === 'true';
 
   return newVal;
+};
+
+export const debounce = <F extends (...args: any[]) => any>(func: F, waitFor: number) => {
+  let timeout: ReturnType<typeof setTimeout>;
+
+  const debounced = (...args: any) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func(...args), waitFor);
+  };
+
+  return debounced as (...args: Parameters<F>) => ReturnType<F>;
 };
