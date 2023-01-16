@@ -1,6 +1,6 @@
 <template>
-  <section>
-    <h2 class="mb-[20px] text-gray-600">Rent price (per day)</h2>
+  <section class="mb-8">
+    <h2 class="mb-[20px] font-semibold text-gray-600">Rent price (per day)</h2>
     <div class="flex items-center">
       <BaseInput :disabled="isLoading" type="number" label="From" v-model.number="minPrice" />
       <span class="px-1">-</span>

@@ -35,6 +35,7 @@ export interface IGetVehiclesRequestParams {
   limit: number;
   location: City | null;
   priceRange: IPriceRange;
+  carTypes: string[];
 }
 
 export interface IUseVehiclesArgs {
@@ -43,6 +44,7 @@ export interface IUseVehiclesArgs {
   sortBy: Ref<string>;
   activeLocationFilters: Ref<ILocationAndTimeFormValues>;
   priceRange: Ref<IPriceRange>;
+  activeCarTypeFilters: Ref<string[]>;
 }
 
 export interface ISelectOption {

@@ -15,6 +15,7 @@
           :is-loading="isLoading"
           @close-mobile-filters="isCarCatalogFiltersOpen = false"
           @update-price-range="updatePriceRange"
+          @update-car-type-filters="updateCarTypeFilters"
         />
       </template>
       <template #cars>
@@ -69,6 +70,15 @@
     },
     { deep: true }
   );
+
+  // CAR TYPES
+  const activeCarTypeFilters = ref<string[]>([]);
+  const updateCarTypeFilters = (filters: string[]) => (activeCarTypeFilters.value = filters);
+
+  watch(activeCarTypeFilters, () => {
+    currentPage.value = 1;
+    fetchVehicles();
+  });
 
   // PRICE RANGE
   const priceRange = ref<IPriceRange>({ minPrice: 0, maxPrice: 0 } as IPriceRange);
@@ -126,6 +136,7 @@
       sortBy,
       activeLocationFilters,
       priceRange,
+      activeCarTypeFilters,
     });
 
   useSearchParams({

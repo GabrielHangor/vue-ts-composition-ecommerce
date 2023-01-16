@@ -9,6 +9,7 @@ export default class QueryBuilder {
     limit,
     location,
     priceRange,
+    carTypes,
   }: IGetVehiclesRequestParams) {
     let query = supabase
       .from('Vehicles')
@@ -19,6 +20,7 @@ export default class QueryBuilder {
     if (location) query = query.eq('city', location);
     if (priceRange.minPrice) query = query.gt('rentalCost', priceRange.minPrice);
     if (priceRange.maxPrice) query = query.lt('rentalCost', priceRange.maxPrice);
+    if (carTypes.length) query = query.in('carType', carTypes);
 
     return query;
   }

@@ -10,6 +10,7 @@ export const useVehicles = ({
   sortBy,
   activeLocationFilters,
   priceRange,
+  activeCarTypeFilters,
 }: IUseVehiclesArgs) => {
   const vehicles = ref<IVehicleEntity[]>([]);
   const vehiclesCount = ref(0);
@@ -39,6 +40,7 @@ export const useVehicles = ({
         limit: vehiclesRange.value.limit,
         location: activeLocationFilters.value.pickupFrom,
         priceRange: priceRange.value,
+        carTypes: activeCarTypeFilters.value,
       });
 
       if (data && !append) vehicles.value = data;

@@ -31,7 +31,7 @@
 
             <BaseCheckBox
               v-else
-              v-model:checked="returnToDifferentLocation"
+              v-model="returnToDifferentLocation"
               @change="formValues.dropOff = ''"
               label="Return to different location"
               id="1"

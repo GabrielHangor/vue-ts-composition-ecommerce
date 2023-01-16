@@ -116,3 +116,12 @@ export const deposit = [100, 150, 200, 250, 300] as const;
 export const carType = ['Sedan', 'Compact', 'Economy', 'Midsize', 'FullSize', 'Mini', 'Luxury'] as const;
 export const capacity = ['2', '3-5', '6+'] as const;
 export const VEHICLES_PER_PAGE = 6;
+export const carTypes = [
+  { name: 'Economy' },
+  { name: 'Midsize' },
+  { name: 'Compact' },
+  { name: 'Luxury' },
+  { name: 'Mini' },
+  { name: 'Full-size' },
+  { name: 'Sedan' },
+];

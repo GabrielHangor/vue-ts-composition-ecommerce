@@ -32,7 +32,11 @@
 
   if (props.initialVisibility) isVisible.value = true;
 
-  const toggleVisibility = () => (isVisible.value = !isVisible.value);
+  const toggleVisibility = () => {
+    if (isTransitioning.value) return;
+
+    isVisible.value = !isVisible.value;
+  };
 
   const enter = (element: HTMLElement) => {
     element.style.width = getComputedStyle(element).width;
