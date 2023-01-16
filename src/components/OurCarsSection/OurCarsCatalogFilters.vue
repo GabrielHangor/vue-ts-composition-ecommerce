@@ -13,6 +13,7 @@
     <PriceRangeFilter
       v-if="initialPriceBoundaries.minPrice"
       :initial-price-boundaries="initialPriceBoundaries"
+      :price-range="priceRange"
       :is-loading="isLoading"
       v-bind="$attrs"
     />
@@ -28,5 +29,6 @@
     isOpen: { type: Boolean as PropType<boolean>, required: true },
     isLoading: { type: Boolean as PropType<boolean>, default: false },
     initialPriceBoundaries: { type: Object as PropType<IPriceRange>, required: true },
+    priceRange: { type: Object as PropType<IPriceRange> },
   });
 </script>

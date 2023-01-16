@@ -10,6 +10,7 @@
       <template #filters>
         <OurCarsCatalogFilters
           :initial-price-boundaries="initialPriceBoundaries"
+          :price-range="priceRange"
           :is-open="isCarCatalogFiltersOpen"
           :is-loading="isLoading"
           @close-mobile-filters="isCarCatalogFiltersOpen = false"
@@ -74,7 +75,9 @@
 
   const updatePriceRange = debounce((range: IPriceRange) => Object.assign(priceRange.value, range), 500);
 
-  watch(priceRange, () => {
+  watch(
+    priceRange,
+    () => {
       currentPage.value = 1;
       fetchVehicles();
     },

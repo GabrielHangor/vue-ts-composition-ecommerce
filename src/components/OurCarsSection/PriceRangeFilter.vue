@@ -13,6 +13,7 @@
         :min-gap="5"
         :slider-min-value="sliderMinValue"
         :slider-max-value="sliderMaxValue"
+        :is-loading="isLoading"
       />
     </div>
   </section>
@@ -27,14 +28,15 @@
   const props = defineProps({
     isLoading: { type: Boolean as PropType<boolean>, default: false },
     initialPriceBoundaries: { type: Object as PropType<IPriceRange>, required: true },
+    priceRange: { type: Object as PropType<IPriceRange> },
   });
 
   const emit = defineEmits<{
     (e: 'updatePriceRange', priceRange: IPriceRange): void;
   }>();
 
-  const minPrice = ref<number | null>(props.initialPriceBoundaries.minPrice);
-  const maxPrice = ref<number | null>(props.initialPriceBoundaries.maxPrice);
+  const minPrice = ref<number | null>(props.priceRange?.minPrice || props.initialPriceBoundaries.minPrice);
+  const maxPrice = ref<number | null>(props.priceRange?.maxPrice || props.initialPriceBoundaries.maxPrice);
 
   const sliderMinValue: number | null = unref(props.initialPriceBoundaries.minPrice);
   const sliderMaxValue: number | null = unref(props.initialPriceBoundaries.maxPrice);

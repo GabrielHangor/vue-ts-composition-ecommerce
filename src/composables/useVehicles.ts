@@ -2,7 +2,7 @@ import type { IVehicleEntity, IUseVehiclesArgs, IPriceRange } from '@/interfaces
 import { computed, onMounted, ref } from 'vue';
 import { VEHICLES_PER_PAGE } from '@/constants';
 import { delay } from '@/helpers';
-import ApiService from '@/api/ApiService';
+import ApiService from '@/services/ApiService';
 
 export const useVehicles = ({
   currentPage,

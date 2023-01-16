@@ -7,6 +7,7 @@
       :max="sliderMaxValue"
       :value="minPrice"
       :title="minPrice"
+      :disabled="isLoading"
       @input="updateMinPrice($event.target.value)"
     />
     <input
@@ -15,6 +16,7 @@
       :max="sliderMaxValue"
       :title="maxPrice"
       :value="maxPrice"
+      :disabled="isLoading"
       @input="updateMaxPrice($event.target.value)"
     />
   </div>
@@ -29,6 +31,7 @@
     sliderMinValue: number;
     sliderMaxValue: number;
     minGap: number;
+    isLoading: boolean;
   }
 
   const props = defineProps<Props>();
@@ -108,10 +111,14 @@
   }
 
   input[type='range']::-ms-thumb {
-    @apply pointer-events-auto h-[20px] w-[20px] cursor-pointer appearance-none rounded-[50%] bg-orange-base;
+    @apply pointer-events-auto  h-[20px] w-[20px] cursor-pointer appearance-none rounded-[50%] bg-orange-base;
   }
 
   input[type='range']:active::-webkit-slider-thumb {
     @apply bg-orange-700;
+  }
+
+  input[type='range']:disabled::-webkit-slider-thumb {
+      @apply bg-gray-400
   }
 </style>

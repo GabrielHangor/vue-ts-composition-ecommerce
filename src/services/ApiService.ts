@@ -1,5 +1,5 @@
 import type { IGetVehiclesRequestParams, IPriceRange, IVehicleEntity } from '@/interfaces';
-import QueryBuilder from '@/api/QueryBuilder';
+import QueryBuilder from '@/services/QueryBuilder';
 import type { PostgrestResponse } from '@supabase/supabase-js';
 
 export default class ApiService {
@@ -8,7 +8,7 @@ export default class ApiService {
   }
 
   static async getPriceRange(): Promise<IPriceRange> {
-    const { data: rentalCostsArr } = await QueryBuilder.buildGetPriceRangeQuery();
+    const { data: rentalCostsArr }  = await QueryBuilder.buildGetPriceRangeQuery();
 
     if (!rentalCostsArr) return { minPrice: 1, maxPrice: 101 };
 
