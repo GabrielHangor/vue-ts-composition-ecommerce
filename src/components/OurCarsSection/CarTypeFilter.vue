@@ -21,16 +21,19 @@
     <template #default="{ isVisible }">
       <div v-show="isVisible">
         <section class="flex flex-col gap-2">
-          <BaseCheckBox
-            v-for="carType in carTypes"
-            :key="carType.name"
-            :id="carType.name"
-            v-model="activeCarTypeFilters"
-            :label="carType.name"
-            :value="carType.name"
-          />
-        </section></div
-    ></template>
+          <div class="flex items-center" v-for="carType in carTypes" :key="carType.name">
+            <BaseCheckBox
+              :id="carType.name"
+              v-model="activeCarTypeFilters"
+              :label="carType.name"
+              :value="carType.name"
+              :input-bg-class="'bg-white'"
+            />
+            <span class="ml-1 text-[13px] text-gray-400">(0)</span>
+          </div>
+        </section>
+      </div></template
+    >
   </BaseCollapse>
 </template>
 

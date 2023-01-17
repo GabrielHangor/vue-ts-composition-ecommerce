@@ -69,3 +69,8 @@ export interface IPriceRange {
   minPrice: number | null;
   maxPrice: number | null;
 }
+
+
+
+
+

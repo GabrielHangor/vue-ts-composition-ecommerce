@@ -1,13 +1,27 @@
 <template>
   <label
-    class="relative flex h-full w-full cursor-pointer items-center"
+    class="relative flex h-full cursor-pointer items-center"
     :for="id"
     :class="{ 'font-semibold': isActive }"
   >
-    <input class="my-1 mr-3 cursor-pointer" :id="id" type="checkbox" v-model="model" :value="value" />
-
-    <!--    <img class="mr-2" :src="`${title}${checkedIconName}`" alt="Checked icon" />-->
-
+    <div class="relative" :class="inputBgClass">
+      <input
+        class="form-checkbox my-1 mr-3 cursor-pointer rounded border p-3 text-transparent checked:border-gray-800 checked:hover:border-gray-800 focus:ring-0 focus:ring-offset-0 checked:focus:border-gray-800"
+        :id="id"
+        type="checkbox"
+        v-model="model"
+        :value="value"
+      />
+      <transition name="fade">
+        <img
+          v-show="isActive"
+          class="absolute top-[3px] right-[0.5rem] z-10 w-6"
+          src="checkbox-checked-img.svg"
+          alt="checked-icon"
+        />
+      </transition>
+      <span class="absolute right-[0.5rem] h-4 w-3 bg-inherit"></span>
+    </div>
     {{ label }}
   </label>
 </template>
@@ -18,16 +32,13 @@
 
   interface Props {
     modelValue: Array<string> | boolean;
+    inputBgClass: string;
     value?: string;
     label: string;
     id: string;
   }
 
   const props = defineProps<Props>();
-
-  // const checkedIconName = computed(() => {
-  //   return props.value ? '/check-square-checked.svg' : '/check-square.svg';
-  // });
 
   const model = computed({
     get() {

@@ -2,7 +2,7 @@ import type { IGetVehiclesRequestParams } from '@/interfaces';
 import { supabase } from '@/supabase';
 
 export default class QueryBuilder {
-  static buildGetAllVehiclesQuery({
+  static buildAllVehiclesQuery({
     sortBy,
     sortOrderASC,
     offset,
@@ -25,7 +25,7 @@ export default class QueryBuilder {
     return query;
   }
 
-  static buildGetPriceRangeQuery() {
+  static buildPriceRangeQuery() {
     return supabase.from('Vehicles').select('rentalCost');
   }
 }

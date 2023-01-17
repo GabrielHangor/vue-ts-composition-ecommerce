@@ -10,6 +10,7 @@
     <transition name="fade" mode="out-in">
       <SkeletonCardBlock v-if="isLoading" />
       <h1 class="p-10 text-center text-5xl" v-else-if="error">Something went wrong... {{ error }}</h1>
+      <h1 class="p-10 text-center text-5xl" v-else-if="!vehicles.length">Nothing was found</h1>
       <CarCardsBlock v-else :vehicles="vehicles" />
     </transition>
 
