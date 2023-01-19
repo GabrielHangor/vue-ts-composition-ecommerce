@@ -1,6 +1,6 @@
 <template>
   <NavBar />
-  <main class="flex h-full flex-col">
+  <main class="flex flex-col">
     <router-view v-slot="{ Component, route }">
       <transition name="slide">
         <KeepAlive>

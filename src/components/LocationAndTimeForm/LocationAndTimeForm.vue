@@ -33,6 +33,7 @@
               v-else
               v-model="returnToDifferentLocation"
               @change="formValues.dropOff = ''"
+              :input-bg-class="'bg-transparent'"
               label="Return to different location"
               id="1"
             />

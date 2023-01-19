@@ -16,7 +16,7 @@
         <img
           v-show="isActive"
           class="absolute top-[3px] right-[0.5rem] z-10 w-6"
-          src="checkbox-checked-img.svg"
+          src="/checkbox-checked-img.svg"
           alt="checked-icon"
         />
       </transition>

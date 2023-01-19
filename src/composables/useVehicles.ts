@@ -1,4 +1,4 @@
-import type { IVehicleEntity, IUseVehiclesArgs, IPriceRange } from '@/interfaces';
+import type { IPriceRange, IUseVehiclesArgs, IVehicleEntity, IVehiclesTypeCount } from '@/interfaces';
 import { computed, onMounted, ref } from 'vue';
 import { VEHICLES_PER_PAGE } from '@/constants';
 import { delay } from '@/helpers';
@@ -17,6 +17,7 @@ export const useVehicles = ({
   const errorMessage = ref<string | null>(null);
   const isLoading = ref(false);
   const initialPriceBoundaries = ref<IPriceRange>({ minPrice: null, maxPrice: null });
+  const vehiclesTypeCount = ref<IVehiclesTypeCount>({} as IVehiclesTypeCount);
 
   const vehiclesRange = computed(() => {
     return {
@@ -59,7 +60,25 @@ export const useVehicles = ({
     initialPriceBoundaries.value = { minPrice, maxPrice };
   };
 
-  onMounted(async () => await Promise.all([fetchVehicles(), fetchPriceBoundaries()]));
+  const fetchVehiclesTypeCount = async () => {
+    vehiclesTypeCount.value = await VehiclesService.getVehiclesTypeCount({
+      priceRange: priceRange.value,
+      location: activeLocationFilters.value.pickupFrom,
+    });
+  };
 
-  return { vehicles, vehiclesCount, errorMessage, isLoading, fetchVehicles, initialPriceBoundaries };
+  onMounted(
+    async () => await Promise.all([fetchVehicles(), fetchPriceBoundaries(), fetchVehiclesTypeCount()])
+  );
+
+  return {
+    vehicles,
+    vehiclesCount,
+    errorMessage,
+    isLoading,
+    fetchVehicles,
+    fetchVehiclesTypeCount,
+    initialPriceBoundaries,
+    vehiclesTypeCount,
+  };
 };

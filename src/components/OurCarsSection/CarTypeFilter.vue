@@ -29,11 +29,12 @@
               :value="carType.name"
               :input-bg-class="'bg-white'"
             />
-            <span class="ml-1 text-[13px] text-gray-400">(0)</span>
+            <span class="ml-1 text-[13px] text-gray-400">
+                ({{ vehiclesTypeCount[carType.name] || 0 }})
+            </span>
           </div>
         </section>
-      </div></template
-    >
+      </div></template>
   </BaseCollapse>
 </template>
 
@@ -41,9 +42,15 @@
   import BaseCollapse from '@/components/BaseCollapse.vue';
   import BaseCheckBox from '@/components/BaseCheckBox.vue';
   import { ref, watch } from 'vue';
+  import type { PropType } from 'vue';
   import { carTypes } from '@/constants';
+  import type { IVehiclesTypeCount } from '@/interfaces';
 
   const title = import.meta.env.BASE_URL;
+
+  const props = defineProps({
+    vehiclesTypeCount: { type: Object as PropType<IVehiclesTypeCount>, required: true },
+  });
 
   const emit = defineEmits<{
     (e: 'updateCarTypeFilters', activeCarTypeFilters: string[]): void;

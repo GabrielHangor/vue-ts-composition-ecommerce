@@ -38,6 +38,11 @@ export interface IGetVehiclesRequestParams {
   carTypes: string[];
 }
 
+export interface IGetVehiclesTypeCountRequestParams {
+  priceRange: IPriceRange;
+  location: string;
+}
+
 export interface IUseVehiclesArgs {
   currentPage: Ref<number>;
   sortOrderASC: Ref<boolean>;
@@ -70,7 +75,12 @@ export interface IPriceRange {
   maxPrice: number | null;
 }
 
-
-
-
-
+export interface IVehiclesTypeCount {
+  Compact: number;
+  Economy: number;
+  'Full-size': number;
+  Luxury: number;
+  Midsize: number;
+  Mini: number;
+  Sedan: number;
+}

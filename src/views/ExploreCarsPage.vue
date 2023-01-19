@@ -13,6 +13,7 @@
           :price-range="priceRange"
           :is-open="isCarCatalogFiltersOpen"
           :is-loading="isLoading"
+          :vehicles-type-count="vehiclesTypeCount"
           @close-mobile-filters="isCarCatalogFiltersOpen = false"
           @update-price-range="updatePriceRange"
           @update-car-type-filters="updateCarTypeFilters"
@@ -46,10 +47,11 @@
   import PageHeading from '@/components/PageHeading.vue';
   import { useVehicles } from '@/composables/useVehicles';
   import { usePreventScroll } from '@/composables/usePreventScroll';
-  import { ref, watch, toRef } from 'vue';
+  import { ref, watch, toRef, onMounted } from 'vue';
   import type { ILocationAndTimeFormValues, IPriceRange } from '@/interfaces';
   import { useSearchParams } from '@/composables/useSearchParams';
   import { debounce } from '@/helpers';
+  import VehiclesService from '@/services/VehiclesService';
 
   const isCarCatalogFiltersOpen = ref(false);
 
@@ -67,6 +69,7 @@
     () => {
       currentPage.value = 1;
       fetchVehicles();
+      fetchVehiclesTypeCount();
     },
     { deep: true }
   );
@@ -90,6 +93,7 @@
     () => {
       currentPage.value = 1;
       fetchVehicles();
+      fetchVehiclesTypeCount();
     },
     { deep: true }
   );
@@ -129,15 +133,23 @@
   // COMPOSABLES
   usePreventScroll(isCarCatalogFiltersOpen);
 
-  const { vehicles, vehiclesCount, isLoading, errorMessage, initialPriceBoundaries, fetchVehicles } =
-    useVehicles({
-      currentPage,
-      sortOrderASC,
-      sortBy,
-      activeLocationFilters,
-      priceRange,
-      activeCarTypeFilters,
-    });
+  const {
+    vehicles,
+    vehiclesCount,
+    isLoading,
+    errorMessage,
+    initialPriceBoundaries,
+    vehiclesTypeCount,
+    fetchVehicles,
+    fetchVehiclesTypeCount,
+  } = useVehicles({
+    currentPage,
+    sortOrderASC,
+    sortBy,
+    activeLocationFilters,
+    priceRange,
+    activeCarTypeFilters,
+  });
 
   useSearchParams({
     page: currentPage,

@@ -1,5 +1,11 @@
-import type { IGetVehiclesRequestParams } from '@/interfaces';
+import type {
+  IGetVehiclesRequestParams,
+  IGetVehiclesTypeCountRequestParams,
+  IPriceRange,
+} from '@/interfaces';
 import { supabase } from '@/supabase';
+import { carTypes } from '@/constants';
+import type { PostgrestFilterBuilder } from '@supabase/postgrest-js';
 
 export default class QueryBuilder {
   static buildAllVehiclesQuery({
@@ -13,7 +19,7 @@ export default class QueryBuilder {
   }: IGetVehiclesRequestParams) {
     let query = supabase
       .from('Vehicles')
-      .select('*', { count: 'exact' })
+      .select('*', { count: 'estimated' })
       .order(`${sortBy}`, { ascending: sortOrderASC })
       .range(offset, limit);
 
@@ -27,5 +33,24 @@ export default class QueryBuilder {
 
   static buildPriceRangeQuery() {
     return supabase.from('Vehicles').select('rentalCost');
+  }
+
+  static buildVehiclesTypeCountQuery({ priceRange, location }: IGetVehiclesTypeCountRequestParams) {
+    const queriesArr: PostgrestFilterBuilder<any, any, { carType: string }>[] = [];
+
+    carTypes.forEach((type) => {
+      let query = supabase
+        .from('Vehicles')
+        .select('carType', { count: 'estimated', head: true })
+        .eq('carType', type.name);
+
+      if (priceRange.minPrice) query = query.gt('rentalCost', priceRange.minPrice);
+      if (priceRange.maxPrice) query = query.lt('rentalCost', priceRange.maxPrice);
+      if (location) query = query.eq('city', location);
+
+      queriesArr.push(query);
+    });
+
+    return queriesArr;
   }
 }
