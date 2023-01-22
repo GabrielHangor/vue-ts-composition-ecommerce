@@ -21,7 +21,7 @@
 
 <script setup lang="ts">
   import BaseInput from '@/components/BaseInput.vue';
-  import { computed, inject, type PropType, ref, unref, watch } from 'vue';
+  import { computed, type PropType, ref, unref, watch } from 'vue';
   import type { IPriceRange } from '@/interfaces';
   import BaseRangeSlider from '@/components/BaseRangeSlider.vue';
 
@@ -35,8 +35,14 @@
     (e: 'updatePriceRange', priceRange: IPriceRange): void;
   }>();
 
-  const minPrice = ref<number | null>(props.priceRange?.minPrice || props.initialPriceBoundaries.minPrice);
-  const maxPrice = ref<number | null>(props.priceRange?.maxPrice || props.initialPriceBoundaries.maxPrice);
+  const minPrice = ref<number | null>(
+    props.priceRange?.minPrice || props.initialPriceBoundaries.minPrice
+  );
+  const maxPrice = ref<number | null>(
+    props.priceRange?.maxPrice || props.initialPriceBoundaries.maxPrice
+  );
+
+  defineExpose({ minPrice, maxPrice });
 
   const sliderMinValue: number | null = unref(props.initialPriceBoundaries.minPrice);
   const sliderMaxValue: number | null = unref(props.initialPriceBoundaries.maxPrice);

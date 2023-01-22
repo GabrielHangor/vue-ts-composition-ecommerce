@@ -12,6 +12,7 @@
     />
 
     <PriceRangeFilter
+      ref="priceRangeFilter"
       v-if="initialPriceBoundaries.minPrice"
       :initial-price-boundaries="initialPriceBoundaries"
       :price-range="priceRange"
@@ -19,18 +20,28 @@
       v-bind="$attrs"
     />
 
-    <CarTypeFilter :vehicles-type-count="vehiclesTypeCount" v-bind="$attrs" />
+    <CarTypeFilter ref="carTypeFilter" :vehicles-type-count="vehiclesTypeCount" v-bind="$attrs" />
 
-    <BaseButton variant="transparent" class="w-full">Reset</BaseButton>
+    <BaseButton @click="resetFilters" variant="transparent" class="w-full">Reset</BaseButton>
   </aside>
 </template>
 
 <script lang="ts" setup>
-  import type { PropType } from 'vue';
+  import type { PropType, Ref } from 'vue';
   import PriceRangeFilter from '@/components/OurCarsSection/PriceRangeFilter.vue';
   import type { IPriceRange, IVehiclesTypeCount } from '@/interfaces';
   import CarTypeFilter from '@/components/OurCarsSection/CarTypeFilter.vue';
   import BaseButton from '@/components/BaseButton.vue';
+  import { ref } from 'vue';
+
+  interface IPriceRangeFilter extends Ref<InstanceType<typeof PriceRangeFilter>> {
+    minPrice: number | null;
+    maxPrice: number | null;
+  }
+
+  interface ICarTypeFilter extends Ref<InstanceType<typeof CarTypeFilter>> {
+    activeCarTypeFilters: string[];
+  }
 
   const props = defineProps({
     isOpen: { type: Boolean as PropType<boolean>, required: true },
@@ -39,4 +50,22 @@
     priceRange: { type: Object as PropType<IPriceRange> },
     vehiclesTypeCount: { type: Object as PropType<IVehiclesTypeCount>, required: true },
   });
+
+  const priceRangeFilter = ref<IPriceRangeFilter>();
+  const carTypeFilter = ref<ICarTypeFilter>();
+
+  const emit = defineEmits<{
+    (e: 'resetFilters'): void;
+  }>();
+
+  const resetFilters = () => {
+    emit('resetFilters');
+
+    if (priceRangeFilter.value) {
+      priceRangeFilter.value.minPrice = props.initialPriceBoundaries?.minPrice;
+      priceRangeFilter.value.maxPrice = props.initialPriceBoundaries?.maxPrice;
+    }
+
+    if (carTypeFilter.value) carTypeFilter.value.activeCarTypeFilters.length = 0;
+  };
 </script>

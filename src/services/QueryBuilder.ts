@@ -1,7 +1,6 @@
 import type {
   IGetVehiclesRequestParams,
   IGetVehiclesTypeCountRequestParams,
-  IPriceRange,
 } from '@/interfaces';
 import { supabase } from '@/supabase';
 import { carTypes } from '@/constants';

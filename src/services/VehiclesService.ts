@@ -10,7 +10,9 @@ import type { PostgrestResponse } from '@supabase/supabase-js';
 import { carTypes } from '@/constants';
 
 export default class VehiclesService {
-  static async getAllVehicles(params: IGetVehiclesRequestParams): Promise<PostgrestResponse<IVehicleEntity>> {
+  static async getAllVehicles(
+    params: IGetVehiclesRequestParams
+  ): Promise<PostgrestResponse<IVehicleEntity>> {
     return QueryBuilder.buildAllVehiclesQuery(params);
   }
 

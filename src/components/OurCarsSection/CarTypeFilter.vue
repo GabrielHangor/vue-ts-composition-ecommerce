@@ -30,18 +30,19 @@
               :input-bg-class="'bg-white'"
             />
             <span class="ml-1 text-[13px] text-gray-400">
-                ({{ vehiclesTypeCount[carType.name] || 0 }})
+              ({{ vehiclesTypeCount[carType.name] || 0 }})
             </span>
           </div>
         </section>
-      </div></template>
+      </div></template
+    >
   </BaseCollapse>
 </template>
 
 <script setup lang="ts">
   import BaseCollapse from '@/components/BaseCollapse.vue';
   import BaseCheckBox from '@/components/BaseCheckBox.vue';
-  import { ref, watch } from 'vue';
+  import { computed, ref, watch } from 'vue';
   import type { PropType } from 'vue';
   import { carTypes } from '@/constants';
   import type { IVehiclesTypeCount } from '@/interfaces';
@@ -57,6 +58,8 @@
   }>();
 
   const activeCarTypeFilters = ref<string[]>([]);
+
+  defineExpose({ activeCarTypeFilters });
 
   watch(activeCarTypeFilters, () => emit('updateCarTypeFilters', activeCarTypeFilters.value));
 </script>

@@ -1,6 +1,7 @@
 <template>
   <div class="flex h-full w-full flex-col">
     <LocationAndTimeForm
+      ref="locationAndTimeForm"
       :active-location-filters="activeLocationFilters"
       :is-loading="isLoading"
       @update-location-filters="updateLocationFilters"
@@ -14,6 +15,7 @@
           :is-open="isCarCatalogFiltersOpen"
           :is-loading="isLoading"
           :vehicles-type-count="vehiclesTypeCount"
+          @reset-filters="resetFilters"
           @close-mobile-filters="isCarCatalogFiltersOpen = false"
           @update-price-range="updatePriceRange"
           @update-car-type-filters="updateCarTypeFilters"
@@ -47,15 +49,33 @@
   import PageHeading from '@/components/PageHeading.vue';
   import { useVehicles } from '@/composables/useVehicles';
   import { usePreventScroll } from '@/composables/usePreventScroll';
-  import { ref, watch, toRef, onMounted } from 'vue';
+  import { ref, watch, toRef, type Ref } from 'vue';
   import type { ILocationAndTimeFormValues, IPriceRange } from '@/interfaces';
   import { useSearchParams } from '@/composables/useSearchParams';
-  import { debounce } from '@/helpers';
-  import VehiclesService from '@/services/VehiclesService';
+  import { debounce, delay } from '@/helpers';
+
+  interface ILocationAndTimeForm extends Ref<InstanceType<typeof LocationAndTimeForm>> {
+    formValues: ILocationAndTimeFormValues;
+  }
+
+  // RESET
+  const resetFilters = async () => {
+    isResetting.value = true;
+
+    activeLocationFilters.value.pickupFrom = '';
+    if (locationAndTimeForm.value) locationAndTimeForm.value.formValues.pickupFrom = '';
+
+    await delay(10);
+    isResetting.value = false;
+  };
+
+  const isResetting = ref<boolean>(false);
 
   const isCarCatalogFiltersOpen = ref(false);
 
   // LOCATION
+  const locationAndTimeForm = ref<ILocationAndTimeForm>();
+
   const activeLocationFilters = ref<ILocationAndTimeFormValues>({
     pickupFrom: '',
   } as ILocationAndTimeFormValues);
@@ -67,6 +87,8 @@
   watch(
     activeLocationFilters,
     () => {
+      if (isResetting.value) return;
+
       currentPage.value = 1;
       fetchVehicles();
       fetchVehiclesTypeCount();
@@ -78,10 +100,16 @@
   const activeCarTypeFilters = ref<string[]>([]);
   const updateCarTypeFilters = (filters: string[]) => (activeCarTypeFilters.value = filters);
 
-  watch(activeCarTypeFilters, () => {
-    currentPage.value = 1;
-    fetchVehicles();
-  });
+  watch(
+    activeCarTypeFilters,
+    () => {
+      if (isResetting.value) return;
+
+      currentPage.value = 1;
+      fetchVehicles();
+    },
+    { deep: true }
+  );
 
   // PRICE RANGE
   const priceRange = ref<IPriceRange>({ minPrice: 0, maxPrice: 0 } as IPriceRange);

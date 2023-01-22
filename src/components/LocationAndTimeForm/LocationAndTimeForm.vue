@@ -14,7 +14,6 @@
         >
           <BaseAutocomplete
             v-model="formValues.pickupFrom"
-            class="h-full"
             label="Pick up from"
             :list-data="citiesListData"
             :error="v$.pickupFrom.$errors[0]?.$message"
@@ -92,6 +91,8 @@
     dropOffDate: '',
     dropOffTime: '',
   });
+
+  defineExpose({ formValues });
 
   watch(
     formValues,

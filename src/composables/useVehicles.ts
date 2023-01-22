@@ -27,7 +27,6 @@ export const useVehicles = ({
   });
 
   const fetchVehicles = async ({ append } = { append: false }) => {
-    if (isLoading.value) return;
     try {
       errorMessage.value = null;
       isLoading.value = true;

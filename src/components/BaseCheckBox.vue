@@ -28,7 +28,6 @@
 
 <script setup lang="ts">
   import { computed } from 'vue';
-  const title = import.meta.env.BASE_URL;
 
   interface Props {
     modelValue: Array<string> | boolean;
