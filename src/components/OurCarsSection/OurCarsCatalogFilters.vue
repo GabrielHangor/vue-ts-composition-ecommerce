@@ -22,7 +22,13 @@
 
     <CarTypeFilter ref="carTypeFilter" :vehicles-type-count="vehiclesTypeCount" v-bind="$attrs" />
 
-    <BaseButton @click="resetFilters" variant="transparent" class="w-full">Reset</BaseButton>
+    <BaseButton
+      @click="resetFilters"
+      variant="transparent"
+      class="w-full"
+      :is-disabled="isResetBtnDisabled"
+      >Reset</BaseButton
+    >
   </aside>
 </template>
 
@@ -32,7 +38,7 @@
   import type { IPriceRange, IVehiclesTypeCount } from '@/interfaces';
   import CarTypeFilter from '@/components/OurCarsSection/CarTypeFilter.vue';
   import BaseButton from '@/components/BaseButton.vue';
-  import { ref } from 'vue';
+  import { computed, nextTick, ref, watch } from 'vue';
 
   interface IPriceRangeFilter extends Ref<InstanceType<typeof PriceRangeFilter>> {
     minPrice: number | null;
@@ -47,7 +53,7 @@
     isOpen: { type: Boolean as PropType<boolean>, required: true },
     isLoading: { type: Boolean as PropType<boolean>, default: false },
     initialPriceBoundaries: { type: Object as PropType<IPriceRange>, required: true },
-    priceRange: { type: Object as PropType<IPriceRange> },
+    priceRange: { type: Object as PropType<IPriceRange>, required: true },
     vehiclesTypeCount: { type: Object as PropType<IVehiclesTypeCount>, required: true },
   });
 
@@ -56,10 +62,12 @@
 
   const emit = defineEmits<{
     (e: 'resetFilters'): void;
+    (e: 'disableWatchers'): void;
   }>();
 
-  const resetFilters = () => {
-    emit('resetFilters');
+  const resetFilters = async () => {
+    emit('disableWatchers');
+    await nextTick();
 
     if (priceRangeFilter.value) {
       priceRangeFilter.value.minPrice = props.initialPriceBoundaries?.minPrice;
@@ -67,5 +75,23 @@
     }
 
     if (carTypeFilter.value) carTypeFilter.value.activeCarTypeFilters.length = 0;
+
+    emit('resetFilters');
   };
+
+  // RESET BTN STATE
+  const hasActiveCarTypeFilters = computed(() => carTypeFilter.value?.activeCarTypeFilters.length !== 0);
+
+  const hasPriceRangeChanged = computed(() => {
+    const { minPrice: rangeMinPrice, maxPrice: rangeMaxPrice } = props.priceRange;
+    const { minPrice: initialMinPrice, maxPrice: initialMaxPrice } = props.initialPriceBoundaries;
+
+    return rangeMinPrice !== initialMinPrice || rangeMaxPrice !== initialMaxPrice;
+  });
+
+  const filtersActiveStateArr = computed(() => {
+    return [hasPriceRangeChanged.value, hasActiveCarTypeFilters.value];
+  });
+
+  const isResetBtnDisabled = computed(() => !filtersActiveStateArr.value.find((el) => el));
 </script>

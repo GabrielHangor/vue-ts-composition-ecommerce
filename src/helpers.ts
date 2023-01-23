@@ -1,3 +1,5 @@
+import type { Ref } from 'vue';
+
 export const getCarType = (model) => {
   const carTypes = {
     'VW Polo Sedan': 'Economy',
@@ -40,10 +42,15 @@ export const getNormalizedUrlQueryVal = (replaceableVal: any, oldVal: string) =>
   return newVal;
 };
 
-export const debounce = <F extends (...args: any[]) => any>(func: F, waitFor: number) => {
+export const debounce = <F extends (...args: any[]) => any>(
+  func: F,
+  waitFor: number,
+  isDisabled: Ref<boolean>
+) => {
   let timeout: ReturnType<typeof setTimeout>;
 
   const debounced = (...args: any) => {
+    if (isDisabled.value) return;
     clearTimeout(timeout);
     timeout = setTimeout(() => func(...args), waitFor);
   };

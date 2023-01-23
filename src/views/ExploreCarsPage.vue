@@ -15,6 +15,7 @@
           :is-open="isCarCatalogFiltersOpen"
           :is-loading="isLoading"
           :vehicles-type-count="vehiclesTypeCount"
+          @disable-watchers="isResetting = true"
           @reset-filters="resetFilters"
           @close-mobile-filters="isCarCatalogFiltersOpen = false"
           @update-price-range="updatePriceRange"
@@ -49,7 +50,7 @@
   import PageHeading from '@/components/PageHeading.vue';
   import { useVehicles } from '@/composables/useVehicles';
   import { usePreventScroll } from '@/composables/usePreventScroll';
-  import { ref, watch, toRef, type Ref } from 'vue';
+  import { ref, watch, toRef, type Ref, nextTick } from 'vue';
   import type { ILocationAndTimeFormValues, IPriceRange } from '@/interfaces';
   import { useSearchParams } from '@/composables/useSearchParams';
   import { debounce, delay } from '@/helpers';
@@ -58,20 +59,26 @@
     formValues: ILocationAndTimeFormValues;
   }
 
+  const isCarCatalogFiltersOpen = ref(false);
+
   // RESET
   const resetFilters = async () => {
-    isResetting.value = true;
-
     activeLocationFilters.value.pickupFrom = '';
     if (locationAndTimeForm.value) locationAndTimeForm.value.formValues.pickupFrom = '';
 
-    await delay(10);
+    Object.assign(priceRange.value, {
+      minPrice: initialPriceBoundaries.value.minPrice,
+      maxPrice: initialPriceBoundaries.value.maxPrice,
+    });
+
+    await nextTick();
+    await fetchVehicles();
+    await fetchVehiclesTypeCount();
+
     isResetting.value = false;
   };
 
   const isResetting = ref<boolean>(false);
-
-  const isCarCatalogFiltersOpen = ref(false);
 
   // LOCATION
   const locationAndTimeForm = ref<ILocationAndTimeForm>();
@@ -89,6 +96,8 @@
     () => {
       if (isResetting.value) return;
 
+      console.log('location watcher trigger');
+
       currentPage.value = 1;
       fetchVehicles();
       fetchVehiclesTypeCount();
@@ -105,6 +114,8 @@
     () => {
       if (isResetting.value) return;
 
+      console.log('car types watcher trigger');
+
       currentPage.value = 1;
       fetchVehicles();
     },
@@ -114,11 +125,19 @@
   // PRICE RANGE
   const priceRange = ref<IPriceRange>({ minPrice: 0, maxPrice: 0 } as IPriceRange);
 
-  const updatePriceRange = debounce((range: IPriceRange) => Object.assign(priceRange.value, range), 500);
+  const updatePriceRange = debounce(
+    (range: IPriceRange) => Object.assign(priceRange.value, range),
+    500,
+    isResetting
+  );
 
   watch(
     priceRange,
     () => {
+      if (isResetting.value) return;
+
+      console.log('price range watcher trigger');
+
       currentPage.value = 1;
       fetchVehicles();
       fetchVehiclesTypeCount();
@@ -137,6 +156,8 @@
   const changeCurrentPage = (page: number) => (currentPage.value = page);
 
   watch(currentPage, () => {
+    console.log('page trigger');
+
     if (shouldAppendPage.value) {
       fetchVehicles({ append: true });
       shouldAppendPage.value = false;
