@@ -13,8 +13,6 @@
   }
 }
 
-
-
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.2s ease-in-out;
@@ -55,4 +53,9 @@
 .expand-enter,
 .expand-leave-to {
   height: 0;
+}
+
+a,
+img {
+  -webkit-user-drag: none;
 }

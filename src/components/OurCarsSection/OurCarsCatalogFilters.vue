@@ -1,6 +1,6 @@
 <template>
   <aside
-    class="md:z-1 fixed top-0 left-0 z-10 flex h-full min-h-[100vh] w-full flex-col items-center overflow-hidden bg-white p-4 transition-[opacity] duration-300 ease-in md:pointer-events-auto md:relative md:relative md:col-span-4 md:w-auto md:p-1 md:opacity-100 lg:col-span-3"
+    class="md:z-1 fixed top-0 left-0 z-10 flex h-full min-h-[100vh] w-full flex-col items-center overflow-hidden overflow-y-auto bg-white p-5 transition-[opacity] duration-300 ease-in md:pointer-events-auto md:relative md:relative md:col-span-4 md:w-auto md:p-1 md:opacity-100 lg:col-span-3 lg:overflow-y-hidden"
     :class="isOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'"
   >
     <div v-show="isLoading" class="absolute z-10 h-full w-full cursor-wait backdrop-grayscale"></div>
@@ -20,12 +20,20 @@
       v-bind="$attrs"
     />
 
-    <CarTypeFilter ref="carTypeFilter" :vehicles-type-count="vehiclesTypeCount" v-bind="$attrs" />
+    <template v-if="vehiclesCountByFilter">
+      <CarTypeFilter
+        ref="carTypeFilter"
+        :vehicles-type-count="vehiclesCountByFilter.carType"
+        v-bind="$attrs"
+      />
+      <CarModelFilter v-bind="$attrs" :vehicles-model-count="vehiclesCountByFilter.model" />
+    </template>
 
     <BaseButton
+
       @click="resetFilters"
       variant="transparent"
-      class="w-full"
+      class="w-full mb-10 md:mb-0"
       :is-disabled="isResetBtnDisabled"
       >Reset</BaseButton
     >
@@ -35,10 +43,19 @@
 <script lang="ts" setup>
   import type { PropType, Ref } from 'vue';
   import PriceRangeFilter from '@/components/OurCarsSection/PriceRangeFilter.vue';
-  import type { IPriceRange, IVehiclesTypeCount } from '@/interfaces';
+  import type { IPriceRange, IVehiclesCountGroupedByFilterType } from '@/interfaces';
   import CarTypeFilter from '@/components/OurCarsSection/CarTypeFilter.vue';
   import BaseButton from '@/components/BaseButton.vue';
-  import { computed, nextTick, ref, watch } from 'vue';
+  import { computed, nextTick, ref } from 'vue';
+  import CarModelFilter from '@/components/OurCarsSection/CarModelFilter.vue';
+
+  interface Props {
+    isOpen: boolean;
+    isLoading?: boolean;
+    initialPriceBoundaries: IPriceRange;
+    priceRange: IPriceRange;
+    vehiclesCountByFilter: IVehiclesCountGroupedByFilterType | null;
+  }
 
   interface IPriceRangeFilter extends Ref<InstanceType<typeof PriceRangeFilter>> {
     minPrice: number | null;
@@ -49,13 +66,7 @@
     activeCarTypeFilters: string[];
   }
 
-  const props = defineProps({
-    isOpen: { type: Boolean as PropType<boolean>, required: true },
-    isLoading: { type: Boolean as PropType<boolean>, default: false },
-    initialPriceBoundaries: { type: Object as PropType<IPriceRange>, required: true },
-    priceRange: { type: Object as PropType<IPriceRange>, required: true },
-    vehiclesTypeCount: { type: Object as PropType<IVehiclesTypeCount>, required: true },
-  });
+  const props = defineProps<Props>();
 
   const priceRangeFilter = ref<IPriceRangeFilter>();
   const carTypeFilter = ref<ICarTypeFilter>();

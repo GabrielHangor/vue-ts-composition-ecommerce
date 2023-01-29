@@ -14,12 +14,13 @@
           :price-range="priceRange"
           :is-open="isCarCatalogFiltersOpen"
           :is-loading="isLoading"
-          :vehicles-type-count="vehiclesTypeCount"
-          @disable-watchers="isResetting = true"
+          :vehicles-count-by-filter="vehiclesCountGroupedByFilterType"
+          @disable-watchers="disableWatchers"
           @reset-filters="resetFilters"
           @close-mobile-filters="isCarCatalogFiltersOpen = false"
           @update-price-range="updatePriceRange"
           @update-car-type-filters="updateCarTypeFilters"
+          @update-car-model-filters="updateCarModelFilters"
         />
       </template>
       <template #cars>
@@ -50,10 +51,11 @@
   import PageHeading from '@/components/PageHeading.vue';
   import { useVehicles } from '@/composables/useVehicles';
   import { usePreventScroll } from '@/composables/usePreventScroll';
-  import { ref, watch, toRef, type Ref, nextTick } from 'vue';
+  import { ref, watch, toRef, type Ref, nextTick, onMounted } from 'vue';
   import type { ILocationAndTimeFormValues, IPriceRange } from '@/interfaces';
   import { useSearchParams } from '@/composables/useSearchParams';
-  import { debounce, delay } from '@/helpers';
+  import { debounce } from '@/helpers';
+  import { supabase } from '@/supabase';
 
   interface ILocationAndTimeForm extends Ref<InstanceType<typeof LocationAndTimeForm>> {
     formValues: ILocationAndTimeFormValues;
@@ -62,6 +64,8 @@
   const isCarCatalogFiltersOpen = ref(false);
 
   // RESET
+  const disableWatchers = () => (isResetting.value = true);
+
   const resetFilters = async () => {
     activeLocationFilters.value.pickupFrom = '';
     if (locationAndTimeForm.value) locationAndTimeForm.value.formValues.pickupFrom = '';
@@ -73,7 +77,7 @@
 
     await nextTick();
     await fetchVehicles();
-    await fetchVehiclesTypeCount();
+    await fetchVehiclesCount();
 
     isResetting.value = false;
   };
@@ -100,7 +104,7 @@
 
       currentPage.value = 1;
       fetchVehicles();
-      fetchVehiclesTypeCount();
+      fetchVehiclesCount();
     },
     { deep: true }
   );
@@ -115,6 +119,23 @@
       if (isResetting.value) return;
 
       console.log('car types watcher trigger');
+
+      currentPage.value = 1;
+      fetchVehicles();
+    },
+    { deep: true }
+  );
+
+  // CAR MODELS
+  const activeCarModelFilters = ref<string[]>([]);
+  const updateCarModelFilters = (filters: string[]) => (activeCarModelFilters.value = filters);
+
+  watch(
+    activeCarModelFilters,
+    () => {
+      if (isResetting.value) return;
+
+      console.log('car models watcher trigger');
 
       currentPage.value = 1;
       fetchVehicles();
@@ -140,7 +161,7 @@
 
       currentPage.value = 1;
       fetchVehicles();
-      fetchVehiclesTypeCount();
+      fetchVehiclesCount();
     },
     { deep: true }
   );
@@ -188,9 +209,9 @@
     isLoading,
     errorMessage,
     initialPriceBoundaries,
-    vehiclesTypeCount,
+    vehiclesCountGroupedByFilterType,
     fetchVehicles,
-    fetchVehiclesTypeCount,
+    fetchVehiclesCount,
   } = useVehicles({
     currentPage,
     sortOrderASC,
@@ -198,6 +219,7 @@
     activeLocationFilters,
     priceRange,
     activeCarTypeFilters,
+    activeCarModelFilters,
   });
 
   useSearchParams({

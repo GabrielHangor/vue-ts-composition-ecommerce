@@ -28,6 +28,63 @@ export interface IVehicleEntity {
   imgPath: string;
 }
 
+export interface ICarType {
+  Luxury: number;
+  Mini: number;
+  Compact: number;
+  Midsize: number;
+  'Full-size': number;
+  Economy: number;
+}
+
+export interface IModel {
+  'Audi TT': number;
+  'VW Beetle': number;
+  'BMW M5': number;
+  'Jaguar XJ': number;
+  'Fiat Fullback': number;
+  'VW Polo Sedan': number;
+}
+
+interface ICapacity {
+  2: number;
+  '3-5': number;
+  '6+': number;
+}
+
+interface IBabySeat {
+  false: number;
+  true: number;
+}
+
+interface ITransmission {
+  MT: number;
+  AT: number;
+}
+
+interface IVideoRecorder {
+  false: number;
+  true: number;
+}
+
+interface IDeposit {
+  100: number;
+  150: number;
+  200: number;
+  250: number;
+  300: number;
+}
+
+export interface IVehiclesCountGroupedByFilterType {
+  carType: ICarType;
+  model: IModel;
+  capacity: ICapacity;
+  babySeat: IBabySeat;
+  transmission: ITransmission;
+  videoRecorder: IVideoRecorder;
+  deposit: IDeposit;
+}
+
 export interface IGetVehiclesRequestParams {
   sortBy: string;
   sortOrderASC: boolean;
@@ -36,9 +93,10 @@ export interface IGetVehiclesRequestParams {
   location: City | null;
   priceRange: IPriceRange;
   carTypes: string[];
+  carModels: string[];
 }
 
-export interface IGetVehiclesTypeCountRequestParams {
+export interface IGetVehiclesCountRequestParams {
   priceRange: IPriceRange;
   location: string;
 }
@@ -50,6 +108,7 @@ export interface IUseVehiclesArgs {
   activeLocationFilters: Ref<ILocationAndTimeFormValues>;
   priceRange: Ref<IPriceRange>;
   activeCarTypeFilters: Ref<string[]>;
+  activeCarModelFilters: Ref<string[]>;
 }
 
 export interface ISelectOption {
@@ -73,14 +132,4 @@ export interface IUseSearchParams<T> {
 export interface IPriceRange {
   minPrice: number | null;
   maxPrice: number | null;
-}
-
-export interface IVehiclesTypeCount {
-  Compact: number;
-  Economy: number;
-  'Full-size': number;
-  Luxury: number;
-  Midsize: number;
-  Mini: number;
-  Sedan: number;
 }

@@ -1,10 +1,5 @@
-import type {
-  IGetVehiclesRequestParams,
-  IGetVehiclesTypeCountRequestParams,
-} from '@/interfaces';
+import type { IGetVehiclesCountRequestParams, IGetVehiclesRequestParams } from '@/interfaces';
 import { supabase } from '@/supabase';
-import { carTypes } from '@/constants';
-import type { PostgrestFilterBuilder } from '@supabase/postgrest-js';
 
 export default class QueryBuilder {
   static buildAllVehiclesQuery({
@@ -15,6 +10,7 @@ export default class QueryBuilder {
     location,
     priceRange,
     carTypes,
+    carModels,
   }: IGetVehiclesRequestParams) {
     let query = supabase
       .from('Vehicles')
@@ -26,6 +22,7 @@ export default class QueryBuilder {
     if (priceRange.minPrice) query = query.gt('rentalCost', priceRange.minPrice);
     if (priceRange.maxPrice) query = query.lt('rentalCost', priceRange.maxPrice);
     if (carTypes.length) query = query.in('carType', carTypes);
+    if (carModels.length) query = query.in('model', carModels);
 
     return query;
   }
@@ -34,22 +31,15 @@ export default class QueryBuilder {
     return supabase.from('Vehicles').select('rentalCost');
   }
 
-  static buildVehiclesTypeCountQuery({ priceRange, location }: IGetVehiclesTypeCountRequestParams) {
-    const queriesArr: PostgrestFilterBuilder<any, any, { carType: string }>[] = [];
+  static buildVehiclesCountQuery({ location, priceRange }: IGetVehiclesCountRequestParams) {
+    let query = supabase
+      .from('Vehicles')
+      .select(`carType, model, capacity, transmission,  babySeat, videoRecorder, deposit`);
 
-    carTypes.forEach((type) => {
-      let query = supabase
-        .from('Vehicles')
-        .select('carType', { count: 'estimated', head: true })
-        .eq('carType', type.name);
+    if (location) query = query.eq('city', location);
+    if (priceRange.minPrice) query = query.gt('rentalCost', priceRange.minPrice);
+    if (priceRange.maxPrice) query = query.lt('rentalCost', priceRange.maxPrice);
 
-      if (priceRange.minPrice) query = query.gt('rentalCost', priceRange.minPrice);
-      if (priceRange.maxPrice) query = query.lt('rentalCost', priceRange.maxPrice);
-      if (location) query = query.eq('city', location);
-
-      queriesArr.push(query);
-    });
-
-    return queriesArr;
+    return query;
   }
 }

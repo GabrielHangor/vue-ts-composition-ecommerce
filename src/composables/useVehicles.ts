@@ -1,4 +1,9 @@
-import type { IPriceRange, IUseVehiclesArgs, IVehicleEntity, IVehiclesTypeCount } from '@/interfaces';
+import type {
+  IPriceRange,
+  IUseVehiclesArgs,
+  IVehicleEntity,
+  IVehiclesCountGroupedByFilterType,
+} from '@/interfaces';
 import { computed, onMounted, ref } from 'vue';
 import { VEHICLES_PER_PAGE } from '@/constants';
 import { delay } from '@/helpers';
@@ -11,13 +16,14 @@ export const useVehicles = ({
   activeLocationFilters,
   priceRange,
   activeCarTypeFilters,
+  activeCarModelFilters,
 }: IUseVehiclesArgs) => {
   const vehicles = ref<IVehicleEntity[]>([]);
   const vehiclesCount = ref(0);
   const errorMessage = ref<string | null>(null);
   const isLoading = ref(false);
   const initialPriceBoundaries = ref<IPriceRange>({ minPrice: null, maxPrice: null });
-  const vehiclesTypeCount = ref<IVehiclesTypeCount>({} as IVehiclesTypeCount);
+  const vehiclesCountGroupedByFilterType = ref<IVehiclesCountGroupedByFilterType | null>(null);
 
   const vehiclesRange = computed(() => {
     return {
@@ -27,6 +33,7 @@ export const useVehicles = ({
   });
 
   const fetchVehicles = async ({ append } = { append: false }) => {
+    if (isLoading.value) return;
     try {
       errorMessage.value = null;
       isLoading.value = true;
@@ -41,6 +48,7 @@ export const useVehicles = ({
         location: activeLocationFilters.value.pickupFrom,
         priceRange: priceRange.value,
         carTypes: activeCarTypeFilters.value,
+        carModels: activeCarModelFilters.value,
       });
 
       if (data && !append) vehicles.value = data;
@@ -59,15 +67,15 @@ export const useVehicles = ({
     initialPriceBoundaries.value = { minPrice, maxPrice };
   };
 
-  const fetchVehiclesTypeCount = async () => {
-    vehiclesTypeCount.value = await VehiclesService.getVehiclesTypeCount({
+  const fetchVehiclesCount = async () => {
+    vehiclesCountGroupedByFilterType.value = await VehiclesService.getVehiclesCountGroupedByFilterType({
       priceRange: priceRange.value,
       location: activeLocationFilters.value.pickupFrom,
     });
   };
 
   onMounted(
-    async () => await Promise.all([fetchVehicles(), fetchPriceBoundaries(), fetchVehiclesTypeCount()])
+    async () => await Promise.all([fetchVehicles(), fetchPriceBoundaries(), fetchVehiclesCount()])
   );
 
   return {
@@ -76,8 +84,8 @@ export const useVehicles = ({
     errorMessage,
     isLoading,
     fetchVehicles,
-    fetchVehiclesTypeCount,
+    fetchVehiclesCount,
     initialPriceBoundaries,
-    vehiclesTypeCount,
+    vehiclesCountGroupedByFilterType,
   };
 };

@@ -22,7 +22,7 @@
       </transition>
       <span class="absolute right-[0.5rem] h-4 w-3 bg-inherit"></span>
     </div>
-    {{ label }}
+    <span> {{ label }}</span>
   </label>
 </template>
 

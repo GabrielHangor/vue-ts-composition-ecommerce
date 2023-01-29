@@ -6,7 +6,7 @@
         role="button"
         @click="toggleVisibility"
       >
-        <h2>Car type</h2>
+        <h2>Model</h2>
         <div class="flex">
           <h2>From</h2>
           <img
@@ -21,16 +21,16 @@
     <template #default="{ isVisible }">
       <div v-show="isVisible">
         <section class="flex flex-col gap-2">
-          <div class="flex items-center" v-for="carType in carTypes" :key="carType.name">
+          <div class="flex items-center" v-for="carModel in carModels" :key="carModel">
             <BaseCheckBox
-              :id="carType.name"
-              v-model="activeCarTypeFilters"
-              :label="carType.name"
-              :value="carType.name"
+              :id="carModel.name"
+              v-model="activeCarModelFilters"
+              :label="carModel.name"
+              :value="carModel.name"
               :input-bg-class="'bg-white'"
             />
             <span class="ml-1 text-[13px] text-gray-400">
-              ({{ vehiclesTypeCount[carType.name] || 0 }})
+              ({{ vehiclesModelCount[carModel.name] || 0 }})
             </span>
           </div>
         </section>
@@ -42,24 +42,23 @@
 <script setup lang="ts">
   import BaseCollapse from '@/components/BaseCollapse.vue';
   import BaseCheckBox from '@/components/BaseCheckBox.vue';
-  import { ref, watch } from 'vue';
-  import type { PropType } from 'vue';
-  import { carTypes } from '@/constants';
-  import type { ICarType } from '@/interfaces';
+  import { type PropType, ref, watch } from 'vue';
+  import { carModels } from '@/constants';
+  import type { IModel } from '@/interfaces';
 
   const title = import.meta.env.BASE_URL;
 
   const props = defineProps({
-    vehiclesTypeCount: { type: Object as PropType<ICarType>, required: true },
+    vehiclesModelCount: { type: Object as PropType<IModel>, required: true },
   });
 
   const emit = defineEmits<{
-    (e: 'updateCarTypeFilters', activeCarTypeFilters: string[]): void;
+    (e: 'updateCarModelFilters', activeCarModelFilters: string[]): void;
   }>();
 
-  const activeCarTypeFilters = ref<string[]>([]);
+  const activeCarModelFilters = ref<string[]>([]);
 
-  defineExpose({ activeCarTypeFilters });
+  defineExpose({ activeCarModelFilters });
 
-  watch(activeCarTypeFilters, () => emit('updateCarTypeFilters', activeCarTypeFilters.value));
+  watch(activeCarModelFilters, () => emit('updateCarModelFilters', activeCarModelFilters.value));
 </script>

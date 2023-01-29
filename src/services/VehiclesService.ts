@@ -1,13 +1,13 @@
 import type {
   IGetVehiclesRequestParams,
-  IGetVehiclesTypeCountRequestParams,
+  IGetVehiclesCountRequestParams,
   IPriceRange,
   IVehicleEntity,
-  IVehiclesTypeCount,
+  IVehiclesCountGroupedByFilterType,
 } from '@/interfaces';
 import QueryBuilder from '@/services/QueryBuilder';
 import type { PostgrestResponse } from '@supabase/supabase-js';
-import { carTypes } from '@/constants';
+import { filterColumns } from '@/constants';
 
 export default class VehiclesService {
   static async getAllVehicles(
@@ -29,11 +29,23 @@ export default class VehiclesService {
     };
   }
 
-  static async getVehiclesTypeCount(params: IGetVehiclesTypeCountRequestParams) {
-    const responseArr = await Promise.all(QueryBuilder.buildVehiclesTypeCountQuery(params));
+  static async getVehiclesCountGroupedByFilterType(params: IGetVehiclesCountRequestParams) {
+    const { data: vehicles } = await QueryBuilder.buildVehiclesCountQuery(params);
 
-    return responseArr.reduce((acc, response, index) => {
-      return { ...acc, [carTypes[index].name]: response.count || 0 };
-    }, {} as IVehiclesTypeCount);
+    if (!vehicles) return null;
+
+    const vehiclesCountGroupedByFilterType = {} as IVehiclesCountGroupedByFilterType;
+
+    const countPropsInArrOfObjs = (arr: any[], prop: string) =>
+      arr.reduce((prev, curr) => {
+        return (prev[curr[prop]] = ++prev[curr[prop]] || 1), prev;
+      }, {});
+
+    filterColumns.forEach((col) => {
+      vehiclesCountGroupedByFilterType[col as keyof IVehiclesCountGroupedByFilterType] =
+        countPropsInArrOfObjs(vehicles, col);
+    });
+
+    return vehiclesCountGroupedByFilterType;
   }
 }

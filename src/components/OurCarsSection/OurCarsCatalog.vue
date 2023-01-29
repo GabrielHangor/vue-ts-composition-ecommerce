@@ -2,9 +2,9 @@
   <section class="col-span-12 mb-4 md:col-span-8 md:col-start-6 lg:col-span-9 lg:col-start-5">
     <OurCarsCatalogHeading
       v-bind="$attrs"
-      :sortBy="sortBy"
-      :sortOrderASC="sortOrderASC"
-      :isLoading="isLoading"
+      :sort-by="sortBy"
+      :sort-order-a-s-c="sortOrderASC"
+      :is-loading="isLoading"
     />
 
     <transition name="fade" mode="out-in">
@@ -15,8 +15,8 @@
     </transition>
 
     <BaseButton
-      v-if="vehicles.length"
-      :isDisabled="isOnLastPage"
+      v-if="vehicles.length && !error"
+      :is-disabled="isOnLastPage"
       :loading="isLoading"
       variant="transparent"
       class="w-full"
@@ -24,10 +24,10 @@
       >Show more</BaseButton
     >
     <BasePaginator
-      v-if="vehicles.length"
-      :currentPage="currentPage"
-      :totalEntities="carsTotal"
-      :entitiesPerPage="VEHICLES_PER_PAGE"
+      v-if="vehicles.length && !error"
+      :current-page="currentPage"
+      :total-entities="carsTotal"
+      :entities-per-page="VEHICLES_PER_PAGE"
       v-bind="$attrs"
     />
   </section>
