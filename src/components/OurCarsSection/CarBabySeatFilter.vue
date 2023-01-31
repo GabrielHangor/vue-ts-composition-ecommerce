@@ -6,7 +6,7 @@
         role="button"
         @click="toggleVisibility"
       >
-        <h2>Car type</h2>
+        <h2>Baby Seat</h2>
         <div class="flex">
           <h2>From</h2>
           <img
@@ -23,20 +23,20 @@
         <section class="flex flex-col gap-2">
           <div
             class="flex items-center justify-between"
-            v-for="(value, carType) in vehiclesTypeCount"
-            :key="carType"
+            v-for="(value, babySeat) in vehiclesBabySeatCount"
+            :key="babySeat"
           >
             <div class="flex items-center">
               <BaseCheckBox
-                :id="carType"
-                v-model="activeCarTypeFilters"
-                :label="carType"
-                :value="carType"
+                :id="value"
+                v-model="activeCarBabySeatFilters"
+                :label="babySeat === 'true' ? 'Yes' : 'No'"
+                :value="babySeat"
                 :input-bg-class="'bg-white'"
               />
               <span class="ml-1 text-[13px] text-gray-400"> ({{ value || 0 }}) </span>
             </div>
-            <p>${{ vehiclesMinRentalCostByCarType?.[carType] || 0 }}</p>
+            <p>${{ vehiclesMinRentalCostByBabySeat?.[babySeat] || 0 }}</p>
           </div>
         </section>
       </div></template
@@ -52,19 +52,21 @@
   const title = import.meta.env.BASE_URL;
 
   interface Props {
-    vehiclesTypeCount: { [key: string]: number };
-    vehiclesMinRentalCostByCarType: { [key: string]: number };
+    vehiclesBabySeatCount: { [key: string]: number };
+    vehiclesMinRentalCostByBabySeat: { [key: string]: number };
   }
 
   const props = defineProps<Props>();
 
   const emit = defineEmits<{
-    (e: 'updateCarTypeFilters', activeCarTypeFilters: string[]): void;
+    (e: 'updateCarBabySeatFilters', activeCarBabySeatFilters: string[]): void;
   }>();
 
-  const activeCarTypeFilters = ref<string[]>([]);
+  const activeCarBabySeatFilters = ref<string[]>([]);
 
-  defineExpose({ activeCarTypeFilters });
+  defineExpose({ activeCarBabySeatFilters });
 
-  watch(activeCarTypeFilters, () => emit('updateCarTypeFilters', activeCarTypeFilters.value));
+  watch(activeCarBabySeatFilters, () =>
+    emit('updateCarBabySeatFilters', activeCarBabySeatFilters.value)
+  );
 </script>

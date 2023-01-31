@@ -1,4 +1,8 @@
 import type { Ref } from 'vue';
+import type {
+  IVehiclesCountGroupedByFilterType,
+  IVehiclesMinRentalCostGroupedByFilterType,
+} from '@/interfaces';
 
 export const getCarType = (model) => {
   const carTypes = {
@@ -56,4 +60,52 @@ export const debounce = <F extends (...args: any[]) => any>(
   };
 
   return debounced as (...args: Parameters<F>) => ReturnType<F>;
+};
+
+export const getNormalizedMinRentalCost = (
+  vehiclesArr: IVehiclesCountGroupedByFilterType[]
+): IVehiclesMinRentalCostGroupedByFilterType => {
+
+  const properties = [
+    'babySeat',
+    'capacity',
+    'carType',
+    'deposit',
+    'model',
+    'transmission',
+    'videoRecorder',
+  ];
+
+  const result = {} as IVehiclesMinRentalCostGroupedByFilterType;
+
+  vehiclesArr.forEach((vehicle) => {
+    const { rentalCost, ...rest } = vehicle;
+
+    if (typeof rentalCost !== 'number') {
+      return;
+    }
+
+    properties.forEach((property) => {
+      const propertyValue = rest[property];
+
+      if (!result[property]) {
+        result[property] = {};
+      }
+
+      if (!result[property][propertyValue] || rentalCost < result[property][propertyValue]) {
+        result[property][propertyValue] = rentalCost;
+      }
+    });
+  });
+
+  return result;
+};
+
+export const countPropsInArrOfObjs = (arr: any[], prop: string) => {
+  const count = {} as { [key: string]: number };
+  for (const obj of arr) {
+    const value = obj[prop];
+    count[value] = (count[value] || 0) + 1;
+  }
+  return count;
 };

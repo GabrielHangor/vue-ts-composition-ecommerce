@@ -1,5 +1,6 @@
 <template>
   <label
+    :title="label"
     class="relative flex h-full cursor-pointer items-center"
     :for="id"
     :class="{ 'font-semibold': isActive }"
@@ -22,7 +23,7 @@
       </transition>
       <span class="absolute right-[0.5rem] h-4 w-3 bg-inherit"></span>
     </div>
-    <span> {{ label }}</span>
+    <span class="line-clamp-1"> {{ label }}</span>
   </label>
 </template>
 
@@ -30,11 +31,11 @@
   import { computed } from 'vue';
 
   interface Props {
-    modelValue: Array<string> | boolean;
+    modelValue: Array<string | number> | boolean;
     inputBgClass: string;
-    value?: string;
+    value?: string | number;
     label: string;
-    id: string;
+    id: string | number;
   }
 
   const props = defineProps<Props>();
@@ -54,5 +55,7 @@
     return props.modelValue;
   });
 
-  const emit = defineEmits<{ (e: 'update:modelValue', modelValue: string[] | boolean): void }>();
+  const emit = defineEmits<{
+    (e: 'update:modelValue', modelValue: Array<string | number> | boolean): void;
+  }>();
 </script>

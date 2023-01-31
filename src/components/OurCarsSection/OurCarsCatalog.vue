@@ -25,6 +25,7 @@
     >
     <BasePaginator
       v-if="vehicles.length && !error"
+      :max-visible-buttons="3"
       :current-page="currentPage"
       :total-entities="carsTotal"
       :entities-per-page="VEHICLES_PER_PAGE"
@@ -42,7 +43,7 @@
   import BasePaginator from '@/components/BasePaginator.vue';
   import { VEHICLES_PER_PAGE } from '@/constants';
   import SkeletonCardBlock from './SkeletonCardBlock.vue';
-  import type { PostgrestError } from '@supabase/supabase-js';
+
 
   const props = defineProps({
     vehicles: { type: Array as PropType<IVehicleEntity[]>, required: true },

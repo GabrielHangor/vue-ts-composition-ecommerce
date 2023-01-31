@@ -28,61 +28,19 @@ export interface IVehicleEntity {
   imgPath: string;
 }
 
-export interface ICarType {
-  Luxury: number;
-  Mini: number;
-  Compact: number;
-  Midsize: number;
-  'Full-size': number;
-  Economy: number;
+export interface IVehiclesMinRentalCostGroupedByFilterType {
+  babySeat: { [key: string]: number };
+  capacity: { [key: string]: number };
+  carType: { [key: string]: number };
+  deposit: { [key: string]: number };
+  model: { [key: string]: number };
+  transmission: { [key: string]: number };
+  videoRecorder: { [key: string]: number };
+  [key: string]: any;
 }
 
-export interface IModel {
-  'Audi TT': number;
-  'VW Beetle': number;
-  'BMW M5': number;
-  'Jaguar XJ': number;
-  'Fiat Fullback': number;
-  'VW Polo Sedan': number;
-}
-
-interface ICapacity {
-  2: number;
-  '3-5': number;
-  '6+': number;
-}
-
-interface IBabySeat {
-  false: number;
-  true: number;
-}
-
-interface ITransmission {
-  MT: number;
-  AT: number;
-}
-
-interface IVideoRecorder {
-  false: number;
-  true: number;
-}
-
-interface IDeposit {
-  100: number;
-  150: number;
-  200: number;
-  250: number;
-  300: number;
-}
-
-export interface IVehiclesCountGroupedByFilterType {
-  carType: ICarType;
-  model: IModel;
-  capacity: ICapacity;
-  babySeat: IBabySeat;
-  transmission: ITransmission;
-  videoRecorder: IVideoRecorder;
-  deposit: IDeposit;
+export interface IVehiclesCountGroupedByFilterType extends IVehiclesMinRentalCostGroupedByFilterType {
+  rentalCost?: { [key: string]: number };
 }
 
 export interface IGetVehiclesRequestParams {
@@ -94,6 +52,11 @@ export interface IGetVehiclesRequestParams {
   priceRange: IPriceRange;
   carTypes: string[];
   carModels: string[];
+  carCapacities: string[];
+  carTransmission: string[];
+  carDeposit: string[];
+  carVideoRecorder: string[];
+  carBabySeat: string[];
 }
 
 export interface IGetVehiclesCountRequestParams {
@@ -109,6 +72,11 @@ export interface IUseVehiclesArgs {
   priceRange: Ref<IPriceRange>;
   activeCarTypeFilters: Ref<string[]>;
   activeCarModelFilters: Ref<string[]>;
+  activeCarCapacityFilters: Ref<string[]>;
+  activeCarTransmissionFilters: Ref<string[]>;
+  activeCarDepositFilters: Ref<string[]>;
+  activeCarVideoRecorderFilters: Ref<string[]>;
+  activeCarBabySeatFilters: Ref<string[]>;
 }
 
 export interface ISelectOption {

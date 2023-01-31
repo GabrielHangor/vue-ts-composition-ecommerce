@@ -21,17 +21,22 @@
     <template #default="{ isVisible }">
       <div v-show="isVisible">
         <section class="flex flex-col gap-2">
-          <div class="flex items-center" v-for="carModel in carModels" :key="carModel">
-            <BaseCheckBox
-              :id="carModel.name"
-              v-model="activeCarModelFilters"
-              :label="carModel.name"
-              :value="carModel.name"
-              :input-bg-class="'bg-white'"
-            />
-            <span class="ml-1 text-[13px] text-gray-400">
-              ({{ vehiclesModelCount[carModel.name] || 0 }})
-            </span>
+          <div
+            v-for="(value, carModel) in vehiclesModelCount"
+            :key="carModel"
+            class="flex items-center justify-between"
+          >
+            <div class="flex items-center">
+              <BaseCheckBox
+                :id="carModel"
+                v-model="activeCarModelFilters"
+                :label="carModel"
+                :value="carModel"
+                :input-bg-class="'bg-white'"
+              />
+              <span class="ml-1 text-[13px] text-gray-400"> ({{ value || 0 }}) </span>
+            </div>
+            <p>${{ vehiclesMinRentalCostByCarModel?.[carModel] || 0 }}</p>
           </div>
         </section>
       </div></template
@@ -42,15 +47,16 @@
 <script setup lang="ts">
   import BaseCollapse from '@/components/BaseCollapse.vue';
   import BaseCheckBox from '@/components/BaseCheckBox.vue';
-  import { type PropType, ref, watch } from 'vue';
-  import { carModels } from '@/constants';
-  import type { IModel } from '@/interfaces';
+  import { ref, watch } from 'vue';
+
+  interface Props {
+    vehiclesModelCount: { [key: string]: number };
+    vehiclesMinRentalCostByCarModel: { [key: string]: number };
+  }
+
+  const props = defineProps<Props>();
 
   const title = import.meta.env.BASE_URL;
-
-  const props = defineProps({
-    vehiclesModelCount: { type: Object as PropType<IModel>, required: true },
-  });
 
   const emit = defineEmits<{
     (e: 'updateCarModelFilters', activeCarModelFilters: string[]): void;

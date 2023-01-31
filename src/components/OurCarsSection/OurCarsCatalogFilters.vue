@@ -1,6 +1,6 @@
 <template>
   <aside
-    class="md:z-1 fixed top-0 left-0 z-10 flex h-full min-h-[100vh] w-full flex-col items-center overflow-hidden overflow-y-auto bg-white p-5 transition-[opacity] duration-300 ease-in md:pointer-events-auto md:relative md:relative md:col-span-4 md:w-auto md:p-1 md:opacity-100 lg:col-span-3 lg:overflow-y-hidden"
+    class="md:z-1 fixed top-0 left-0 z-10 flex h-full min-h-[100vh] w-full flex-col items-center overflow-hidden overflow-y-auto bg-white p-5 transition-[opacity] duration-300 ease-in md:pointer-events-auto md:relative md:relative md:col-span-4 md:w-auto md:overflow-y-hidden md:p-1 md:opacity-100 lg:col-span-3"
     :class="isOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'"
   >
     <div v-show="isLoading" class="absolute z-10 h-full w-full cursor-wait backdrop-grayscale"></div>
@@ -20,20 +20,49 @@
       v-bind="$attrs"
     />
 
-    <template v-if="vehiclesCountByFilter">
+    <template v-if="vehiclesCountByFilter && minRentalCostByFilter">
       <CarTypeFilter
         ref="carTypeFilter"
         :vehicles-type-count="vehiclesCountByFilter.carType"
+        :vehicles-min-rental-cost-by-car-type="minRentalCostByFilter.carType"
         v-bind="$attrs"
       />
-      <CarModelFilter v-bind="$attrs" :vehicles-model-count="vehiclesCountByFilter.model" />
+      <CarModelFilter
+        v-bind="$attrs"
+        :vehicles-min-rental-cost-by-car-model="minRentalCostByFilter.model"
+        :vehicles-model-count="vehiclesCountByFilter.model"
+      />
+      <CarCapacityFilter
+        v-bind="$attrs"
+        :vehicles-min-rental-cost-by-car-capacity="minRentalCostByFilter.capacity"
+        :vehicles-capacity-count="vehiclesCountByFilter.capacity"
+      />
+      <CarTransmissionFilter
+        v-bind="$attrs"
+        :vehicles-min-rental-cost-by-car-transmission="minRentalCostByFilter.transmission"
+        :vehicles-transmission-count="vehiclesCountByFilter.transmission"
+      />
+      <CarDepositFilter
+        v-bind="$attrs"
+        :vehicles-min-rental-cost-by-car-deposit="minRentalCostByFilter.deposit"
+        :vehicles-deposit-count="vehiclesCountByFilter.deposit"
+      />
+      <CarVideoRecorderFilter
+        v-bind="$attrs"
+        :vehicles-min-rental-cost-by-video-recorder="minRentalCostByFilter.videoRecorder"
+        :vehicles-video-recorder-count="vehiclesCountByFilter.videoRecorder"
+      />
+      <CarBabySeatFilter
+        v-bind="$attrs"
+        :vehicles-baby-seat-count="vehiclesCountByFilter.babySeat"
+        :vehicles-min-rental-cost-by-baby-seat="minRentalCostByFilter.babySeat"
+      />
     </template>
 
     <BaseButton
-
       @click="resetFilters"
       variant="transparent"
-      class="w-full mb-10 md:mb-0"
+      class="mb-10 w-full md:mb-0"
       :is-disabled="isResetBtnDisabled"
       >Reset</BaseButton
     >
@@ -41,20 +70,30 @@
 </template>
 
 <script lang="ts" setup>
-  import type { PropType, Ref } from 'vue';
+  import type { Ref } from 'vue';
   import PriceRangeFilter from '@/components/OurCarsSection/PriceRangeFilter.vue';
-  import type { IPriceRange, IVehiclesCountGroupedByFilterType } from '@/interfaces';
+  import type {
+    IPriceRange,
+    IVehiclesCountGroupedByFilterType,
+    IVehiclesMinRentalCostGroupedByFilterType,
+  } from '@/interfaces';
   import CarTypeFilter from '@/components/OurCarsSection/CarTypeFilter.vue';
   import BaseButton from '@/components/BaseButton.vue';
   import { computed, nextTick, ref } from 'vue';
   import CarModelFilter from '@/components/OurCarsSection/CarModelFilter.vue';
+  import CarCapacityFilter from '@/components/OurCarsSection/CarCapacityFilter.vue';
+  import CarTransmissionFilter from '@/components/OurCarsSection/CarTransmissionFilter.vue';
+  import CarDepositFilter from '@/components/OurCarsSection/CarDepositFilter.vue';
+  import CarVideoRecorderFilter from '@/components/OurCarsSection/CarVideoRecorderFilter.vue';
+  import CarBabySeatFilter from '@/components/OurCarsSection/CarBabySeatFilter.vue';
 
   interface Props {
     isOpen: boolean;
     isLoading?: boolean;
     initialPriceBoundaries: IPriceRange;
     priceRange: IPriceRange;
-    vehiclesCountByFilter: IVehiclesCountGroupedByFilterType | null;
+    vehiclesCountByFilter: IVehiclesCountGroupedByFilterType;
+    minRentalCostByFilter: IVehiclesMinRentalCostGroupedByFilterType;
   }
 
   interface IPriceRangeFilter extends Ref<InstanceType<typeof PriceRangeFilter>> {

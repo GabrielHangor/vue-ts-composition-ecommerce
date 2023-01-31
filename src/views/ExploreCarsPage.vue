@@ -15,12 +15,18 @@
           :is-open="isCarCatalogFiltersOpen"
           :is-loading="isLoading"
           :vehicles-count-by-filter="vehiclesCountGroupedByFilterType"
+          :min-rental-cost-by-filter="minRentalCostGroupedByFilterType"
           @disable-watchers="disableWatchers"
           @reset-filters="resetFilters"
           @close-mobile-filters="isCarCatalogFiltersOpen = false"
           @update-price-range="updatePriceRange"
           @update-car-type-filters="updateCarTypeFilters"
           @update-car-model-filters="updateCarModelFilters"
+          @update-car-capacity-filters="updateCarCapacityFilters"
+          @update-car-transmission-filters="updateCarTransmissionFilters"
+          @update-car-deposit-filters="updateCarDepositFilters"
+          @update-car-video-recorder-filters="updateCarVideoRecorderFilters"
+          @update-car-baby-seat-filters="updateCarBabySeatFilters"
         />
       </template>
       <template #cars>
@@ -51,11 +57,10 @@
   import PageHeading from '@/components/PageHeading.vue';
   import { useVehicles } from '@/composables/useVehicles';
   import { usePreventScroll } from '@/composables/usePreventScroll';
-  import { ref, watch, toRef, type Ref, nextTick, onMounted } from 'vue';
+  import { ref, watch, toRef, type Ref, nextTick } from 'vue';
   import type { ILocationAndTimeFormValues, IPriceRange } from '@/interfaces';
   import { useSearchParams } from '@/composables/useSearchParams';
   import { debounce } from '@/helpers';
-  import { supabase } from '@/supabase';
 
   interface ILocationAndTimeForm extends Ref<InstanceType<typeof LocationAndTimeForm>> {
     formValues: ILocationAndTimeFormValues;
@@ -76,8 +81,8 @@
     });
 
     await nextTick();
-    await fetchVehicles();
-    await fetchVehiclesCount();
+
+    await Promise.all([fetchVehicles(), fetchVehiclesCount(), fetchMinRentalCostByFilterType()]);
 
     isResetting.value = false;
   };
@@ -103,8 +108,7 @@
       console.log('location watcher trigger');
 
       currentPage.value = 1;
-      fetchVehicles();
-      fetchVehiclesCount();
+      Promise.all([fetchVehicles(), fetchVehiclesCount(), fetchMinRentalCostByFilterType()]);
     },
     { deep: true }
   );
@@ -113,35 +117,94 @@
   const activeCarTypeFilters = ref<string[]>([]);
   const updateCarTypeFilters = (filters: string[]) => (activeCarTypeFilters.value = filters);
 
-  watch(
-    activeCarTypeFilters,
-    () => {
-      if (isResetting.value) return;
+  watch(activeCarTypeFilters, () => {
+    if (isResetting.value) return;
 
-      console.log('car types watcher trigger');
+    console.log('car types watcher trigger');
 
-      currentPage.value = 1;
-      fetchVehicles();
-    },
-    { deep: true }
-  );
+    currentPage.value = 1;
+    fetchVehicles();
+  });
 
   // CAR MODELS
   const activeCarModelFilters = ref<string[]>([]);
   const updateCarModelFilters = (filters: string[]) => (activeCarModelFilters.value = filters);
 
-  watch(
-    activeCarModelFilters,
-    () => {
-      if (isResetting.value) return;
+  watch(activeCarModelFilters, () => {
+    if (isResetting.value) return;
 
-      console.log('car models watcher trigger');
+    console.log('car models watcher trigger');
 
-      currentPage.value = 1;
-      fetchVehicles();
-    },
-    { deep: true }
-  );
+    currentPage.value = 1;
+    fetchVehicles();
+  });
+
+  // CAR CAPACITY
+  const activeCarCapacityFilters = ref<string[]>([]);
+  const updateCarCapacityFilters = (filters: string[]) => (activeCarCapacityFilters.value = filters);
+
+  watch(activeCarCapacityFilters, () => {
+    if (isResetting.value) return;
+
+    console.log('car capacity watcher trigger');
+
+    currentPage.value = 1;
+    fetchVehicles();
+  });
+
+  // CAR TRANSMISSION
+  const activeCarTransmissionFilters = ref<string[]>([]);
+  const updateCarTransmissionFilters = (filters: string[]) =>
+    (activeCarTransmissionFilters.value = filters);
+
+  watch(activeCarTransmissionFilters, () => {
+    if (isResetting.value) return;
+
+    console.log('car transmission watcher trigger');
+
+    currentPage.value = 1;
+    fetchVehicles();
+  });
+
+  // CAR DEPOSIT
+  const activeCarDepositFilters = ref<string[]>([]);
+  const updateCarDepositFilters = (filters: string[]) => (activeCarDepositFilters.value = filters);
+
+  watch(activeCarDepositFilters, () => {
+    if (isResetting.value) return;
+
+    console.log('car deposit watcher trigger');
+
+    currentPage.value = 1;
+    fetchVehicles();
+  });
+
+  // CAR BABYSEAT
+  const activeCarBabySeatFilters = ref<string[]>([]);
+  const updateCarBabySeatFilters = (filters: string[]) => (activeCarBabySeatFilters.value = filters);
+
+  watch(activeCarBabySeatFilters, () => {
+    if (isResetting.value) return;
+
+    console.log('car baby seat watcher trigger');
+
+    currentPage.value = 1;
+    fetchVehicles();
+  });
+
+  // CAR VIDEORECORDER
+  const activeCarVideoRecorderFilters = ref<string[]>([]);
+  const updateCarVideoRecorderFilters = (filters: string[]) =>
+    (activeCarVideoRecorderFilters.value = filters);
+
+  watch(activeCarVideoRecorderFilters, () => {
+    if (isResetting.value) return;
+
+    console.log('car video recorder watcher trigger');
+
+    currentPage.value = 1;
+    fetchVehicles();
+  });
 
   // PRICE RANGE
   const priceRange = ref<IPriceRange>({ minPrice: 0, maxPrice: 0 } as IPriceRange);
@@ -160,8 +223,7 @@
       console.log('price range watcher trigger');
 
       currentPage.value = 1;
-      fetchVehicles();
-      fetchVehiclesCount();
+      Promise.all([fetchVehicles(), fetchVehiclesCount(), fetchMinRentalCostByFilterType()]);
     },
     { deep: true }
   );
@@ -210,8 +272,10 @@
     errorMessage,
     initialPriceBoundaries,
     vehiclesCountGroupedByFilterType,
+    minRentalCostGroupedByFilterType,
     fetchVehicles,
     fetchVehiclesCount,
+    fetchMinRentalCostByFilterType,
   } = useVehicles({
     currentPage,
     sortOrderASC,
@@ -220,6 +284,11 @@
     priceRange,
     activeCarTypeFilters,
     activeCarModelFilters,
+    activeCarCapacityFilters,
+    activeCarTransmissionFilters,
+    activeCarDepositFilters,
+    activeCarBabySeatFilters,
+    activeCarVideoRecorderFilters,
   });
 
   useSearchParams({

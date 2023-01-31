@@ -8,6 +8,7 @@ import type {
 import QueryBuilder from '@/services/QueryBuilder';
 import type { PostgrestResponse } from '@supabase/supabase-js';
 import { filterColumns } from '@/constants';
+import { countPropsInArrOfObjs, getNormalizedMinRentalCost } from '@/helpers';
 
 export default class VehiclesService {
   static async getAllVehicles(
@@ -36,16 +37,18 @@ export default class VehiclesService {
 
     const vehiclesCountGroupedByFilterType = {} as IVehiclesCountGroupedByFilterType;
 
-    const countPropsInArrOfObjs = (arr: any[], prop: string) =>
-      arr.reduce((prev, curr) => {
-        return (prev[curr[prop]] = ++prev[curr[prop]] || 1), prev;
-      }, {});
-
-    filterColumns.forEach((col) => {
-      vehiclesCountGroupedByFilterType[col as keyof IVehiclesCountGroupedByFilterType] =
-        countPropsInArrOfObjs(vehicles, col);
-    });
+    filterColumns.forEach(
+      (col) => (vehiclesCountGroupedByFilterType[col] = countPropsInArrOfObjs(vehicles, col))
+    );
 
     return vehiclesCountGroupedByFilterType;
+  }
+
+  static async getMinRentalCostGroupedByFilterType(params: IGetVehiclesCountRequestParams) {
+    const { data: vehicles } = await QueryBuilder.buildVehiclesCountQuery(params);
+
+    if (!vehicles?.length) return null;
+
+    return getNormalizedMinRentalCost(vehicles);
   }
 }

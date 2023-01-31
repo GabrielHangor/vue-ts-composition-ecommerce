@@ -3,6 +3,7 @@ import type {
   IUseVehiclesArgs,
   IVehicleEntity,
   IVehiclesCountGroupedByFilterType,
+  IVehiclesMinRentalCostGroupedByFilterType,
 } from '@/interfaces';
 import { computed, onMounted, ref } from 'vue';
 import { VEHICLES_PER_PAGE } from '@/constants';
@@ -17,6 +18,11 @@ export const useVehicles = ({
   priceRange,
   activeCarTypeFilters,
   activeCarModelFilters,
+  activeCarCapacityFilters,
+  activeCarTransmissionFilters,
+  activeCarDepositFilters,
+  activeCarBabySeatFilters,
+  activeCarVideoRecorderFilters,
 }: IUseVehiclesArgs) => {
   const vehicles = ref<IVehicleEntity[]>([]);
   const vehiclesCount = ref(0);
@@ -24,6 +30,7 @@ export const useVehicles = ({
   const isLoading = ref(false);
   const initialPriceBoundaries = ref<IPriceRange>({ minPrice: null, maxPrice: null });
   const vehiclesCountGroupedByFilterType = ref<IVehiclesCountGroupedByFilterType | null>(null);
+  const minRentalCostGroupedByFilterType = ref<IVehiclesMinRentalCostGroupedByFilterType | null>(null);
 
   const vehiclesRange = computed(() => {
     return {
@@ -49,6 +56,11 @@ export const useVehicles = ({
         priceRange: priceRange.value,
         carTypes: activeCarTypeFilters.value,
         carModels: activeCarModelFilters.value,
+        carCapacities: activeCarCapacityFilters.value,
+        carTransmission: activeCarTransmissionFilters.value,
+        carDeposit: activeCarDepositFilters.value,
+        carBabySeat: activeCarBabySeatFilters.value,
+        carVideoRecorder: activeCarVideoRecorderFilters.value,
       });
 
       if (data && !append) vehicles.value = data;
@@ -56,6 +68,7 @@ export const useVehicles = ({
       if (count || count === 0) vehiclesCount.value = count;
       if (error) throw new Error('Nothing was found...');
     } catch (error) {
+      console.error(error);
       if (error instanceof Error) errorMessage.value = error.message;
     } finally {
       isLoading.value = false;
@@ -74,8 +87,21 @@ export const useVehicles = ({
     });
   };
 
+  const fetchMinRentalCostByFilterType = async () => {
+    minRentalCostGroupedByFilterType.value = await VehiclesService.getMinRentalCostGroupedByFilterType({
+      priceRange: priceRange.value,
+      location: activeLocationFilters.value.pickupFrom,
+    });
+  };
+
   onMounted(
-    async () => await Promise.all([fetchVehicles(), fetchPriceBoundaries(), fetchVehiclesCount()])
+    async () =>
+      await Promise.all([
+        fetchVehicles(),
+        fetchPriceBoundaries(),
+        fetchVehiclesCount(),
+        fetchMinRentalCostByFilterType(),
+      ])
   );
 
   return {
@@ -85,7 +111,9 @@ export const useVehicles = ({
     isLoading,
     fetchVehicles,
     fetchVehiclesCount,
+    fetchMinRentalCostByFilterType,
     initialPriceBoundaries,
     vehiclesCountGroupedByFilterType,
+    minRentalCostGroupedByFilterType,
   };
 };
