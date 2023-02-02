@@ -19,3 +19,12 @@ export type Deposit = typeof deposit[number];
 export type CarType = typeof carType[number];
 export type Capacity = typeof capacity[number];
 
+export type filterEvents =
+  | keyof any
+  | 'updateCarTypeFilters'
+  | 'updateModelFilters'
+  | 'updateCapacityFilters'
+  | 'updateBabySeatFilters'
+  | 'updateTransmissionFilters'
+  | 'updateVideoRecorderFilters'
+  | 'updateDepositTypeFilters';

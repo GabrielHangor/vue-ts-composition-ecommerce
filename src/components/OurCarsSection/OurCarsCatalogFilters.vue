@@ -1,6 +1,6 @@
 <template>
   <aside
-    class="md:z-1 fixed top-0 left-0 z-10 flex h-full min-h-[100vh] w-full flex-col items-center overflow-hidden overflow-y-auto bg-white p-5 transition-[opacity] duration-300 ease-in md:pointer-events-auto md:relative md:relative md:col-span-4 md:w-auto md:overflow-y-hidden md:p-1 md:opacity-100 lg:col-span-3"
+    class="md:z-1 fixed top-0 left-0 z-10 flex h-fit min-h-[100vh] w-full flex-col items-center overflow-hidden overflow-y-auto bg-white p-5 transition-[opacity] duration-300 ease-in md:pointer-events-auto md:relative md:col-span-4 md:w-auto md:overflow-y-hidden md:p-1 md:opacity-100 lg:col-span-3"
     :class="isOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'"
   >
     <div v-show="isLoading" class="absolute z-10 h-full w-full cursor-wait backdrop-grayscale"></div>
@@ -21,41 +21,14 @@
     />
 
     <template v-if="vehiclesCountByFilter && minRentalCostByFilter">
-      <CarTypeFilter
-        ref="carTypeFilter"
-        :vehicles-type-count="vehiclesCountByFilter.carType"
-        :vehicles-min-rental-cost-by-car-type="minRentalCostByFilter.carType"
+      <CarCollapsibleFilter
+        v-for="filter in filterColumns"
+        :key="filter"
         v-bind="$attrs"
-      />
-      <CarModelFilter
-        v-bind="$attrs"
-        :vehicles-min-rental-cost-by-car-model="minRentalCostByFilter.model"
-        :vehicles-model-count="vehiclesCountByFilter.model"
-      />
-      <CarCapacityFilter
-        v-bind="$attrs"
-        :vehicles-min-rental-cost-by-car-capacity="minRentalCostByFilter.capacity"
-        :vehicles-capacity-count="vehiclesCountByFilter.capacity"
-      />
-      <CarTransmissionFilter
-        v-bind="$attrs"
-        :vehicles-min-rental-cost-by-car-transmission="minRentalCostByFilter.transmission"
-        :vehicles-transmission-count="vehiclesCountByFilter.transmission"
-      />
-      <CarDepositFilter
-        v-bind="$attrs"
-        :vehicles-min-rental-cost-by-car-deposit="minRentalCostByFilter.deposit"
-        :vehicles-deposit-count="vehiclesCountByFilter.deposit"
-      />
-      <CarVideoRecorderFilter
-        v-bind="$attrs"
-        :vehicles-min-rental-cost-by-video-recorder="minRentalCostByFilter.videoRecorder"
-        :vehicles-video-recorder-count="vehiclesCountByFilter.videoRecorder"
-      />
-      <CarBabySeatFilter
-        v-bind="$attrs"
-        :vehicles-baby-seat-count="vehiclesCountByFilter.babySeat"
-        :vehicles-min-rental-cost-by-baby-seat="minRentalCostByFilter.babySeat"
+        ref="collapsibleFilters"
+        :vehicles-count-filter="vehiclesCountByFilter[filter]"
+        :vehicles-min-rental-cost-by-filter="minRentalCostByFilter[filter]"
+        :filter-type="filter"
       />
     </template>
 
@@ -77,15 +50,11 @@
     IVehiclesCountGroupedByFilterType,
     IVehiclesMinRentalCostGroupedByFilterType,
   } from '@/interfaces';
-  import CarTypeFilter from '@/components/OurCarsSection/CarTypeFilter.vue';
+
   import BaseButton from '@/components/BaseButton.vue';
   import { computed, nextTick, ref } from 'vue';
-  import CarModelFilter from '@/components/OurCarsSection/CarModelFilter.vue';
-  import CarCapacityFilter from '@/components/OurCarsSection/CarCapacityFilter.vue';
-  import CarTransmissionFilter from '@/components/OurCarsSection/CarTransmissionFilter.vue';
-  import CarDepositFilter from '@/components/OurCarsSection/CarDepositFilter.vue';
-  import CarVideoRecorderFilter from '@/components/OurCarsSection/CarVideoRecorderFilter.vue';
-  import CarBabySeatFilter from '@/components/OurCarsSection/CarBabySeatFilter.vue';
+  import CarCollapsibleFilter from '@/components/OurCarsSection/CarCollapsibleFilter.vue';
+  import { filterColumns } from '@/constants';
 
   interface Props {
     isOpen: boolean;
@@ -101,14 +70,15 @@
     maxPrice: number | null;
   }
 
-  interface ICarTypeFilter extends Ref<InstanceType<typeof CarTypeFilter>> {
-    activeCarTypeFilters: string[];
+  interface ICarFilter extends Ref<InstanceType<typeof CarCollapsibleFilter>> {
+    activeCarFilters: string[];
   }
 
   const props = defineProps<Props>();
 
   const priceRangeFilter = ref<IPriceRangeFilter>();
-  const carTypeFilter = ref<ICarTypeFilter>();
+
+  const collapsibleFilters = ref<ICarFilter[]>();
 
   const emit = defineEmits<{
     (e: 'resetFilters'): void;
@@ -124,13 +94,15 @@
       priceRangeFilter.value.maxPrice = props.initialPriceBoundaries?.maxPrice;
     }
 
-    if (carTypeFilter.value) carTypeFilter.value.activeCarTypeFilters.length = 0;
+    collapsibleFilters.value?.forEach((filter) => (filter.activeCarFilters.length = 0));
 
     emit('resetFilters');
   };
 
   // RESET BTN STATE
-  const hasActiveCarTypeFilters = computed(() => carTypeFilter.value?.activeCarTypeFilters.length !== 0);
+  const hasActiveCarFilters = computed(() => {
+    return collapsibleFilters.value?.find((filter) => filter.activeCarFilters.length !== 0);
+  });
 
   const hasPriceRangeChanged = computed(() => {
     const { minPrice: rangeMinPrice, maxPrice: rangeMaxPrice } = props.priceRange;
@@ -140,7 +112,7 @@
   });
 
   const filtersActiveStateArr = computed(() => {
-    return [hasPriceRangeChanged.value, hasActiveCarTypeFilters.value];
+    return [hasPriceRangeChanged.value, hasActiveCarFilters.value];
   });
 
   const isResetBtnDisabled = computed(() => !filtersActiveStateArr.value.find((el) => el));

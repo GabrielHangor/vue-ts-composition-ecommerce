@@ -21,12 +21,12 @@
           @close-mobile-filters="isCarCatalogFiltersOpen = false"
           @update-price-range="updatePriceRange"
           @update-car-type-filters="updateCarTypeFilters"
-          @update-car-model-filters="updateCarModelFilters"
-          @update-car-capacity-filters="updateCarCapacityFilters"
-          @update-car-transmission-filters="updateCarTransmissionFilters"
-          @update-car-deposit-filters="updateCarDepositFilters"
-          @update-car-video-recorder-filters="updateCarVideoRecorderFilters"
-          @update-car-baby-seat-filters="updateCarBabySeatFilters"
+          @update-model-filters="updateCarModelFilters"
+          @update-capacity-filters="updateCarCapacityFilters"
+          @update-transmission-filters="updateCarTransmissionFilters"
+          @update-deposit-filters="updateCarDepositFilters"
+          @update-video-recorder-filters="updateCarVideoRecorderFilters"
+          @update-baby-seat-filters="updateCarBabySeatFilters"
         />
       </template>
       <template #cars>
@@ -61,6 +61,7 @@
   import type { ILocationAndTimeFormValues, IPriceRange } from '@/interfaces';
   import { useSearchParams } from '@/composables/useSearchParams';
   import { debounce } from '@/helpers';
+
 
   interface ILocationAndTimeForm extends Ref<InstanceType<typeof LocationAndTimeForm>> {
     formValues: ILocationAndTimeFormValues;

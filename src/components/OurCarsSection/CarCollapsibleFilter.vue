@@ -6,7 +6,7 @@
         role="button"
         @click="toggleVisibility"
       >
-        <h2>Capacity</h2>
+        <h2>{{ filterNameMap[filterType] }}</h2>
         <div class="flex">
           <h2>From</h2>
           <img
@@ -23,20 +23,20 @@
         <section class="flex flex-col gap-2">
           <div
             class="flex items-center justify-between"
-            v-for="(value, carCapacity) in vehiclesCapacityCount"
-            :key="carCapacity"
+            v-for="(value, carFilter) in vehiclesCountFilter"
+            :key="carFilter"
           >
             <div class="flex items-center">
               <BaseCheckBox
-                :id="carCapacity"
-                v-model="activeCarCapacityFilters"
-                :label="carCapacity"
-                :value="carCapacity"
+                :id="`${filterType}${carFilter}`"
+                v-model="activeCarFilters"
+                :label="generateLabel(carFilter)"
+                :value="carFilter"
                 :input-bg-class="'bg-white'"
               />
               <span class="ml-1 text-[13px] text-gray-400"> ({{ value || 0 }}) </span>
             </div>
-            <p>${{ vehiclesMinRentalCostByCarCapacity?.[carCapacity] || 0 }}</p>
+            <p>${{ vehiclesMinRentalCostByFilter?.[carFilter] || 0 }}</p>
           </div>
         </section>
       </div></template
@@ -48,25 +48,37 @@
   import BaseCollapse from '@/components/BaseCollapse.vue';
   import BaseCheckBox from '@/components/BaseCheckBox.vue';
   import { ref, watch } from 'vue';
+  import type { filterEvents } from '@/types';
+  import { filterNameMap } from '@/constants';
 
   const title = import.meta.env.BASE_URL;
 
   interface Props {
-    vehiclesCapacityCount: { [key: string]: number };
-    vehiclesMinRentalCostByCarCapacity: { [key: string]: number };
+    vehiclesCountFilter: { [key: string]: number };
+    vehiclesMinRentalCostByFilter: { [key: string]: number };
+    filterType: string;
   }
+
+  const generateEvent = (filterType: string): filterEvents =>
+    `update${filterType.charAt(0).toUpperCase() + filterType.slice(1)}Filters`;
+
+  const generateLabel = (carFilter: string) => {
+    if (props.filterType === 'babySeat' || props.filterType == 'videoRecorder') {
+      return carFilter === 'true' ? 'Yes' : 'No';
+    }
+
+    return carFilter;
+  };
 
   const props = defineProps<Props>();
 
   const emit = defineEmits<{
-    (e: 'updateCarCapacityFilters', activeCarCapacityFilters: string[]): void;
+    (e: ReturnType<typeof generateEvent>, activeCarFilters: string[]): void;
   }>();
 
-  const activeCarCapacityFilters = ref<string[]>([]);
+  const activeCarFilters = ref<string[]>([]);
 
-  defineExpose({ activeCarCapacityFilters });
+  defineExpose({ activeCarFilters });
 
-  watch(activeCarCapacityFilters, () =>
-    emit('updateCarCapacityFilters', activeCarCapacityFilters.value)
-  );
+  watch(activeCarFilters, () => emit(generateEvent(props.filterType), activeCarFilters.value));
 </script>

@@ -61,6 +61,15 @@ export const carType = ['Sedan', 'Compact', 'Economy', 'Midsize', 'FullSize', 'M
 export const capacity = ['2', '3-5', '6+'];
 export const VEHICLES_PER_PAGE = 6;
 
+export const filterEvents = [
+  'updateCarTypeFilters',
+  'updateModelFilters',
+  'updateCapacityFilters',
+  'updateBabySeatFilters',
+  'updateTransmissionFilters',
+  'updateVideoRecorderFilters',
+  'updateDepositTypeFilters',
+] as const;
 
 export const filterColumns = [
   'carType',
@@ -71,3 +80,13 @@ export const filterColumns = [
   'videoRecorder',
   'deposit',
 ];
+
+export const filterNameMap = {
+  carType: 'Car Type',
+  model: 'Model',
+  capacity: 'Capacity',
+  babySeat: 'Baby Seat',
+  transmission: 'Transmission',
+  videoRecorder: 'Video Recorder',
+  deposit: 'Deposit',
+};

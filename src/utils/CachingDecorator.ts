@@ -1,14 +1,15 @@
 export default function cacheable(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
   const originalMethod = descriptor.value;
-  const maxSize = 5 * 1024 * 1024; // 5 MB
-  const prefix = 'cacheable-';
+  const MAX_SIZE = 5 * 1024 * 1024; // 5 MB
+  const PREFIX = 'cacheable-';
+  const MAX_CACHE_AGE_MS = 604800000;
 
   descriptor.value = async function (...args: any[]) {
-    const key = `${prefix}${propertyKey}:${JSON.stringify(args)}`;
+    const key = `${PREFIX}${propertyKey}:${JSON.stringify(args)}`;
 
-    if (localStorage.length && decodeURIComponent(JSON.stringify(localStorage)).length >= maxSize) {
+    if (localStorage.length && decodeURIComponent(JSON.stringify(localStorage)).length >= MAX_SIZE) {
       Object.keys(localStorage)
-        .filter((k) => k.startsWith(prefix))
+        .filter((k) => k.startsWith(PREFIX))
         .forEach((k) => localStorage.removeItem(k));
     }
 
@@ -17,7 +18,7 @@ export default function cacheable(target: any, propertyKey: string, descriptor: 
     if (cache) {
       const cacheData = JSON.parse(cache);
 
-      if (Date.now() - cacheData.timestamp < 604800000) {
+      if (Date.now() - cacheData.timestamp < MAX_CACHE_AGE_MS) {
         return cacheData.result;
       } else {
         localStorage.removeItem(key);
