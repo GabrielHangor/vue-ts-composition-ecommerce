@@ -1,8 +1,16 @@
 export default function cacheable(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
   const originalMethod = descriptor.value;
+  const maxSize = 5 * 1024 * 1024; // 5 MB
+  const prefix = 'cacheable-';
 
   descriptor.value = async function (...args: any[]) {
-    const key = `${propertyKey}:${JSON.stringify(args)}`;
+    const key = `${prefix}${propertyKey}:${JSON.stringify(args)}`;
+
+    if (localStorage.length && decodeURIComponent(JSON.stringify(localStorage)).length >= maxSize) {
+      Object.keys(localStorage)
+        .filter((k) => k.startsWith(prefix))
+        .forEach((k) => localStorage.removeItem(k));
+    }
 
     const cache = localStorage.getItem(key);
 

@@ -9,7 +9,7 @@ import QueryBuilder from '@/services/QueryBuilder';
 import type { PostgrestResponse } from '@supabase/supabase-js';
 import { filterColumns } from '@/constants';
 import { countPropsInArrOfObjs, getNormalizedMinRentalCost } from '@/helpers';
-import cacheable from '@/services/CachingDecorator';
+import cacheable from '@/utils/CachingDecorator';
 
 export default class VehiclesService {
   @cacheable
