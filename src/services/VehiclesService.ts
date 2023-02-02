@@ -9,14 +9,17 @@ import QueryBuilder from '@/services/QueryBuilder';
 import type { PostgrestResponse } from '@supabase/supabase-js';
 import { filterColumns } from '@/constants';
 import { countPropsInArrOfObjs, getNormalizedMinRentalCost } from '@/helpers';
+import cacheable from '@/services/CachingDecorator';
 
 export default class VehiclesService {
+  @cacheable
   static async getAllVehicles(
     params: IGetVehiclesRequestParams
   ): Promise<PostgrestResponse<IVehicleEntity>> {
     return QueryBuilder.buildAllVehiclesQuery(params);
   }
 
+  @cacheable
   static async getPriceRange(): Promise<IPriceRange> {
     const { data: rentalCostsArr } = await QueryBuilder.buildPriceRangeQuery();
 
@@ -30,6 +33,7 @@ export default class VehiclesService {
     };
   }
 
+  @cacheable
   static async getVehiclesCountGroupedByFilterType(params: IGetVehiclesCountRequestParams) {
     const { data: vehicles } = await QueryBuilder.buildVehiclesCountQuery(params);
 
@@ -44,6 +48,7 @@ export default class VehiclesService {
     return vehiclesCountGroupedByFilterType;
   }
 
+  @cacheable
   static async getMinRentalCostGroupedByFilterType(params: IGetVehiclesCountRequestParams) {
     const { data: vehicles } = await QueryBuilder.buildVehiclesCountQuery(params);
 

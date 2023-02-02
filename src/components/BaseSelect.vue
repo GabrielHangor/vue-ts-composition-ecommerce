@@ -2,7 +2,7 @@
   <select
     :disabled="isLoading"
     class="cursor-pointer appearance-none px-2 focus:outline-none"
-    :class="{'cursor-progress' : isLoading}"
+    :class="{ 'cursor-progress': isLoading }"
     :value="modelValue"
     @input="updateValue(($event.target as HTMLInputElement).value)"
   >
