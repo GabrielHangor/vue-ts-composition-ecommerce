@@ -53,7 +53,9 @@
           >
         </div>
       </div>
-      <BaseButton class="hidden w-full sm:block">Rent now</BaseButton>
+      <router-link :to="`/catalog/${vehicle.id}`">
+        <BaseButton class="hidden w-full sm:block">Rent now</BaseButton>
+      </router-link>
     </div>
   </div>
 </template>

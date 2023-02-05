@@ -24,9 +24,15 @@ const router = createRouter({
       component: () => import('../views/DetailsPage.vue'),
     },
     {
-      path: '/explore',
-      name: 'explore',
-      component: () => import('../views/ExploreCarsPage.vue'),
+      path: '/catalog',
+      name: 'catalog',
+      component: () => import('../views/CatalogPage.vue'),
+    },
+    {
+      path: '/catalog/:id',
+      name: 'vehicle',
+      props: true,
+      component: () => import('../views/VehiclePage.vue'),
     },
     {
       path: '/investors',

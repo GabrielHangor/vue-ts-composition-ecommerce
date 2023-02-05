@@ -1,16 +1,18 @@
 <template>
-  <NavBar />
-  <main class="flex flex-col">
+  <TheNavbar />
+  <main class="flex flex-col flex-grow">
     <router-view v-slot="{ Component, route }">
-      <transition name="slide">
-        <KeepAlive>
+      <transition mode="out-in" name="fade">
+        <KeepAlive :include="['CatalogPage']">
           <component :key="route.name" :is="Component" />
         </KeepAlive>
       </transition>
     </router-view>
   </main>
+  <TheFooter />
 </template>
 
 <script setup lang="ts">
-  import NavBar from '@/components/NavBar/NavBar.vue';
+  import TheNavbar from '@/components/NavBar/TheNavbar.vue';
+  import TheFooter from '@/components/TheFooter.vue';
 </script>

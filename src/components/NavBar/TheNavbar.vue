@@ -1,5 +1,5 @@
 <template>
-  <nav class="container relative mx-auto flex items-center justify-between py-3 md:items-start md:py-8">
+  <header class="container relative mx-auto flex items-center justify-between py-3 md:items-start md:py-8">
     <RouterLink to="/"
       ><img
         src="/Logo-car.svg"
@@ -20,7 +20,7 @@
       <NavBarLinks @close-mobile-nav="isNavOpen = false" />
       <BaseButton variant="transparent-orange">Rent now</BaseButton>
     </div>
-  </nav>
+  </header>
 </template>
 <script lang="ts" setup>
   import { usePreventScroll } from '@/composables/usePreventScroll';

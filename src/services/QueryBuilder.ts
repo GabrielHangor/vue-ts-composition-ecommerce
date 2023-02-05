@@ -23,6 +23,10 @@ export default class QueryBuilder {
     return query;
   }
 
+  static buildVehicleByIdQuery(id: string) {
+    return supabase.from('Vehicles').select('*').eq('id', id);
+  }
+
   static buildPriceRangeQuery() {
     return supabase.from('Vehicles').select('rentalCost');
   }

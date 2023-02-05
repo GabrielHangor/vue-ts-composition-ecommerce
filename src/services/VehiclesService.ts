@@ -20,6 +20,11 @@ export default class VehiclesService {
   }
 
   @cacheable
+  static async getVehicleById(id: string): Promise<PostgrestResponse<IVehicleEntity>> {
+    return QueryBuilder.buildVehicleByIdQuery(id);
+  }
+
+  @cacheable
   static async getPriceRange(): Promise<IPriceRange> {
     const { data: rentalCostsArr } = await QueryBuilder.buildPriceRangeQuery();
 
