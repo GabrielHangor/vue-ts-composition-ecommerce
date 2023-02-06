@@ -15,6 +15,7 @@ coverage
 *.local
 public
 stats.html
+catalogPopulator.js
 
 /cypress/videos/
 /cypress/screenshots/
