@@ -1,7 +1,7 @@
-import type { IGetVehiclesCountRequestParams, IGetVehiclesRequestParams } from '@/modules/catalog/catalog.interfaces';
+import type { IGetVehiclesCountRequestParams, IGetVehiclesRequestParams } from '@/modules/catalog/models/catalog.interfaces';
 import { supabase } from '@/supabase';
 
-export default class QueryBuilder {
+export default class CatalogQueryBuilder {
   static buildAllVehiclesQuery(params: IGetVehiclesRequestParams) {
     let query = supabase
       .from('Vehicles')

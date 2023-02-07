@@ -4,7 +4,7 @@ import type {
   IVehicleEntity,
   IVehiclesCountGroupedByFilterType,
   IVehiclesMinRentalCostGroupedByFilterType,
-} from '@/modules/catalog/catalog.interfaces';
+} from '@/modules/catalog/models/catalog.interfaces';
 import { computed, onMounted, ref } from 'vue';
 import { VEHICLES_PER_PAGE } from '@/modules/catalog/catalog.constants';
 import { delay } from '@/modules/catalog/catalog.helpers';

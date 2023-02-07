@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts" setup>
-  import type { IVehicleEntity } from '@/modules/catalog/catalog.interfaces';
+  import type { IVehicleEntity } from '@/modules/catalog/models/catalog.interfaces';
   import type { PropType } from 'vue';
   import CarCard from './CarCard.vue';
 

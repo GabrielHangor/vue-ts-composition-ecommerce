@@ -15,7 +15,6 @@
     { path: '/catalog', title: 'Catalog' },
     { path: '/details', title: 'Rental details' },
     { path: '/about', title: 'About us' },
-    { path: '/investors', title: 'For investors' },
     { path: '/contact', title: 'Contact' },
   ];
 

@@ -64,8 +64,8 @@
   import BaseTimePicker from '../../../shared/components/BaseTimePicker.vue';
   import { useVuelidate } from '@vuelidate/core';
   import { helpers } from '@vuelidate/validators';
-  import type { City } from '@/types';
-  import type { ILocationAndTimeFormValues } from '@/modules/catalog/catalog.interfaces';
+  import type { City } from '@/modules/catalog/models/catalog.types';
+  import type { ILocationAndTimeFormValues } from '@/modules/catalog/models/catalog.interfaces';
   import BaseCollapse from '@/shared/components/BaseCollapse.vue';
 
   const citiesListData = [

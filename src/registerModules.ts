@@ -6,8 +6,12 @@ const registerModule = (module: Record<string, (router: Router) => void>) => {
 };
 
 export const registerModules = (modules: Record<string, Record<string, (router: Router) => void>>) => {
-  Object.keys(modules).forEach((moduleKey) => {
-    const module = modules[moduleKey];
-    registerModule(module);
-  });
+  try {
+    Object.keys(modules).forEach((moduleKey) => {
+      const module = modules[moduleKey];
+      registerModule(module);
+    });
+  } catch (e) {
+    console.log(`Error while registering module ${e}`);
+  }
 };

@@ -6,7 +6,7 @@ import type {
   deposit,
   numberOfSeats,
   transmission,
-} from './modules/catalog/catalog.constants';
+} from '../catalog.constants';
 
 export type BtnVariant = typeof btnVariants[number];
 

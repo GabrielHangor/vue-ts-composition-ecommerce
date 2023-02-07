@@ -1,4 +1,4 @@
-import type { Capacity, CarType, City, Deposit, NumberOfSeats, Transmission } from '../../types';
+import type { Capacity, CarType, City, Deposit, NumberOfSeats, Transmission } from './catalog.types';
 import type { Ref } from 'vue';
 
 export interface ILocationAndTimeFormValues {

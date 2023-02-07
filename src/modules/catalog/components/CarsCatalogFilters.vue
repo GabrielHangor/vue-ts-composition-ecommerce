@@ -49,7 +49,7 @@
     IPriceRange,
     IVehiclesCountGroupedByFilterType,
     IVehiclesMinRentalCostGroupedByFilterType,
-  } from '@/modules/catalog/catalog.interfaces';
+  } from '@/modules/catalog/models/catalog.interfaces';
 
   import BaseButton from '@/shared/components/BaseButton.vue';
   import { computed, nextTick, ref } from 'vue';

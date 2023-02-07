@@ -37,7 +37,7 @@
 <script lang="ts" setup>
   import OurCarsCatalogHeading from './CarsCatalogHeading.vue';
   import CarCardsBlock from './CarCardsBlock.vue';
-  import type { IVehicleEntity } from '@/modules/catalog/catalog.interfaces';
+  import type { IVehicleEntity } from '@/modules/catalog/models/catalog.interfaces';
   import { computed, type PropType } from 'vue';
   import BaseButton from '../../../shared/components/BaseButton.vue';
   import BasePaginator from '@/shared/components/BasePaginator.vue';

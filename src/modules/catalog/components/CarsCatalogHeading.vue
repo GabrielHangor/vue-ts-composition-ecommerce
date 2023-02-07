@@ -20,7 +20,7 @@
 <script lang="ts" setup>
   import { computed, type PropType } from 'vue';
   import BaseSelect from '@/shared/components/BaseSelect.vue';
-  import type { ISelectOptions } from '@/modules/catalog/catalog.interfaces';
+  import type { ISelectOptions } from '@/modules/catalog/models/catalog.interfaces';
   const title = import.meta.env.BASE_URL;
 
   const sortOptions: ISelectOptions = {

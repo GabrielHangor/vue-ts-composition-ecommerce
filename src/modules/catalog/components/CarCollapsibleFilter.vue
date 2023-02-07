@@ -48,7 +48,7 @@
   import BaseCollapse from '@/shared/components/BaseCollapse.vue';
   import BaseCheckBox from '@/shared/components/BaseCheckBox.vue';
   import { ref, watch } from 'vue';
-  import type { filterEvents } from '@/types';
+  import type { filterEvents } from '@/modules/catalog/models/catalog.types';
   import { filterNameMap } from '@/modules/catalog/catalog.constants';
 
   const title = import.meta.env.BASE_URL;

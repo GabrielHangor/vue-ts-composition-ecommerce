@@ -1,7 +1,7 @@
 import { type Ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { getNormalizedUrlQueryVal } from '@/modules/catalog/catalog.helpers';
-import type { IMap, IUseSearchParams } from '@/modules/catalog/catalog.interfaces';
+import type { IMap, IUseSearchParams } from '@/modules/catalog/models/catalog.interfaces';
 
 export const useSearchParams = (params: IUseSearchParams<Ref>) => {
   const router = useRouter();

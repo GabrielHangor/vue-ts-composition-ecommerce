@@ -58,7 +58,7 @@
   import { useVehicles } from '@/modules/catalog/composables/useVehicles';
   import { usePreventScroll } from '@/shared/composables/usePreventScroll';
   import { ref, watch, toRef, type Ref, nextTick } from 'vue';
-  import type { ILocationAndTimeFormValues, IPriceRange } from '@/modules/catalog/catalog.interfaces';
+  import type { ILocationAndTimeFormValues, IPriceRange } from '@/modules/catalog/models/catalog.interfaces';
   import { useSearchParams } from '@/modules/catalog/composables/useSearchParams';
   import { debounce } from '@/modules/catalog/catalog.helpers';
 

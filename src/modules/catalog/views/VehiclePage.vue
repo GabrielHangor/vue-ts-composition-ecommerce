@@ -12,7 +12,7 @@
 <script setup lang="ts">
   import CatalogService from '@/modules/catalog/services/CatalogService';
   import { ref, watchEffect } from 'vue';
-  import type { IVehicleEntity } from '@/modules/catalog/catalog.interfaces';
+  import type { IVehicleEntity } from '@/modules/catalog/models/catalog.interfaces';
   import type { PostgrestError } from '@supabase/supabase-js';
 
   const title = import.meta.env.BASE_URL;

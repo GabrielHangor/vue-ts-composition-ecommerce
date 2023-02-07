@@ -12,7 +12,7 @@
 <script setup lang="ts">
   import type { PropType } from 'vue';
   import BaseButtonSpinner from '@/shared/components/BaseButtonSpinner.vue';
-  import type { BtnVariant } from '@/types';
+  import type { BtnVariant } from '@/modules/catalog/models/catalog.types';
 
   const props = defineProps({
     variant: { type: String as PropType<BtnVariant>, default: 'primary' },
