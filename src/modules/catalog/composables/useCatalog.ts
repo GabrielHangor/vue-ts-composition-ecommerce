@@ -1,6 +1,6 @@
 import type {
   IPriceRange,
-  IUseVehiclesArgs,
+  IUseCatalogArgs,
   IVehicleEntity,
   IVehiclesCountGroupedByFilterType,
   IVehiclesMinRentalCostGroupedByFilterType,
@@ -10,7 +10,7 @@ import { VEHICLES_PER_PAGE } from '@/modules/catalog/catalog.constants';
 import { delay } from '@/modules/catalog/catalog.helpers';
 import CatalogService from '@/modules/catalog/services/CatalogService';
 
-export const useVehicles = ({
+export const useCatalog = ({
   currentPage,
   sortOrderASC,
   sortBy,
@@ -23,11 +23,11 @@ export const useVehicles = ({
   activeCarDepositFilters,
   activeCarBabySeatFilters,
   activeCarVideoRecorderFilters,
-}: IUseVehiclesArgs) => {
+}: IUseCatalogArgs) => {
   const vehicles = ref<IVehicleEntity[]>([]);
   const vehiclesCount = ref(0);
   const errorMessage = ref<string | null>(null);
-  const isLoading = ref(false);
+  const isLoading = ref(true);
   const initialPriceBoundaries = ref<IPriceRange>({ minPrice: null, maxPrice: null });
   const vehiclesCountGroupedByFilterType = ref<IVehiclesCountGroupedByFilterType | null>(null);
   const minRentalCostGroupedByFilterType = ref<IVehiclesMinRentalCostGroupedByFilterType | null>(null);
@@ -40,7 +40,6 @@ export const useVehicles = ({
   });
 
   const fetchVehicles = async ({ append } = { append: false }) => {
-    if (isLoading.value) return;
     try {
       errorMessage.value = null;
       isLoading.value = true;

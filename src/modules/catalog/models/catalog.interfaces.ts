@@ -64,7 +64,7 @@ export interface IGetVehiclesCountRequestParams {
   location: string;
 }
 
-export interface IUseVehiclesArgs {
+export interface IUseCatalogArgs {
   currentPage: Ref<number>;
   sortOrderASC: Ref<boolean>;
   sortBy: Ref<string>;

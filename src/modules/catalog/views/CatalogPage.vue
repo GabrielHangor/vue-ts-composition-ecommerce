@@ -55,13 +55,15 @@
   import OurCarsCatalogFilters from '@/modules/catalog/components/CarsCatalogFilters.vue';
   import OurCarsSectionWrapper from '@/modules/catalog/components/CarsSectionWrapper.vue';
   import PageHeading from '@/modules/catalog/components/PageHeading.vue';
-  import { useVehicles } from '@/modules/catalog/composables/useVehicles';
+  import { useCatalog } from '@/modules/catalog/composables/useCatalog';
   import { usePreventScroll } from '@/shared/composables/usePreventScroll';
   import { ref, watch, toRef, type Ref, nextTick } from 'vue';
-  import type { ILocationAndTimeFormValues, IPriceRange } from '@/modules/catalog/models/catalog.interfaces';
+  import type {
+    ILocationAndTimeFormValues,
+    IPriceRange,
+  } from '@/modules/catalog/models/catalog.interfaces';
   import { useSearchParams } from '@/modules/catalog/composables/useSearchParams';
   import { debounce } from '@/modules/catalog/catalog.helpers';
-
 
   interface ILocationAndTimeForm extends Ref<InstanceType<typeof LocationAndTimeForm>> {
     formValues: ILocationAndTimeFormValues;
@@ -155,8 +157,7 @@
 
   // CAR TRANSMISSION
   const activeCarTransmissionFilters = ref<string[]>([]);
-  const updateCarTransmissionFilters = (filters: string[]) =>
-    (activeCarTransmissionFilters.value = filters);
+  const updateCarTransmissionFilters = (filters: string[]) => (activeCarTransmissionFilters.value = filters);
 
   watch(activeCarTransmissionFilters, () => {
     if (isResetting.value) return;
@@ -277,7 +278,7 @@
     fetchVehicles,
     fetchVehiclesCount,
     fetchMinRentalCostByFilterType,
-  } = useVehicles({
+  } = useCatalog({
     currentPage,
     sortOrderASC,
     sortBy,
