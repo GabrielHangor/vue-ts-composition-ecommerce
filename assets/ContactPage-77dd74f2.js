@@ -1,0 +1,1 @@
+import{_ as t,c as e,o as c}from"./index-2e7eb2f5.js";const o={},n={class:"w-full max-h-full text-center text-5xl md:text-9xl font-bold text-orange-base"};function a(s,r){return c(),e("div",n,"CONTACT PAGE")}const _=t(o,[["render",a]]);export{_ as default};
