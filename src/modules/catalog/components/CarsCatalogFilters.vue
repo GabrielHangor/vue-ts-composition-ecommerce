@@ -37,8 +37,9 @@
       variant="transparent"
       class="mb-10 w-full md:mb-0"
       :is-disabled="isResetBtnDisabled"
-      >Reset</BaseButton
     >
+      Reset
+    </BaseButton>
   </aside>
 </template>
 

@@ -21,8 +21,9 @@
       variant="transparent"
       class="w-full"
       @click="appendPage"
-      >Show more</BaseButton
     >
+      Show more
+    </BaseButton>
     <BasePaginator
       v-if="vehicles.length && !error"
       :max-visible-buttons="3"

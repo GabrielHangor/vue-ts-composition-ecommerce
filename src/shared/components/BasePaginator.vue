@@ -4,7 +4,8 @@
       class="cursor-pointer p-[14px]"
       @click="goToPage(1)"
       :class="[paginationButtonClass, { 'font-bold text-orange-base': currentPage === 1 }]"
-      >First
+    >
+      First
     </span>
     <span
       v-for="page in visibleRange"
@@ -18,13 +19,15 @@
       ]"
       :key="page.name"
       @click="goToPage(page.name)"
-      >{{ page.name }}</span
     >
+      {{ page.name }}
+    </span>
     <span
       class="cursor-pointer p-[14px]"
       @click="goToPage(totalPages)"
       :class="[paginationButtonClass, { 'font-bold text-orange-base': currentPage === totalPages }]"
-      >Last
+    >
+      Last
     </span>
   </section>
 </template>

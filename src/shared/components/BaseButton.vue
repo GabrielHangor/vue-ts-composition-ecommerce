@@ -4,7 +4,10 @@
     :class="btnClassList"
     :disabled="loading || isDisabled"
   >
-    <div v-if="loading" class="flex justify-center"><BaseButtonSpinner />Loading...</div>
+    <div v-if="loading" class="flex justify-center">
+      <BaseButtonSpinner />
+      Loading...
+    </div>
     <slot v-else></slot>
   </button>
 </template>

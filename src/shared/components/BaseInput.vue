@@ -38,7 +38,7 @@
     modelValue: string | number | null;
     label: string;
     error?: string | Ref<string>;
-    disabled: boolean;
+    disabled?: boolean;
   }
 
   const props = defineProps<Props>();

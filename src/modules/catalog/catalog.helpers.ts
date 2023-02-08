@@ -82,3 +82,18 @@ export const countPropsInArrOfObjs = (arr: any[], prop: string) => {
   }
   return count;
 };
+
+export const scrollToTopSmoothly = () => {
+  const currentY = window.scrollY;
+  const targetY = 0;
+  const step = (targetY - currentY) / 20;
+  let count = 0;
+  const scroll = () => {
+    count++;
+    window.scrollTo(0, currentY + count * step);
+    if (count < 20) {
+      window.requestAnimationFrame(scroll);
+    }
+  };
+  window.requestAnimationFrame(scroll);
+};

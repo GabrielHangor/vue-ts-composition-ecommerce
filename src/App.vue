@@ -13,6 +13,6 @@
 </template>
 
 <script setup lang="ts">
-  import TheNavbar from '@/shared/components/NavBar/TheNavbar.vue';
+  import TheNavbar from '@/shared/components/TheNavbar.vue';
   import TheFooter from '@/shared/components/TheFooter.vue';
 </script>

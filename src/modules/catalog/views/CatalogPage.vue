@@ -63,7 +63,7 @@
     IPriceRange,
   } from '@/modules/catalog/models/catalog.interfaces';
   import { useSearchParams } from '@/modules/catalog/composables/useSearchParams';
-  import { debounce } from '@/modules/catalog/catalog.helpers';
+  import { debounce, scrollToTopSmoothly } from '@/modules/catalog/catalog.helpers';
 
   interface ILocationAndTimeForm extends Ref<InstanceType<typeof LocationAndTimeForm>> {
     formValues: ILocationAndTimeFormValues;
@@ -88,6 +88,8 @@
     await Promise.all([fetchVehicles(), fetchVehiclesCount(), fetchMinRentalCostByFilterType()]);
 
     isResetting.value = false;
+
+    scrollToTopSmoothly();
   };
 
   const isResetting = ref<boolean>(false);
@@ -157,7 +159,8 @@
 
   // CAR TRANSMISSION
   const activeCarTransmissionFilters = ref<string[]>([]);
-  const updateCarTransmissionFilters = (filters: string[]) => (activeCarTransmissionFilters.value = filters);
+  const updateCarTransmissionFilters = (filters: string[]) =>
+    (activeCarTransmissionFilters.value = filters);
 
   watch(activeCarTransmissionFilters, () => {
     if (isResetting.value) return;

@@ -59,3 +59,15 @@ a,
 img {
   -webkit-user-drag: none;
 }
+
+.height-enter-active,
+.height-leave-active {
+  transition-duration: 0.5s;
+  transition-property: height;
+  transition-timing-function: ease;
+  overflow: hidden;
+}
+
+.height-enter,
+.height-leave-active {
+}
