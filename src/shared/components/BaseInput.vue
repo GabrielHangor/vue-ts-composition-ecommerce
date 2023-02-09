@@ -27,7 +27,7 @@
         >{{ label }}</label
       >
     </div>
-    <span class="mt-1 text-xs text-error">{{ error }}</span>
+    <span class="mt-1 block text-center text-xs text-error">{{ error }}</span>
   </div>
 </template>
 

@@ -24,9 +24,16 @@
 
       <div class="border-b"></div>
 
-      <BaseInput v-model="email" label="Email address" />
-      <BaseInput v-model="password" label="Your Password" />
-      <BaseButton type="submit" variant="primary">Sign in</BaseButton>
+      <BaseInput v-model="login" label="Email address" :error="v$.login.$errors[0]?.$message" />
+      <BaseInput
+        v-model="password"
+        type="password"
+        label="Your Password"
+        :error="v$.password.$errors[0]?.$message"
+      />
+      <BaseButton type="submit" variant="primary" :loading="isLoading">Sign in</BaseButton>
+
+      <span v-if="error" class="block text-center text-sm text-error">{{ error }}</span>
 
       <p role="button" class="text-center text-sm text-base-gray underline">Forgot your password?</p>
       <p role="button" class="text-center text-sm text-base-gray underline" @click="displaySignUpForm">
@@ -39,17 +46,40 @@
 <script setup lang="ts">
   import BaseInput from '@/shared/components/BaseInput.vue';
   import BaseButton from '@/shared/components/BaseButton.vue';
-  import { ref } from 'vue';
+  import { computed, ref } from 'vue';
   import BaseAdjustableHeightWrapper from '@/shared/components/BaseAdjustableHeightWrapper.vue';
-
-  const email = ref('');
-  const password = ref('');
+  import { useVuelidate } from '@vuelidate/core';
+  import { helpers, required, email, minLength } from '@vuelidate/validators';
+  import { useAuth } from '@/modules/user/composables/useAuth';
 
   const emit = defineEmits<{
     (e: 'display-sign-up-form'): void;
     (e: 'hide-modal'): void;
   }>();
 
+  const login = ref('');
+  const password = ref('');
+
   const displaySignUpForm = () => emit('display-sign-up-form');
-  const submitForm = () => console.log('form submitted');
+
+  const { isLoading, error, signIn } = useAuth();
+
+  const submitForm = async () => {
+    const isFormValid = await v$.value.$validate();
+    if (!isFormValid) return;
+
+    await signIn({ email: login.value, password: password.value });
+    if (!error.value) emit('hide-modal');
+  };
+
+  // VALIDATION
+  const validationRules = computed(() => ({
+    login: { required, email },
+    password: {
+      required,
+      password_validation: helpers.withMessage('Minimum 6 symbols length', minLength(6)),
+    },
+  }));
+
+  const v$ = useVuelidate(validationRules, { login, password }, { $autoDirty: true });
 </script>

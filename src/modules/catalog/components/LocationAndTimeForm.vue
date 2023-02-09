@@ -2,8 +2,8 @@
   <BaseCollapse :initial-visibility="initialVisibility">
     <template #controls="{ toggleVisibility, isTransitioning, isVisible }">
       <section v-if="!initialVisibility && !isVisible" class="bg-orange-base/5 py-8">
-        <BaseButton class="mx-auto block" :is-disabled="isTransitioning" @click="toggleVisibility"
-          >Choose Location
+        <BaseButton class="mx-auto block" :is-disabled="isTransitioning" @click="toggleVisibility">
+          Choose Location
         </BaseButton>
       </section>
     </template>
@@ -134,7 +134,7 @@
   const initialVisibility = window.innerWidth >= 768;
 
   const returnToDifferentLocation = ref(false);
-  const isLocationCorrect = (location: City) => !!citiesListData.includes(location);
+  const isLocationCorrect = (location: City) => citiesListData.includes(location);
 
   const formValues = ref<ILocationAndTimeFormValues>({
     pickupFrom: props.activeLocationFilters?.pickupFrom || '',

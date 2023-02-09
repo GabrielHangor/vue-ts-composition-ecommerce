@@ -30,7 +30,12 @@
         {{ link.title }}
       </RouterLink>
       <BaseButton variant="transparent-orange">Rent now</BaseButton>
-      <BaseButton variant="transparent-orange" @click="isModalOpen = true">Log In</BaseButton>
+
+
+      <BaseButton v-if="!user" variant="transparent-orange" @click="isModalOpen = true">
+        Log In
+      </BaseButton>
+      <BaseButton v-else variant="transparent-orange" @click="logout">Logout</BaseButton>
     </div>
 
     <Teleport to="#modal-container">
@@ -48,7 +53,7 @@
   import { usePreventScroll } from '@/shared/composables/usePreventScroll';
   import { computed, defineAsyncComponent, ref } from 'vue';
   import BaseButton from './BaseButton.vue';
-  import AuthFormWrapper from '@/modules/user/components/AuthFormWrapper.vue';
+  import { useAuth } from '@/modules/user/composables/useAuth';
 
   const links = [
     { path: '/catalog', title: 'Catalog' },
@@ -60,8 +65,11 @@
   const title = import.meta.env.BASE_URL;
 
   const BaseModal = defineAsyncComponent(() => import('@/shared/components/BaseModal.vue'));
+  const AuthFormWrapper = defineAsyncComponent(() => import('@/modules/user/components/AuthFormWrapper.vue'));
 
   const isModalOpen = ref(false);
+
+  const { user, logout } = useAuth();
 
   const isNavOpen = ref(false);
 
