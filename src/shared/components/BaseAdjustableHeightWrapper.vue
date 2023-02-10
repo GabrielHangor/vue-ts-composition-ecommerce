@@ -2,7 +2,6 @@
   <transition
     name="height"
     mode="out-in"
-    appear
     @beforeLeave="beforeLeave"
     @enter="enter"
     @afterEnter="afterEnter"

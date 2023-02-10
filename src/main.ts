@@ -27,4 +27,4 @@ app.use(router);
 
 import './index.css';
 
-app.mount('#app');
+router.isReady().then(() => app.mount('#app'));

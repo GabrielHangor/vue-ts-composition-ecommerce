@@ -31,7 +31,6 @@
       </RouterLink>
       <BaseButton variant="transparent-orange">Rent now</BaseButton>
 
-
       <BaseButton v-if="!user" variant="transparent-orange" @click="isModalOpen = true">
         Log In
       </BaseButton>
@@ -40,10 +39,8 @@
 
     <Teleport to="#modal-container">
       <transition name="fade">
-        <BaseModal v-if="isModalOpen" v-model="isModalOpen">
-          <template #default="{ hideModal }">
-            <AuthFormWrapper @hide-modal="hideModal" />
-          </template>
+        <BaseModal v-if="isModalOpen" v-model="isModalOpen" v-slot="{ hideModal }">
+          <AuthFormWrapper @hide-modal="hideModal" />
         </BaseModal>
       </transition>
     </Teleport>
@@ -51,9 +48,10 @@
 </template>
 <script lang="ts" setup>
   import { usePreventScroll } from '@/shared/composables/usePreventScroll';
-  import { computed, defineAsyncComponent, ref } from 'vue';
+  import { computed, defineAsyncComponent, onMounted, ref } from 'vue';
   import BaseButton from './BaseButton.vue';
   import { useAuth } from '@/modules/user/composables/useAuth';
+  import { useRoute } from 'vue-router';
 
   const links = [
     { path: '/catalog', title: 'Catalog' },
@@ -65,9 +63,14 @@
   const title = import.meta.env.BASE_URL;
 
   const BaseModal = defineAsyncComponent(() => import('@/shared/components/BaseModal.vue'));
-  const AuthFormWrapper = defineAsyncComponent(() => import('@/modules/user/components/AuthFormWrapper.vue'));
+  const AuthFormWrapper = defineAsyncComponent(
+    () => import('@/modules/user/components/AuthFormWrapper.vue')
+  );
 
   const isModalOpen = ref(false);
+
+  const route = useRoute();
+  if (route.query['update_password']) isModalOpen.value = true;
 
   const { user, logout } = useAuth();
 

@@ -1,8 +1,7 @@
 import { ref } from 'vue';
-import UserService from '@/modules/user/services/UserService';
-import type { IUserAuthData } from '@/modules/user/models/user.interfaces';
+import AuthService from '@/modules/user/services/AuthService';
 import { supabase } from '@/supabase';
-import type { User, AuthError } from '@supabase/supabase-js';
+import type { User, AuthError, Provider } from '@supabase/supabase-js';
 
 supabase.auth.onAuthStateChange((event, session) => {
   console.log(event, session);
@@ -12,40 +11,48 @@ supabase.auth.onAuthStateChange((event, session) => {
 const user = ref<User | null>(null);
 
 export const useAuth = () => {
+  const handleServiceCall =
+    <T>(serviceMethod: (params: T) => Promise<void>) =>
+    async (params: T) => {
+      error.value = null;
+      try {
+        isLoading.value = true;
+        await serviceMethod(params);
+      } catch (e) {
+        console.error(e);
+        error.value = e as AuthError;
+      } finally {
+        isLoading.value = false;
+      }
+    };
+
   const isLoading = ref(false);
   const error = ref<AuthError | null>(null);
 
-  const signUp = async ({ email, password }: IUserAuthData) => {
-    error.value = null;
+  const signUp = handleServiceCall(AuthService.signUp);
 
-    try {
-      isLoading.value = true;
-      await UserService.signUp({ email, password });
-    } catch (e) {
-      console.error(e);
-      error.value = e as AuthError;
-    } finally {
-      isLoading.value = false;
-    }
-  };
+  const signIn = handleServiceCall(AuthService.signIn);
 
-  const signIn = async ({ email, password }: IUserAuthData) => {
-    error.value = null;
+  const signInWithOAuth = (provider: Provider) => AuthService.signInWithOAuth(provider);
 
-    try {
-      isLoading.value = true;
-      await UserService.signIn({ email, password });
-    } catch (e) {
-      console.error(e);
-      error.value = e as AuthError;
-    } finally {
-      isLoading.value = false;
-    }
-  };
+  const sendPasswordResetLink = handleServiceCall(AuthService.sendPasswordResetLink);
 
-  const logout = async () => await UserService.logout();
+  const updatePassword = handleServiceCall(AuthService.updatePassword);
+
+  const logout = async () => await AuthService.logout();
 
   const isLoggedIn = () => !!user.value;
 
-  return { isLoading, error, user, isLoggedIn, signUp, signIn, logout };
+  return {
+    isLoading,
+    error,
+    user,
+    signUp,
+    signIn,
+    updatePassword,
+    sendPasswordResetLink,
+    logout,
+    isLoggedIn,
+    signInWithOAuth,
+  };
 };

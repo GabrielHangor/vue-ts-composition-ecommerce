@@ -1,37 +1,34 @@
 <template>
-  <BaseAdjustableHeightWrapper>
-    <form
-      @click.stop
-      @submit.prevent="submitForm"
-      class="mx-3 flex w-full flex-col gap-5 rounded-xl bg-white p-5 md:mx-0 md:max-w-sm"
-    >
-      <h2 class="text-center text-[22px] font-bold">Sign up</h2>
+  <form
+    @click.stop
+    @submit.prevent="handleSignUp"
+    class="mx-3 flex w-full flex-col gap-5 rounded-xl bg-white p-5 md:mx-0 md:max-w-sm"
+  >
+    <h2 class="text-center text-[22px] font-bold">Sign up</h2>
 
-      <BaseInput v-model="login" label="Email address" :error="v$.login.$errors[0]?.$message" />
-      <BaseInput
-        type="password"
-        v-model="password"
-        label="Your Password"
-        :error="v$.password.$errors[0]?.$message"
-      />
-      <BaseInput
-        v-model="confirmedPassword"
-        type="password"
-        label="Confirm Password"
-        :error="v$.confirmedPassword.$errors[0]?.$message"
-      />
-      <BaseButton type="submit" variant="primary" :loading="isLoading">Sign up</BaseButton>
+    <BaseInput v-model="login" label="Email address" :error="v$.login.$errors[0]?.$message" />
+    <BaseInput
+      type="password"
+      v-model="password"
+      label="Your Password"
+      :error="v$.password.$errors[0]?.$message"
+    />
+    <BaseInput
+      v-model="confirmedPassword"
+      type="password"
+      label="Confirm Password"
+      :error="v$.confirmedPassword.$errors[0]?.$message"
+    />
+    <BaseButton type="submit" variant="primary" :loading="isLoading">Sign up</BaseButton>
 
-      <span v-if="error" class="block text-center text-sm text-error">{{ error }}</span>
-      <p role="button" class="text-center text-sm text-base-gray underline" @click="displaySignInForm">
-        Sign in
-      </p>
-    </form>
-  </BaseAdjustableHeightWrapper>
+    <span v-if="error" class="block text-center text-sm text-error">{{ error }}</span>
+    <p role="button" class="text-center text-sm text-base-gray underline" @click="displaySignInForm">
+      Sign in
+    </p>
+  </form>
 </template>
 
 <script setup lang="ts">
-  import BaseAdjustableHeightWrapper from '@/shared/components/BaseAdjustableHeightWrapper.vue';
   import BaseInput from '@/shared/components/BaseInput.vue';
   import BaseButton from '@/shared/components/BaseButton.vue';
   import { computed, ref } from 'vue';
@@ -52,7 +49,7 @@
 
   const { isLoading, error, signUp } = useAuth();
 
-  const submitForm = async () => {
+  const handleSignUp = async () => {
     const isFormValid = await v$.value.$validate();
     if (!isFormValid) return;
 

@@ -1,8 +1,8 @@
 <template>
   <TheNavbar />
-  <main class="flex flex-col flex-grow">
+  <main class="flex flex-grow flex-col">
     <router-view v-slot="{ Component, route }">
-      <transition mode="out-in" name="fade">
+      <transition appear mode="out-in" name="fade">
         <KeepAlive :include="['CatalogPage']">
           <component :key="route.name" :is="Component" />
         </KeepAlive>
