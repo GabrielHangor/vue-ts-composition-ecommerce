@@ -29,7 +29,7 @@ export default class AuthService {
 
   static async sendPasswordResetLink(email: string) {
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: 'http://127.0.0.1:5173?update_password=1',
+      redirectTo: 'https://gabrielhangor.github.io/vue-ts-composition-ecommerce/?update_password=1',
     });
     if (error) throw Error(error.message);
   }
