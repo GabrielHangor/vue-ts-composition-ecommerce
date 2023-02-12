@@ -4,29 +4,31 @@
     @submit.prevent="handleUpdatePassword"
     class="mx-3 w-full rounded-xl bg-white p-5 md:mx-0 md:max-w-sm"
   >
-    <section v-if="!showSuccessNotification" class="flex w-full flex-col gap-5">
-      <h2 class="text-center text-[22px] font-bold">Update password</h2>
+    <transition name="fade" mode="out-in">
+      <section v-if="!showSuccessNotification" class="flex w-full flex-col gap-5">
+        <h2 class="text-center text-[22px] font-bold">Update password</h2>
 
-      <BaseInput
-        type="password"
-        v-model="password"
-        label="New Password"
-        :error="v$.password.$errors[0]?.$message"
-      />
-      <BaseInput
-        v-model="confirmedPassword"
-        type="password"
-        label="Confirm Password"
-        :error="v$.confirmedPassword.$errors[0]?.$message"
-      />
-      <BaseButton type="submit" variant="primary" :loading="isLoading">Update password</BaseButton>
+        <BaseInput
+          type="password"
+          v-model="password"
+          label="New Password"
+          :error="v$.password.$errors[0]?.$message"
+        />
+        <BaseInput
+          v-model="confirmedPassword"
+          type="password"
+          label="Confirm Password"
+          :error="v$.confirmedPassword.$errors[0]?.$message"
+        />
+        <BaseButton type="submit" variant="primary" :loading="isLoading">Update password</BaseButton>
 
-      <span v-if="error" class="block text-center text-sm text-error">{{ error }}</span>
-    </section>
-    <section v-else class="flex w-full flex-col gap-5">
-      <img class="mx-auto w-[100px]" src="/success-icon.svg" alt="Success" />
-      <p class="text-center">Password successfully changed</p>
-    </section>
+        <span v-if="error" class="block text-center text-sm text-error">{{ error }}</span>
+      </section>
+      <section v-else class="flex w-full flex-col gap-5">
+        <img class="mx-auto w-[100px]" src="/success-icon.svg" alt="Success" />
+        <p class="text-center">Password successfully changed</p>
+      </section>
+    </transition>
   </form>
 </template>
 
