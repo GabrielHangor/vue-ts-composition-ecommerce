@@ -1,0 +1,1 @@
+import{G as e,c as t,b as o}from"./index-a5e07cb9.js";import"./browser-ponyfill-10e9505f.js";const c={},n={class:"max-h-full w-full text-center text-5xl md:text-9xl font-bold text-orange-base"};function r(s,a){return o(),t("div",n,"HOME PAGE")}const _=e(c,[["render",r]]);export{_ as default};
