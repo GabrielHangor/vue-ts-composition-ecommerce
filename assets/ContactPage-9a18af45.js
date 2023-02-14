@@ -1,0 +1,1 @@
+import{N as t,c as e,b as c}from"./index-6f45b1b4.js";import"./browser-ponyfill-10e9505f.js";const o={},n={class:"w-full max-h-full text-center text-5xl md:text-9xl font-bold text-orange-base"};function a(r,s){return c(),e("div",n,"CONTACT PAGE")}const _=t(o,[["render",a]]);export{_ as default};
