@@ -7,7 +7,7 @@
           class="relative h-[44px] w-[44px] rounded-[50%] bg-gray-300 p-3 text-[22px] text-white"
         >
           <span class="origin-top-right">
-            {{ userData?.user_metadata?.firstName[0] }}
+            {{ userData?.user_metadata?.firstName[0] || userData.email[0] }}
           </span>
         </div>
         <img src="/dropdown-arrow.svg" alt="arrow" class="transition" :class="{ 'rotate-180': open }" />
