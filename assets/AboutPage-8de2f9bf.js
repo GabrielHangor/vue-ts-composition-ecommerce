@@ -1,0 +1,1 @@
+import{N as t,c as e,b as o}from"./index-9df57f87.js";import"./browser-ponyfill-10e9505f.js";const c={},n={class:"max-h-full w-full text-center text-5xl font-bold text-orange-base md:text-9xl"};function r(s,a){return o(),e("div",n," ABOUT PAGE ")}const _=t(c,[["render",r]]);export{_ as default};
