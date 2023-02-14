@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import AuthService from '@/modules/user/services/AuthService';
+import UserService from '@/modules/user/services/UserService';
 import { supabase } from '@/supabase';
 import type { User, AuthError, Provider } from '@supabase/supabase-js';
 
@@ -10,7 +10,7 @@ supabase.auth.onAuthStateChange((event, session) => {
 
 const user = ref<User | null>(null);
 
-export const useAuth = () => {
+export const useUser = () => {
   const handleServiceCall =
     <T>(serviceMethod: (params: T) => Promise<void>) =>
     async (params: T) => {
@@ -29,17 +29,19 @@ export const useAuth = () => {
   const isLoading = ref(false);
   const error = ref<AuthError | null>(null);
 
-  const signUp = handleServiceCall(AuthService.signUp);
+  const signUp = handleServiceCall(UserService.signUp);
 
-  const signIn = handleServiceCall(AuthService.signIn);
+  const signIn = handleServiceCall(UserService.signIn);
 
-  const signInWithOAuth = (provider: Provider) => AuthService.signInWithOAuth(provider);
+  const signInWithOAuth = (provider: Provider) => UserService.signInWithOAuth(provider);
 
-  const sendPasswordResetLink = handleServiceCall(AuthService.sendPasswordResetLink);
+  const sendPasswordResetLink = handleServiceCall(UserService.sendPasswordResetLink);
 
-  const updatePassword = handleServiceCall(AuthService.updatePassword);
+  const updatePassword = handleServiceCall(UserService.updatePassword);
 
-  const logout = async () => await AuthService.logout();
+  const updateUserData = handleServiceCall(UserService.updateUserData);
+
+  const logout = async () => await UserService.logout();
 
   const isLoggedIn = () => !!user.value;
 
@@ -54,5 +56,6 @@ export const useAuth = () => {
     logout,
     isLoggedIn,
     signInWithOAuth,
+    updateUserData,
   };
 };

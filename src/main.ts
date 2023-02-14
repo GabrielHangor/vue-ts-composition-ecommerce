@@ -9,6 +9,7 @@ import aboutModule from './modules/about';
 import contactModule from './modules/contact';
 import homeModule from './modules/home';
 import catalogModule from './modules/catalog';
+import userModule from './modules/user';
 
 import { registerModules } from '@/registerModules';
 
@@ -18,6 +19,7 @@ registerModules({
   contact: contactModule,
   home: homeModule,
   details: detailsModule,
+  user: userModule,
 });
 
 const app = createApp(App);

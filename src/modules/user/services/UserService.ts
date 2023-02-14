@@ -1,8 +1,8 @@
-import type { IUserAuthData } from '@/modules/user/models/user.interfaces';
+import type { IUserAuthData, IUserMetaData } from '@/modules/user/models/user.interfaces';
 import { supabase } from '@/supabase';
 import type { SignInWithOAuthCredentials } from '@supabase/supabase-js';
 
-export default class AuthService {
+export default class UserService {
   static async signUp({ email, password }: IUserAuthData) {
     const { error } = await supabase.auth.signUp({
       email,
@@ -39,6 +39,15 @@ export default class AuthService {
 
   static async updatePassword(password: string) {
     const { error } = await supabase.auth.updateUser({ password });
+    if (error) throw Error(error.message);
+  }
+
+  static async updateUserData(params: IUserMetaData) {
+    const { email, ...metaData } = params;
+    const { error } = await supabase.auth.updateUser({
+      email,
+      data: metaData,
+    });
     if (error) throw Error(error.message);
   }
 }

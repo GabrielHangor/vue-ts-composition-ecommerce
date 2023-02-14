@@ -34,7 +34,7 @@
   import { computed, ref } from 'vue';
   import { useVuelidate } from '@vuelidate/core';
   import { email, helpers, minLength, required, sameAs } from '@vuelidate/validators';
-  import { useAuth } from '@/modules/user/composables/useAuth';
+  import { useUser } from '@/modules/user/composables/useUser';
 
   const emit = defineEmits<{
     (e: 'display-sign-in-form'): void;
@@ -47,7 +47,7 @@
 
   const displaySignInForm = () => emit('display-sign-in-form');
 
-  const { isLoading, error, signUp } = useAuth();
+  const { isLoading, error, signUp } = useUser();
 
   const handleSignUp = async () => {
     const isFormValid = await v$.value.$validate();

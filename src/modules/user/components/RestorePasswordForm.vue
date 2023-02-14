@@ -34,7 +34,7 @@
   import { computed, ref } from 'vue';
   import { useVuelidate } from '@vuelidate/core';
   import { email, required } from '@vuelidate/validators';
-  import { useAuth } from '@/modules/user/composables/useAuth';
+  import { useUser } from '@/modules/user/composables/useUser';
   import BaseAdjustableHeightWrapper from '@/shared/components/BaseAdjustableHeightWrapper.vue';
 
   const emit = defineEmits<{
@@ -46,7 +46,7 @@
 
   const displaySignUpForm = () => emit('display-sign-up-form');
 
-  const { isLoading, error, sendPasswordResetLink } = useAuth();
+  const { isLoading, error, sendPasswordResetLink } = useUser();
 
   const handleResetPassword = async () => {
     const isFormValid = await v$.value.$validate();

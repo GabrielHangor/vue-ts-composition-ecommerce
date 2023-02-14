@@ -38,7 +38,7 @@
   import { computed, ref } from 'vue';
   import { useVuelidate } from '@vuelidate/core';
   import { helpers, minLength, required, sameAs } from '@vuelidate/validators';
-  import { useAuth } from '@/modules/user/composables/useAuth';
+  import { useUser } from '@/modules/user/composables/useUser';
   import { useRouter } from 'vue-router';
 
   const emit = defineEmits<{
@@ -49,7 +49,7 @@
   const confirmedPassword = ref('');
   const showSuccessNotification = ref(false);
 
-  const { isLoading, error, updatePassword } = useAuth();
+  const { isLoading, error, updatePassword } = useUser();
   const router = useRouter();
 
   const handleUpdatePassword = async () => {

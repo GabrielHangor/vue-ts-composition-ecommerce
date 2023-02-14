@@ -3,7 +3,7 @@
   "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "src/mocks"],
   "compilerOptions": {
     "experimentalDecorators": true,
-    "types": ["vite-plugin-pages/client", "node", "vite/client"],
+    "types": ["node", "vite/client"],
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]

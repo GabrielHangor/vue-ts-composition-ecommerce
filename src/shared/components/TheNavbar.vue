@@ -17,7 +17,7 @@
       class="pr-4 md:hidden md:pr-0"
     />
     <div
-      class="md:z-1 absolute top-[100%] z-10 flex min-h-[100vh] w-full flex-col items-center justify-center gap-9 overflow-hidden bg-white text-sm font-medium text-gray-600 transition-[opacity] duration-300 ease-in md:pointer-events-auto md:relative md:top-0 md:min-h-fit md:w-auto md:flex-row md:items-center md:justify-between md:gap-[20px] md:bg-transparent md:opacity-100 lg:gap-[65px] lg:text-[16px]"
+      class="md:z-1 absolute top-[100%] z-10 flex min-h-[100vh] w-full flex-col items-center justify-center gap-9 overflow-hidden bg-white text-sm font-medium text-gray-600 transition-[opacity] duration-300 ease-in md:pointer-events-auto md:relative md:top-0 md:min-h-fit md:w-auto md:flex-row md:items-center md:justify-between md:gap-[20px] md:overflow-visible md:bg-transparent md:opacity-100 lg:gap-[65px] lg:text-[16px]"
       :class="isNavOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'"
     >
       <RouterLink
@@ -31,10 +31,8 @@
       </RouterLink>
       <BaseButton variant="transparent-orange">Rent now</BaseButton>
 
-      <BaseButton v-if="!user" variant="transparent-orange" @click="isModalOpen = true">
-        Log In
-      </BaseButton>
-      <BaseButton v-else variant="transparent-orange" @click="logout">Logout</BaseButton>
+      <AccountMenu v-if="user" :user-data="user" @logout="logout" />
+      <BaseButton v-else variant="transparent-orange" @click="isModalOpen = true">Log In</BaseButton>
     </div>
 
     <Teleport to="#modal-container">
@@ -44,14 +42,13 @@
         </BaseModal>
       </transition>
     </Teleport>
-
   </header>
 </template>
 <script lang="ts" setup>
   import { usePreventScroll } from '@/shared/composables/usePreventScroll';
   import { computed, defineAsyncComponent, onMounted, ref } from 'vue';
   import BaseButton from './BaseButton.vue';
-  import { useAuth } from '@/modules/user/composables/useAuth';
+  import { useUser } from '@/modules/user/composables/useUser';
   import { useRoute } from 'vue-router';
 
   const links = [
@@ -67,13 +64,14 @@
   const AuthFormWrapper = defineAsyncComponent(
     () => import('@/modules/user/components/AuthFormWrapper.vue')
   );
+  const AccountMenu = defineAsyncComponent(() => import('@/modules/user/components/AccountMenu.vue'));
 
   const isModalOpen = ref(false);
 
   const route = useRoute();
   if (route.query['update_password']) isModalOpen.value = true;
 
-  const { user, logout } = useAuth();
+  const { user, logout } = useUser();
 
   const isNavOpen = ref(false);
 

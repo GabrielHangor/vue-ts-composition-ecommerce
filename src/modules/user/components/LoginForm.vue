@@ -53,7 +53,7 @@
   import { computed, ref } from 'vue';
   import { useVuelidate } from '@vuelidate/core';
   import { helpers, required, email, minLength } from '@vuelidate/validators';
-  import { useAuth } from '@/modules/user/composables/useAuth';
+  import { useUser } from '@/modules/user/composables/useUser';
   import type { Provider } from '@supabase/supabase-js';
 
   const emit = defineEmits<{
@@ -68,7 +68,7 @@
   const displaySignUpForm = () => emit('display-sign-up-form');
   const displayRestorePasswordForm = () => emit('display-restore-password-form');
 
-  const { isLoading, error, signIn, signInWithOAuth } = useAuth();
+  const { isLoading, error, signIn, signInWithOAuth } = useUser();
 
   const handleSignIn = async () => {
     const isFormValid = await v$.value.$validate();
