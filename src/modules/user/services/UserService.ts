@@ -20,7 +20,7 @@ export default class UserService {
   static async signInWithOAuth(provider: SignInWithOAuthCredentials['provider']) {
     const { error } = await supabase.auth.signInWithOAuth({
       provider,
-      options: { redirectTo: 'https://gabrielhangor.github.io/vue-ts-composition-ecommerce' },
+      options: { redirectTo: 'http://127.0.0.1:5173/vue-ts-composition-ecommerce/' },
     });
     if (error) throw Error(error.message);
   }

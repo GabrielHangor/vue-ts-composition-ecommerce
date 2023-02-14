@@ -7,7 +7,7 @@
           class="relative h-[44px] w-[44px] rounded-[50%] bg-gray-300 p-3 text-[22px] text-white"
         >
           <span class="origin-top-right">
-            {{ userData?.user_metadata?.firstName[0] || userData.email[0] }}
+            {{ avatarSymbol }}
           </span>
         </div>
         <img src="/dropdown-arrow.svg" alt="arrow" class="transition" :class="{ 'rotate-180': open }" />
@@ -86,6 +86,7 @@
   import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue';
   import type { User } from '@supabase/supabase-js';
   import { useRouter } from 'vue-router';
+  import { computed } from 'vue';
 
   interface Props {
     userData: User;
@@ -102,4 +103,8 @@
     router.push({ path: '/' });
     emit('logout');
   };
+
+  const avatarSymbol = computed<string>(() => {
+    return props.userData?.user_metadata?.firstName?.charAt(0) || props.userData?.email?.charAt(0);
+  });
 </script>

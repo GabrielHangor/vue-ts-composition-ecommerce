@@ -29,7 +29,7 @@
   import { useUser } from '@/modules/user/composables/useUser';
   import BaseButton from '@/shared/components/BaseButton.vue';
   import BaseInput from '@/shared/components/BaseInput.vue';
-  import { ref } from 'vue';
+  import { onMounted, ref } from 'vue';
   import type { IUserMetaData } from '@/modules/user/models/user.interfaces';
 
   const { user, isLoading, updateUserData } = useUser();
