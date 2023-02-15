@@ -2,6 +2,7 @@ import type { IUserAuthData, IUserMetaData } from '@/modules/user/models/user.in
 import { supabase } from '@/supabase';
 import type { SignInWithOAuthCredentials } from '@supabase/supabase-js';
 
+
 export default class UserService {
   static async signUp({ email, password }: IUserAuthData) {
     const { error } = await supabase.auth.signUp({
@@ -20,7 +21,7 @@ export default class UserService {
   static async signInWithOAuth(provider: SignInWithOAuthCredentials['provider']) {
     const { error } = await supabase.auth.signInWithOAuth({
       provider,
-      options: { redirectTo: 'http://127.0.0.1:5173/vue-ts-composition-ecommerce/' },
+      options: { redirectTo: 'https://gabrielhangor.github.io/vue-ts-composition-ecommerce/' },
     });
     if (error) throw Error(error.message);
   }
@@ -48,6 +49,7 @@ export default class UserService {
       email,
       data: metaData,
     });
+
     if (error) throw Error(error.message);
   }
 }

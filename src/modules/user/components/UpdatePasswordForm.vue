@@ -4,31 +4,23 @@
     @submit.prevent="handleUpdatePassword"
     class="mx-3 w-full rounded-xl bg-white p-5 md:mx-0 md:max-w-sm"
   >
-    <transition name="fade" mode="out-in">
-      <section v-if="!showSuccessNotification" class="flex w-full flex-col gap-5">
-        <h2 class="text-center text-[22px] font-bold">Update password</h2>
+    <section class="flex w-full flex-col gap-5">
+      <h2 class="text-center text-[22px] font-bold">Update password</h2>
 
-        <BaseInput
-          type="password"
-          v-model="password"
-          label="New Password"
-          :error="v$.password.$errors[0]?.$message"
-        />
-        <BaseInput
-          v-model="confirmedPassword"
-          type="password"
-          label="Confirm Password"
-          :error="v$.confirmedPassword.$errors[0]?.$message"
-        />
-        <BaseButton type="submit" variant="primary" :loading="isLoading">Update password</BaseButton>
-
-        <span v-if="error" class="block text-center text-sm text-error">{{ error }}</span>
-      </section>
-      <section v-else class="flex w-full flex-col gap-5">
-        <img class="mx-auto w-[100px]" src="/success-icon.svg" alt="Success" />
-        <p class="text-center">Password successfully changed</p>
-      </section>
-    </transition>
+      <BaseInput
+        type="password"
+        v-model="password"
+        label="New Password"
+        :error="v$.password.$errors[0]?.$message"
+      />
+      <BaseInput
+        v-model="confirmedPassword"
+        type="password"
+        label="Confirm Password"
+        :error="v$.confirmedPassword.$errors[0]?.$message"
+      />
+      <BaseButton type="submit" variant="primary" :loading="isLoading">Update password</BaseButton>
+    </section>
   </form>
 </template>
 
@@ -40,6 +32,7 @@
   import { helpers, minLength, required, sameAs } from '@vuelidate/validators';
   import { useUser } from '@/modules/user/composables/useUser';
   import { useRouter } from 'vue-router';
+  import { useToast } from 'vue-toastification';
 
   const emit = defineEmits<{
     (e: 'hide-modal'): void;
@@ -47,9 +40,9 @@
 
   const password = ref('');
   const confirmedPassword = ref('');
-  const showSuccessNotification = ref(false);
 
   const { isLoading, error, updatePassword } = useUser();
+  const toast = useToast();
   const router = useRouter();
 
   const handleUpdatePassword = async () => {
@@ -58,10 +51,11 @@
 
     await updatePassword(password.value);
 
-    if (!error.value) {
-      showSuccessNotification.value = true;
+    if (error.value) {
+      toast.error(error.value || 'Unknown error');
+    } else {
+      toast.success('Password changed');
       await router.replace({ query: {} });
-
       setTimeout(() => emit('hide-modal'), 5000);
     }
   };

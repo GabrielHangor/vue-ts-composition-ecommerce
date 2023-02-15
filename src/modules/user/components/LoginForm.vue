@@ -32,8 +32,6 @@
     />
     <BaseButton type="submit" variant="primary" :loading="isLoading">Sign in</BaseButton>
 
-    <span v-if="error" class="block text-center text-sm text-error">{{ error }}</span>
-
     <p
       role="button"
       class="text-center text-sm text-base-gray underline"
@@ -55,6 +53,7 @@
   import { helpers, required, email, minLength } from '@vuelidate/validators';
   import { useUser } from '@/modules/user/composables/useUser';
   import type { Provider } from '@supabase/supabase-js';
+  import { useToast } from 'vue-toastification';
 
   const emit = defineEmits<{
     (e: 'display-sign-up-form'): void;
@@ -69,13 +68,20 @@
   const displayRestorePasswordForm = () => emit('display-restore-password-form');
 
   const { isLoading, error, signIn, signInWithOAuth } = useUser();
+  const toast = useToast();
 
   const handleSignIn = async () => {
     const isFormValid = await v$.value.$validate();
     if (!isFormValid) return;
 
     await signIn({ email: login.value, password: password.value });
-    if (!error.value) emit('hide-modal');
+
+    if (error.value) {
+      toast.error(error.value || 'Unknown error');
+    } else {
+      toast.success('Authentication completed');
+      emit('hide-modal');
+    }
   };
 
   const signInWithProvider = async (provider: Provider) => {

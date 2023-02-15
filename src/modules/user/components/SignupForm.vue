@@ -21,7 +21,6 @@
     />
     <BaseButton type="submit" variant="primary" :loading="isLoading">Sign up</BaseButton>
 
-    <span v-if="error" class="block text-center text-sm text-error">{{ error }}</span>
     <p role="button" class="text-center text-sm text-base-gray underline" @click="displaySignInForm">
       Sign in
     </p>
@@ -35,6 +34,7 @@
   import { useVuelidate } from '@vuelidate/core';
   import { email, helpers, minLength, required, sameAs } from '@vuelidate/validators';
   import { useUser } from '@/modules/user/composables/useUser';
+  import { useToast } from 'vue-toastification';
 
   const emit = defineEmits<{
     (e: 'display-sign-in-form'): void;
@@ -48,13 +48,20 @@
   const displaySignInForm = () => emit('display-sign-in-form');
 
   const { isLoading, error, signUp } = useUser();
+  const toast = useToast();
 
   const handleSignUp = async () => {
     const isFormValid = await v$.value.$validate();
     if (!isFormValid) return;
 
     await signUp({ email: login.value, password: password.value });
-    if (!error.value) emit('hide-modal');
+
+    if (error.value) {
+      toast.error(error.value || 'Unknown error');
+    } else {
+      toast.success(`User ${login.value} registered`);
+      emit('hide-modal');
+    }
   };
 
   // VALIDATION

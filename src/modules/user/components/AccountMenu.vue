@@ -30,12 +30,13 @@
             <span class="font-bold">{{ userData.email }}</span>
           </div>
         </MenuItem>
-        <MenuItem>
+        <MenuItem v-slot="{ close }">
           <div class="flex flex-col">
             <router-link
               active-class=""
               class="p-3 text-sm transition hover:bg-orange-base hover:text-white"
               to="/user"
+              @click="close"
             >
               <div class="flex items-center justify-between">
                 <span>Account</span>

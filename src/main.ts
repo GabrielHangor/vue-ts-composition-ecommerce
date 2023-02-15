@@ -3,6 +3,7 @@ import { createPinia } from 'pinia';
 
 import App from './App.vue';
 import router from './router';
+import Toast from 'vue-toastification';
 
 import detailsModule from './modules/details';
 import aboutModule from './modules/about';
@@ -12,6 +13,9 @@ import catalogModule from './modules/catalog';
 import userModule from './modules/user';
 
 import { registerModules } from '@/registerModules';
+
+import './styles/index.css';
+import './styles/toast.scss';
 
 registerModules({
   catalog: catalogModule,
@@ -26,7 +30,6 @@ const app = createApp(App);
 
 app.use(createPinia());
 app.use(router);
-
-import './index.css';
+app.use(Toast);
 
 router.isReady().then(() => app.mount('#app'));

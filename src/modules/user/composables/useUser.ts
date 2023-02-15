@@ -19,15 +19,18 @@ export const useUser = () => {
         isLoading.value = true;
         await serviceMethod(params);
       } catch (e) {
-        console.error(e);
-        error.value = e as AuthError;
+        if (e instanceof Error) {
+          console.error(e);
+          console.log();
+          error.value = e.message;
+        }
       } finally {
         isLoading.value = false;
       }
     };
 
   const isLoading = ref(false);
-  const error = ref<AuthError | null>(null);
+  const error = ref<AuthError['message'] | null>(null);
 
   const signUp = handleServiceCall(UserService.signUp);
 
