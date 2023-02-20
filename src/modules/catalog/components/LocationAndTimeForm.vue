@@ -65,7 +65,7 @@
   import { useVuelidate } from '@vuelidate/core';
   import { helpers } from '@vuelidate/validators';
   import type { City } from '@/modules/catalog/models/catalog.types';
-  import type { ILocationAndTimeFormValues } from '@/modules/catalog/models/catalog.interfaces';
+  import type { ILocationAndTimeFormValues } from '@/modules/catalog/models/catalog.models';
   import BaseCollapse from '@/shared/components/BaseCollapse.vue';
 
   const citiesListData = [

@@ -2,7 +2,7 @@ import type { Ref } from 'vue';
 import type {
   IVehiclesCountGroupedByFilterType,
   IVehiclesMinRentalCostGroupedByFilterType,
-} from '@/modules/catalog/models/catalog.interfaces';
+} from '@/modules/catalog/models/catalog.models';
 
 export const delay = (value: number) => {
   return new Promise<void>((res) => {

@@ -1,7 +1,7 @@
 import { type Ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { getNormalizedUrlQueryVal } from '@/modules/catalog/catalog.helpers';
-import type { IMap, IUseSearchParams } from '@/modules/catalog/models/catalog.interfaces';
+import type { IMap, IUseSearchParams } from '@/modules/catalog/models/catalog.models';
 
 export const useSearchParams = (params: IUseSearchParams<Ref>) => {
   const router = useRouter();
@@ -22,7 +22,7 @@ export const useSearchParams = (params: IUseSearchParams<Ref>) => {
         if (params[key].value !== '' && params[key].value) query[key] = params[key].value;
       }
 
-      router.push({ query });
+      router.replace({ query });
     },
     { deep: true }
   );

@@ -4,7 +4,7 @@ import type {
   IPriceRange,
   IVehicleEntity,
   IVehiclesCountGroupedByFilterType,
-} from '@/modules/catalog/models/catalog.interfaces';
+} from '@/modules/catalog/models/catalog.models';
 import CatalogQueryBuilder from '@/modules/catalog/services/CatalogQueryBuilder';
 import type { PostgrestResponse } from '@supabase/supabase-js';
 import { filterColumns } from '@/modules/catalog/catalog.constants';

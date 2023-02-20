@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts" setup>
-  import type { ISelectOptions } from '@/modules/catalog/models/catalog.interfaces';
+  import type { ISelectOptions } from '@/modules/catalog/models/catalog.models';
   import type { PropType } from 'vue';
 
   const props = defineProps({

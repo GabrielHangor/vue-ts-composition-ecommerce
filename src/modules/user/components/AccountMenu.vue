@@ -3,7 +3,7 @@
     <MenuButton v-slot="{ open }" class="inline-flex justify-center text-sm font-medium">
       <div class="flex gap-5">
         <div
-          :title="userData['user_metadata'].firstName"
+          :title="userData['user_metadata']?.firstName"
           class="relative h-[44px] w-[44px] rounded-[50%] bg-gray-300 p-3 text-[22px] text-white"
         >
           <span class="origin-top-right">
@@ -23,10 +23,10 @@
       leave-to-class="transform scale-95 opacity-0"
     >
       <MenuItems
-        class="absolute right-0 mt-2 flex flex-col divide-y divide-gray-200 rounded bg-white drop-shadow-xl"
+        class="absolute right-0 mt-2 flex flex-col divide-y divide-gray-200 rounded bg-white  shadow-lg"
       >
         <MenuItem>
-          <div class="rounded p-3 text-sm">
+          <div class="rounded px-12 py-5 text-sm">
             <span class="font-bold">{{ userData.email }}</span>
           </div>
         </MenuItem>
@@ -34,7 +34,7 @@
           <div class="flex flex-col">
             <router-link
               active-class=""
-              class="p-3 text-sm transition hover:bg-orange-base hover:text-white"
+              class="px-12 py-5 text-sm transition hover:bg-orange-base hover:text-white"
               to="/user"
               @click="close"
             >
@@ -57,7 +57,7 @@
               </div>
             </router-link>
             <div
-              class="flex cursor-pointer items-center justify-between rounded-b p-3 text-sm transition hover:bg-orange-base hover:text-white"
+              class="flex cursor-pointer items-center justify-between rounded-b px-12 py-5 text-sm transition hover:bg-orange-base hover:text-white"
               @click="signOut"
             >
               <span>Sign Out</span>

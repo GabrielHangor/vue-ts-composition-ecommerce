@@ -7,12 +7,12 @@
       <BaseSelect
         :isLoading="isLoading"
         :modelValue="sortBy"
-        @update:modelValue="(newVal) => $emit('updateSortType', newVal)"
+        @update:modelValue="(newVal: SortTypes) => $emit('updateSortType', newVal)"
         :selectOptions="sortOptions"
       ></BaseSelect>
-      <span class="cursor-pointer"
-        ><img :src="`${title}${sortIcon}`" alt="Sort by icon" @click="toggleSortOrder"
-      /></span>
+      <span class="cursor-pointer">
+        <img :src="`${title}${sortIcon}`" alt="Sort by icon" @click="toggleSortOrder" />
+      </span>
     </div>
   </div>
 </template>
@@ -20,14 +20,16 @@
 <script lang="ts" setup>
   import { computed, type PropType } from 'vue';
   import BaseSelect from '@/shared/components/BaseSelect.vue';
-  import type { ISelectOptions } from '@/modules/catalog/models/catalog.interfaces';
+  import type { ISelectOptions } from '@/modules/catalog/models/catalog.models';
+  import { SortTypes } from '@/modules/catalog/models/catalog.models';
+
   const title = import.meta.env.BASE_URL;
 
-  const sortOptions: ISelectOptions = {
-    baseOption: { value: 'rentalCost', name: 'Sort by price' },
+  const sortOptions: ISelectOptions<SortTypes> = {
+    baseOption: { value: SortTypes.RentalCost, name: 'Sort by price' },
     options: [
-      { value: 'releaseYear', name: 'Sort by year' },
-      { value: 'deposit', name: 'Sort by deposit' },
+      { value: SortTypes.ReleaseYear, name: 'Sort by year' },
+      { value: SortTypes.Deposit, name: 'Sort by deposit' },
     ],
   };
 
@@ -39,7 +41,7 @@
 
   const emit = defineEmits<{
     (e: 'toggle-sort-order'): void;
-    (e: 'updateSortType', value: string): void;
+    (e: 'updateSortType', value: SortTypes): void;
     (e: 'openMobileFilters'): void;
   }>();
 

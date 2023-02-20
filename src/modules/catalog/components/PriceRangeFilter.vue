@@ -22,7 +22,7 @@
 <script setup lang="ts">
   import BaseInput from '@/shared/components/BaseInput.vue';
   import { computed, type PropType, ref, unref, watch } from 'vue';
-  import type { IPriceRange } from '@/modules/catalog/models/catalog.interfaces';
+  import type { IPriceRange } from '@/modules/catalog/models/catalog.models';
   import BaseRangeSlider from '@/shared/components/BaseRangeSlider.vue';
 
   const props = defineProps({

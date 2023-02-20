@@ -30,13 +30,14 @@
         />
       </template>
       <template #cars>
-        <OurCarsCatalog
+        <CarsCatalog
           :sort-by="sortBy"
           :vehicles="vehicles"
           :error="errorMessage"
           :is-loading="isLoading"
           :current-page="currentPage"
           :cars-total="vehiclesCount"
+          :should-append-page="shouldAppendPage"
           :sort-order-a-s-c="sortOrderASC"
           @append-page="appendPage"
           @update-sort-type="updateSortType"
@@ -51,19 +52,17 @@
 
 <script lang="ts" setup>
   import LocationAndTimeForm from '@/modules/catalog/components/LocationAndTimeForm.vue';
-  import OurCarsCatalog from '@/modules/catalog/components/CarsCatalog.vue';
+  import CarsCatalog from '@/modules/catalog/components/CarsCatalog.vue';
   import OurCarsCatalogFilters from '@/modules/catalog/components/CarsCatalogFilters.vue';
   import OurCarsSectionWrapper from '@/modules/catalog/components/CarsSectionWrapper.vue';
   import PageHeading from '@/modules/catalog/components/PageHeading.vue';
   import { useCatalog } from '@/modules/catalog/composables/useCatalog';
   import { usePreventScroll } from '@/shared/composables/usePreventScroll';
   import { ref, watch, toRef, type Ref, nextTick } from 'vue';
-  import type {
-    ILocationAndTimeFormValues,
-    IPriceRange,
-  } from '@/modules/catalog/models/catalog.interfaces';
+  import type { ILocationAndTimeFormValues, IPriceRange } from '@/modules/catalog/models/catalog.models';
   import { useSearchParams } from '@/modules/catalog/composables/useSearchParams';
   import { debounce, scrollToTopSmoothly } from '@/modules/catalog/catalog.helpers';
+  import { SortTypes } from '@/modules/catalog/models/catalog.models';
 
   interface ILocationAndTimeForm extends Ref<InstanceType<typeof LocationAndTimeForm>> {
     formValues: ILocationAndTimeFormValues;
@@ -235,6 +234,7 @@
 
   // PAGE
   const currentPage = ref(1);
+  const shouldAppendPage = ref(false);
 
   const appendPage = () => {
     shouldAppendPage.value = true;
@@ -243,29 +243,26 @@
 
   const changeCurrentPage = (page: number) => (currentPage.value = page);
 
-  watch(currentPage, () => {
+  watch(currentPage, async () => {
     console.log('page trigger');
 
     if (shouldAppendPage.value) {
-      fetchVehicles({ append: true });
+      await fetchVehicles({ append: true });
       shouldAppendPage.value = false;
       return;
     }
 
-    fetchVehicles();
+    await fetchVehicles();
   });
 
   // SORT
   const sortOrderASC = ref(true);
-  const sortBy = ref('rentalCost');
+  const sortBy = ref(SortTypes.RentalCost);
 
   const toggleSortOrder = () => (sortOrderASC.value = !sortOrderASC.value);
-  const updateSortType = (sortType: string) => (sortBy.value = sortType);
+  const updateSortType = (sortType: SortTypes) => (sortBy.value = sortType);
 
   watch([sortBy, sortOrderASC], () => fetchVehicles());
-
-  // OTHER
-  const shouldAppendPage = ref(false);
 
   // COMPOSABLES
   usePreventScroll(isCarCatalogFiltersOpen);

@@ -46,7 +46,7 @@
   import BaseButton from '@/shared/components/BaseButton.vue';
   import BaseInput from '@/shared/components/BaseInput.vue';
   import { computed, ref } from 'vue';
-  import type { IUserMetaData } from '@/modules/user/models/user.interfaces';
+  import type { IUserMetaData } from '@/modules/user/models/user.models';
   import { alpha, email, helpers, minLength, required } from '@vuelidate/validators';
   import { useVuelidate } from '@vuelidate/core';
   import { useToast } from 'vue-toastification';

@@ -1,4 +1,4 @@
-import type { IGetVehiclesCountRequestParams, IGetVehiclesRequestParams } from '@/modules/catalog/models/catalog.interfaces';
+import type { IGetVehiclesCountRequestParams, IGetVehiclesRequestParams } from '@/modules/catalog/models/catalog.models';
 import { supabase } from '@/supabase';
 
 export default class CatalogQueryBuilder {

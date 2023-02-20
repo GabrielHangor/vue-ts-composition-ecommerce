@@ -8,10 +8,16 @@
     />
 
     <transition name="fade" mode="out-in">
-      <SkeletonVehicleCardsSection v-if="isLoading" />
+      <div v-if="!isLoading || shouldAppendPage">
+        <VehicleCardsSection :vehicles="vehicles" />
+        <transition name="fade" mode="out-in">
+          <SkeletonVehicleCardsSection v-if="shouldAppendPage" />
+        </transition>
+      </div>
+
+      <SkeletonVehicleCardsSection v-else-if="isLoading" />
       <h1 class="p-10 text-center text-5xl" v-else-if="error">Something went wrong... {{ error }}</h1>
       <h1 class="p-10 text-center text-5xl" v-else-if="!vehicles.length">Nothing was found</h1>
-      <VehicleCardsSection v-else :vehicles="vehicles" />
     </transition>
 
     <BaseButton
@@ -38,7 +44,7 @@
 <script lang="ts" setup>
   import OurCarsCatalogHeading from './CarsCatalogHeading.vue';
   import VehicleCardsSection from './VehicleCardsSection.vue';
-  import type { IVehicleEntity } from '@/modules/catalog/models/catalog.interfaces';
+  import type { IVehicleEntity } from '@/modules/catalog/models/catalog.models';
   import { computed, type PropType } from 'vue';
   import BaseButton from '../../../shared/components/BaseButton.vue';
   import BasePaginator from '@/shared/components/BasePaginator.vue';
@@ -49,6 +55,7 @@
     vehicles: { type: Array as PropType<IVehicleEntity[]>, required: true },
     carsTotal: { type: Number as PropType<number>, required: true },
     currentPage: { type: Number as PropType<number>, required: true },
+    shouldAppendPage: { type: Boolean, required: true },
     isLoading: { type: Boolean as PropType<boolean> },
     sortOrderASC: { type: Boolean as PropType<boolean> },
     sortBy: { type: String as PropType<string> },

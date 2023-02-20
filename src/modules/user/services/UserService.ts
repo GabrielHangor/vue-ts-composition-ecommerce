@@ -1,6 +1,6 @@
-import type { IUserAuthData, IUserMetaData } from '@/modules/user/models/user.interfaces';
+import type { IUserAuthData, IUserMetaData } from '@/modules/user/models/user.models';
 import { supabase } from '@/supabase';
-import type { SignInWithOAuthCredentials } from '@supabase/supabase-js';
+import type { AuthProviders } from '@/modules/user/models/user.models';
 
 
 export default class UserService {
@@ -18,7 +18,7 @@ export default class UserService {
     if (error) throw Error(error.message);
   }
 
-  static async signInWithOAuth(provider: SignInWithOAuthCredentials['provider']) {
+  static async signInWithOAuth(provider: AuthProviders) {
     const { error } = await supabase.auth.signInWithOAuth({
       provider,
       options: { redirectTo: 'https://gabrielhangor.github.io/vue-ts-composition-ecommerce/' },

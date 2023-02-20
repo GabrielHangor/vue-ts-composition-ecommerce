@@ -7,13 +7,13 @@
     <h2 class="text-center text-[22px] font-bold">Sign in</h2>
 
     <div class="flex flex-col gap-2">
-      <BaseButton type="button" variant="transparent" @click="signInWithProvider('google')">
+      <BaseButton type="button" variant="transparent" @click="signInWithProvider(AuthProviders.Google)">
         <div class="flex items-center justify-center gap-5">
           <img class="h-[24px] w-[24px]" src="/google-auth-icon.svg" alt="Google" />
           <span>Sign in with Google</span>
         </div>
       </BaseButton>
-      <BaseButton type="button" variant="transparent" @click="signInWithProvider('github')">
+      <BaseButton type="button" variant="transparent" @click="signInWithProvider(AuthProviders.Github)">
         <div class="flex items-center justify-center gap-5">
           <img class="h-[24px] w-[24px]" src="/github-auth-icon.svg" alt="Github" />
           <span>Sign in with Github</span>
@@ -52,8 +52,8 @@
   import { useVuelidate } from '@vuelidate/core';
   import { helpers, required, email, minLength } from '@vuelidate/validators';
   import { useUser } from '@/modules/user/composables/useUser';
-  import type { Provider } from '@supabase/supabase-js';
   import { useToast } from 'vue-toastification';
+  import { AuthProviders } from '@/modules/user/models/user.models';
 
   const emit = defineEmits<{
     (e: 'display-sign-up-form'): void;
@@ -84,7 +84,7 @@
     }
   };
 
-  const signInWithProvider = async (provider: Provider) => {
+  const signInWithProvider = async (provider: AuthProviders) => {
     await signInWithOAuth(provider);
   };
 

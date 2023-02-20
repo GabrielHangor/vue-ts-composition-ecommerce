@@ -13,3 +13,8 @@ export interface IUserMetaData {
   zipCode: string | number;
   street: string;
 }
+
+export enum AuthProviders {
+  Google = 'google',
+  Github = 'github',
+}

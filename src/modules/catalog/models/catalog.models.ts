@@ -44,7 +44,7 @@ export interface IVehiclesCountGroupedByFilterType extends IVehiclesMinRentalCos
 }
 
 export interface IGetVehiclesRequestParams {
-  sortBy: string;
+  sortBy: SortTypes;
   sortOrderASC: boolean;
   offset: number;
   limit: number;
@@ -67,7 +67,7 @@ export interface IGetVehiclesCountRequestParams {
 export interface IUseCatalogArgs {
   currentPage: Ref<number>;
   sortOrderASC: Ref<boolean>;
-  sortBy: Ref<string>;
+  sortBy: Ref<SortTypes>;
   activeLocationFilters: Ref<ILocationAndTimeFormValues>;
   priceRange: Ref<IPriceRange>;
   activeCarTypeFilters: Ref<string[]>;
@@ -79,14 +79,14 @@ export interface IUseCatalogArgs {
   activeCarBabySeatFilters: Ref<string[]>;
 }
 
-export interface ISelectOption {
-  value: string | number;
+export interface ISelectOption<T> {
+  value: T;
   name: string;
 }
 
-export interface ISelectOptions {
-  baseOption: ISelectOption;
-  options: ISelectOption[];
+export interface ISelectOptions<T> {
+  baseOption: ISelectOption<T>;
+  options: ISelectOption<T>[];
 }
 
 export interface IMap<T> {
@@ -100,4 +100,10 @@ export interface IUseSearchParams<T> {
 export interface IPriceRange {
   minPrice: number | null;
   maxPrice: number | null;
+}
+
+export enum SortTypes {
+  RentalCost = 'rentalCost',
+  ReleaseYear = 'releaseYear',
+  Deposit = 'deposit',
 }

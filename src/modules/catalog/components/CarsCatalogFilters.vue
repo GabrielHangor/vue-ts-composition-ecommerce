@@ -50,7 +50,7 @@
     IPriceRange,
     IVehiclesCountGroupedByFilterType,
     IVehiclesMinRentalCostGroupedByFilterType,
-  } from '@/modules/catalog/models/catalog.interfaces';
+  } from '@/modules/catalog/models/catalog.models';
 
   import BaseButton from '@/shared/components/BaseButton.vue';
   import { computed, nextTick, ref } from 'vue';
@@ -62,8 +62,8 @@
     isLoading?: boolean;
     initialPriceBoundaries: IPriceRange;
     priceRange: IPriceRange;
-    vehiclesCountByFilter: IVehiclesCountGroupedByFilterType;
-    minRentalCostByFilter: IVehiclesMinRentalCostGroupedByFilterType;
+    vehiclesCountByFilter: IVehiclesCountGroupedByFilterType | null;
+    minRentalCostByFilter: IVehiclesMinRentalCostGroupedByFilterType | null;
   }
 
   interface IPriceRangeFilter extends Ref<InstanceType<typeof PriceRangeFilter>> {

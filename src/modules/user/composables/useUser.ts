@@ -1,7 +1,8 @@
 import { ref } from 'vue';
 import UserService from '@/modules/user/services/UserService';
 import { supabase } from '@/supabase';
-import type { User, AuthError, Provider } from '@supabase/supabase-js';
+import type { User, AuthError } from '@supabase/supabase-js';
+import type { AuthProviders } from '@/modules/user/models/user.models';
 
 supabase.auth.onAuthStateChange((event, session) => {
   console.log(event, session);
@@ -21,7 +22,6 @@ export const useUser = () => {
       } catch (e) {
         if (e instanceof Error) {
           console.error(e);
-          console.log();
           error.value = e.message;
         }
       } finally {
@@ -36,7 +36,7 @@ export const useUser = () => {
 
   const signIn = handleServiceCall(UserService.signIn);
 
-  const signInWithOAuth = (provider: Provider) => UserService.signInWithOAuth(provider);
+  const signInWithOAuth = (provider: AuthProviders) => UserService.signInWithOAuth(provider);
 
   const sendPasswordResetLink = handleServiceCall(UserService.sendPasswordResetLink);
 
