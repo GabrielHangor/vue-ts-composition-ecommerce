@@ -1,7 +1,9 @@
 <template>
   <aside
-    class="md:z-1 fixed top-0 left-0 z-10 flex h-fit min-h-[100vh] w-full flex-col items-center overflow-hidden overflow-y-auto bg-white p-5 transition-[opacity] duration-300 ease-in md:pointer-events-auto md:relative md:col-span-4 md:w-auto md:overflow-y-hidden md:p-1 md:opacity-100 lg:col-span-3"
-    :class="isOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'"
+    class="md:z-1 fixed top-0 left-0 z-10 flex h-full w-full flex-col items-center bg-white p-5 transition-[opacity] duration-300 ease-in md:pointer-events-auto md:relative md:col-span-4 md:w-auto md:overflow-y-hidden md:p-1 md:opacity-100 lg:col-span-3"
+    :class="
+      isOpen ? 'pointer-events-auto !overflow-y-auto opacity-100' : 'pointer-events-none opacity-0'
+    "
   >
     <div v-show="isLoading" class="absolute z-10 h-full w-full cursor-wait backdrop-grayscale"></div>
     <img
